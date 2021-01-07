@@ -9,5 +9,4 @@ public class WordbookApplication {
     public static void main(String[] args) {
         SpringApplication.run(WordbookApplication.class, args);
     }
-
 }
