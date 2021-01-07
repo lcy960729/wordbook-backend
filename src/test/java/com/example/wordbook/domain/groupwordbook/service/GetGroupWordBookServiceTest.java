@@ -15,20 +15,19 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
-import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-public class GetServiceTest {
+public class GetGroupWordBookServiceTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(GetServiceTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(GetGroupWordBookServiceTest.class);
 
     @InjectMocks
     private GetGroupWordBookService getGroupWordBookService;

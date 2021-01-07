@@ -14,17 +14,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.ConstraintViolationException;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-public class UpdateServiceTest {
+public class DeleteGroupWordBookServiceTest {
 
     @InjectMocks
     private UpdateGroupWordBookService updateGroupWordBookService;
@@ -71,26 +68,5 @@ public class UpdateServiceTest {
         //then
         assertThat(detailGroupWordBookDTO.getId()).isEqualTo(wordBookId);
         assertThat(detailGroupWordBookDTO.getName()).isEqualTo(nameConsistingWellFormedAfterUpdate);
-    }
-
-    @Test
-    @DisplayName("이름에 문자+숫자 조합이 아닌 숫자만 들어왔을때 에러를 반환하는 테스트")
-    public void updateWordBookName_ErrorTest_NameThatIsOnlyNumeric() {
-        //given
-        String nameConsistingWellFormedAfterUpdate = "123123";
-
-        GroupWordBookRequestDTO.Update updateGroupWordBookDTO = GroupWordBookRequestDTO.Update.builder()
-                .id(wordBookId)
-                .name(nameConsistingWellFormedAfterUpdate)
-                .build();
-
-        given(getGroupWordBookService.getEntityById(wordBookId)).willReturn(groupWordBook);
-        given(groupWordBookRepository.save(any(GroupWordBook.class))).willReturn(groupWordBook);
-
-        //when
-        Throwable throwable = catchThrowable(()->updateGroupWordBookService.update_name(wordBookId, updateGroupWordBookDTO));
-
-        //then
-        assertThat(throwable).isInstanceOf(ConstraintViolationException.class);
     }
 }

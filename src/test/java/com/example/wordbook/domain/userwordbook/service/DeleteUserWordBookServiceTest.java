@@ -25,7 +25,7 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-public class DeleteServiceTest {
+public class DeleteUserWordBookServiceTest {
 
     @InjectMocks
     private UpdateUserWordBookService updateUserWordBookService;

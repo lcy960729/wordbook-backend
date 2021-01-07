@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-public class CreateServiceTest {
+public class CreateGroupWordBookServiceTest {
 
     @InjectMocks
     private CreateGroupWordBookService createGroupWordBookService;

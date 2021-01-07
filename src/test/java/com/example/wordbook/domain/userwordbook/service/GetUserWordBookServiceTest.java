@@ -6,7 +6,6 @@ import com.example.wordbook.domain.userwordbook.exception.WordBookNotFoundExcept
 import com.example.wordbook.domain.userwordbook.repository.UserWordBookRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -25,9 +24,9 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-public class GetServiceTest {
+public class GetUserWordBookServiceTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(GetServiceTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(GetUserWordBookServiceTest.class);
 
     @InjectMocks
     private GetUserWordBookService getUserWordBookService;

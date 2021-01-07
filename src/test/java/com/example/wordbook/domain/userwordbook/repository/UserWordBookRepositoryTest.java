@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 
@@ -21,9 +20,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class GroupWordBookRepositoryTest {
+public class UserWordBookRepositoryTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(GroupWordBookRepositoryTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserWordBookRepositoryTest.class);
 
     @Autowired
     private UserWordBookRepository userWordBookRepository;

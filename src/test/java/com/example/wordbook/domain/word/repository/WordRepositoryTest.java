@@ -4,7 +4,7 @@ import com.example.wordbook.domain.groupwordbook.entity.GroupWordBook;
 import com.example.wordbook.domain.groupwordbook.repository.GroupWordBookRepository;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.domain.userwordbook.entity.UserWordBook;
-import com.example.wordbook.domain.userwordbook.repository.GroupWordBookRepositoryTest;
+import com.example.wordbook.domain.userwordbook.repository.UserWordBookRepositoryTest;
 import com.example.wordbook.domain.userwordbook.repository.UserWordBookRepository;
 import com.example.wordbook.domain.word.entity.Word;
 import com.example.wordbook.domain.wordbook.entity.WordBook;
@@ -19,10 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +30,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class WordRepositoryTest {
-    private static final Logger logger = LoggerFactory.getLogger(GroupWordBookRepositoryTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserWordBookRepositoryTest.class);
 
     @Autowired
     private WordRepository wordRepository;

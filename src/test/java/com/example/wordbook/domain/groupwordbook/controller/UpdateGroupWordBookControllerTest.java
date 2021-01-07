@@ -1,12 +1,13 @@
-package com.example.wordbook.domain.userwordbook.controller;
+package com.example.wordbook.domain.groupwordbook.controller;
 
-import com.example.wordbook.domain.userwordbook.dto.UserWordBookRequestDTO;
-import com.example.wordbook.domain.userwordbook.dto.UserWordBookResponseDTO;
-import com.example.wordbook.domain.userwordbook.service.CreateUserWordBookService;
-import com.example.wordbook.domain.userwordbook.service.DeleteUserWordBookService;
-import com.example.wordbook.domain.userwordbook.service.GetUserWordBookService;
-import com.example.wordbook.domain.userwordbook.service.UpdateUserWordBookService;
+import com.example.wordbook.domain.groupwordbook.dto.GroupWordBookRequestDTO;
+import com.example.wordbook.domain.groupwordbook.dto.GroupWordBookResponseDTO;
+import com.example.wordbook.domain.groupwordbook.service.CreateGroupWordBookService;
+import com.example.wordbook.domain.groupwordbook.service.DeleteGroupWordBookService;
+import com.example.wordbook.domain.groupwordbook.service.GetGroupWordBookService;
+import com.example.wordbook.domain.groupwordbook.service.UpdateGroupWordBookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -28,33 +30,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = UserWordBookController.class)
-public class UpdateControllerTest {
+public class UpdateGroupWordBookControllerTest extends GroupWordBookControllerTest{
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private GetUserWordBookService getUserWordBookService;
-    @MockBean
-    private CreateUserWordBookService createUserWordBookService;
-    @MockBean
-    private UpdateUserWordBookService updateUserWordBookService;
-    @MockBean
-    private DeleteUserWordBookService deleteUserWordBookService;
-
-    private ResultActions requestUpdateUserWordBook(Long id) throws Exception {
-        UserWordBookRequestDTO.Update updateDTO = UserWordBookRequestDTO.Update.builder()
+    private ResultActions requestUpdateGroupWordBook(Long id) throws Exception {
+        GroupWordBookRequestDTO.Update updateDTO = GroupWordBookRequestDTO.Update.builder()
                 .id(0L)
                 .name("Cy의 단어장-전")
                 .build();
 
         return mockMvc.perform(
-                put("/api/v1/userWordBooks/" + id)
+                put("/api/v1/groupWordBooks/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaTypes.HAL_JSON)
                         .content(objectMapper.writeValueAsString(updateDTO))
@@ -63,19 +48,19 @@ public class UpdateControllerTest {
 
     @Test
     @DisplayName("정상적으로 id에 해당하는 단어장을 반환하는 테스트")
-    public void updateUserWordBook() throws Exception {
+    public void updateGroupWordBook() throws Exception {
         //given
-        UserWordBookResponseDTO.Detail userWordBookDTO = UserWordBookResponseDTO.Detail.builder()
+        GroupWordBookResponseDTO.Detail groupWordBookDTO = GroupWordBookResponseDTO.Detail.builder()
                 .id(0L)
                 .isUsing(true)
                 .name("Cy의 단어장-후")
-                .userId(0L)
+                .groupId(0L)
                 .build();
 
-        given(updateUserWordBookService.update_name(anyLong(),any(UserWordBookRequestDTO.Update.class))).willReturn(userWordBookDTO);
+        given(updateGroupWordBookService.update_name(anyLong(),any(GroupWordBookRequestDTO.Update.class))).willReturn(groupWordBookDTO);
 
         //when
-        ResultActions resultActions = requestUpdateUserWordBook(0L);
+        ResultActions resultActions = requestUpdateGroupWordBook(0L);
 
         //then
         resultActions
@@ -84,7 +69,7 @@ public class UpdateControllerTest {
                 //.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE));
                 .andExpect(jsonPath("id").exists())
                 .andExpect(jsonPath("isUsing").exists())
-                .andExpect(jsonPath("name").value(userWordBookDTO.getName()))
-                .andExpect(jsonPath("userId").exists());
+                .andExpect(jsonPath("name").value(groupWordBookDTO.getName()))
+                .andExpect(jsonPath("groupId").exists());
     }
 }

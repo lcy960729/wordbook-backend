@@ -27,24 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = GroupWordBookController.class)
-public class DeleteControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private GetGroupWordBookService getGroupWordBookService;
-    @MockBean
-    private CreateGroupWordBookService createGroupWordBookService;
-    @MockBean
-    private UpdateGroupWordBookService updateGroupWordBookService;
-    @MockBean
-    private DeleteGroupWordBookService deleteGroupWordBookService;
+public class DeleteGroupWordBookControllerTest extends GroupWordBookControllerTest{
 
     private ResultActions requestDeleteGroupWordBook(Long id) throws Exception {
         return mockMvc.perform(

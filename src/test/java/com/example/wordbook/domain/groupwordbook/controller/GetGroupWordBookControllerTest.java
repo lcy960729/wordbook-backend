@@ -29,24 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = GroupWordBookController.class)
-public class GetControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private GetGroupWordBookService getGroupWordBookService;
-    @MockBean
-    private CreateGroupWordBookService createGroupWordBookService;
-    @MockBean
-    private UpdateGroupWordBookService updateGroupWordBookService;
-    @MockBean
-    private DeleteGroupWordBookService deleteGroupWordBookService;
+public class GetGroupWordBookControllerTest extends GroupWordBookControllerTest{
 
     private ResultActions requestGetGroupWordBook(Long id) throws Exception {
         return mockMvc.perform(
