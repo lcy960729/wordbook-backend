@@ -1,7 +1,5 @@
 package com.example.wordbook.domain.word.controller;
 
-import com.example.wordbook.domain.groupwordbook.dto.GroupWordBookRequestDTO;
-import com.example.wordbook.domain.groupwordbook.dto.GroupWordBookResponseDTO;
 import com.example.wordbook.domain.word.dto.WordRequestDTO;
 import com.example.wordbook.global.exception.BusinessException;
 import com.example.wordbook.domain.word.service.CreateWordService;
@@ -41,8 +39,8 @@ public class WordController {
 //    }
 //
 //    @PutMapping(value = "/{id}")
-//    public ResponseEntity<Object> updateWord(@PathVariable String id, @RequestBody GroupWordBookRequestDTO.Update updateGroupWordBookDTO){
-//        GroupWordBookResponseDTO.Detail groupWordBookDTO =  updateGroupWordBookService.update_name(Long.parseLong(id), updateGroupWordBookDTO);
+//    public ResponseEntity<Object> updateWord(@PathVariable String id, @RequestBody WordBookRequestDTO.Update updateGroupWordBookDTO){
+//        WordBookResponseDTO.Detail groupWordBookDTO =  updateGroupWordBookService.update_name(Long.parseLong(id), updateGroupWordBookDTO);
 //        return ResponseEntity.ok().body(groupWordBookDTO);
 //    }
 //
@@ -51,10 +49,4 @@ public class WordController {
 //        deleteGroupWordBookService.deleteById(Long.parseLong(id));
 //        return ResponseEntity.ok("deleted");
 //    }
-
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<Object> validationExceptionHandle(BusinessException e){
-
-        return ResponseEntity.badRequest().build();
-    }
 }

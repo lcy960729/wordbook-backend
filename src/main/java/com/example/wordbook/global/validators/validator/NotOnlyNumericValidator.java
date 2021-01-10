@@ -1,6 +1,5 @@
 package com.example.wordbook.global.validators.validator;
 
-import com.example.wordbook.domain.userwordbook.controller.UserWordBookController;
 import com.example.wordbook.global.validators.annotation.NotOnlyNumeric;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,8 +1,6 @@
 package com.example.wordbook.domain.user.entity;
 
-import com.example.wordbook.domain.groupwordbook.entity.GroupWordBook;
-import com.example.wordbook.domain.userwordbook.entity.UserWordBook;
-import com.example.wordbook.domain.wordbook.entity.WordBook;
+import com.example.wordbook.domain.wordbook.entity.UserWordBook;
 import lombok.*;
 
 import javax.persistence.*;

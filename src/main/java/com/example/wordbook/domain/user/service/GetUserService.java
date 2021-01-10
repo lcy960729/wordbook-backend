@@ -2,7 +2,7 @@ package com.example.wordbook.domain.user.service;
 
 import com.example.wordbook.domain.user.dto.UserDetailDTO;
 import com.example.wordbook.domain.user.entity.User;
-import com.example.wordbook.domain.user.mapper.UserMapper;
+import com.example.wordbook.global.mapper.UserMapper;
 import com.example.wordbook.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 

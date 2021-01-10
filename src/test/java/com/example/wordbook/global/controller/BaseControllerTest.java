@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = UserController.class)
 public class BaseControllerTest {
     @Autowired
     protected MockMvc mockMvc;

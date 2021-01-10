@@ -52,14 +52,4 @@ public class UserController {
 
         return null;
     }
-
-    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
-    public ResponseEntity<Object> methodArgumentNotValidExceptionHandle(MethodArgumentNotValidException methodArgumentNotValidException) {
-        return ResponseEntity.badRequest().build();
-    }
-
-    @ExceptionHandler(value = {ConstraintViolationException.class})
-    public ResponseEntity<Object> ConstraintViolationExceptionHandle(ConstraintViolationException constraintViolationException) {
-        return ResponseEntity.unprocessableEntity().build();
-    }
 }

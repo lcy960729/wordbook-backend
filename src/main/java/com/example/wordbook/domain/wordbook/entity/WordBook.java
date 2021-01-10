@@ -28,22 +28,4 @@ public class WordBook {
 
     @OneToMany(mappedBy = "wordBook")
     private List<Word> words;
-
-    public WordBook(Boolean isUsing, String name, List<Word> words) {
-        this.isUsing = isUsing;
-        this.name = name;
-        this.words = words;
-    }
-
-    protected void changeName(@NotBlank String name) {
-        this.name = name;
-    }
-
-    protected void setUsing(Boolean isUsing) {
-        this.isUsing = isUsing;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

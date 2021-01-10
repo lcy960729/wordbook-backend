@@ -1,13 +1,9 @@
 package com.example.wordbook.domain.word.repository;
 
-import com.example.wordbook.domain.groupwordbook.entity.GroupWordBook;
-import com.example.wordbook.domain.groupwordbook.repository.GroupWordBookRepository;
-import com.example.wordbook.domain.user.entity.User;
-import com.example.wordbook.domain.userwordbook.entity.UserWordBook;
-import com.example.wordbook.domain.userwordbook.repository.UserWordBookRepositoryTest;
-import com.example.wordbook.domain.userwordbook.repository.UserWordBookRepository;
 import com.example.wordbook.domain.word.entity.Word;
-import com.example.wordbook.domain.wordbook.entity.WordBook;
+import com.example.wordbook.domain.wordbook.entity.GroupWordBook;
+import com.example.wordbook.domain.user.entity.User;
+import com.example.wordbook.domain.wordbook.entity.UserWordBook;
 import com.example.wordbook.domain.wordbook.repository.WordBookRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,16 +26,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class WordRepositoryTest {
-    private static final Logger logger = LoggerFactory.getLogger(UserWordBookRepositoryTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(WordRepositoryTest.class);
 
     @Autowired
     private WordRepository wordRepository;
-
-    @Autowired
-    private UserWordBookRepository userWordBookRepository;
-
-    @Autowired
-    private GroupWordBookRepository groupWordBookRepository;
 
     @Autowired
     private WordBookRepository wordBookRepository;
@@ -52,28 +42,28 @@ public class WordRepositoryTest {
     @BeforeAll
     public void setUp(){
         userWordBook = UserWordBook.builder()
-                .userId(User.builder().build())
+                .user(User.builder().build())
                 .name("test")
                 .isUsing(true)
                 .words(new ArrayList<>())
                 .build();
 
-        userWordBook = userWordBookRepository.save(userWordBook);
+        userWordBook = wordBookRepository.save(userWordBook);
 
         groupWordBook = GroupWordBook.builder()
-                .groupId(0L)
+                .group(0L)
                 .name("test")
                 .isUsing(true)
                 .words(new ArrayList<>())
                 .build();
 
-        groupWordBook = groupWordBookRepository.save(groupWordBook);
+        groupWordBook = wordBookRepository.save(groupWordBook);
     }
 
     @Test
     public void createUserWordBook() throws JsonProcessingException {
         //given
-        WordBook wordBook = wordBookRepository.findById(1L).get();
+        UserWordBook wordBook = (UserWordBook) wordBookRepository.findById(1L).get();
 
         Word word = Word.builder()
                 .isUsing(true)
