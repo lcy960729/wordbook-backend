@@ -1,7 +1,8 @@
 package com.example.wordbook.domain.word.repository;
 
+import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
 import com.example.wordbook.domain.word.entity.Word;
-import com.example.wordbook.domain.wordbook.entity.GroupWordBook;
+import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.domain.wordbook.entity.UserWordBook;
 import com.example.wordbook.domain.wordbook.repository.WordBookRepository;
@@ -37,7 +38,7 @@ public class WordRepositoryTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private UserWordBook userWordBook;
-    private GroupWordBook groupWordBook;
+    private StudyGroupWordBook studyGroupWordBook;
 
     @BeforeAll
     public void setUp(){
@@ -50,14 +51,14 @@ public class WordRepositoryTest {
 
         userWordBook = wordBookRepository.save(userWordBook);
 
-        groupWordBook = GroupWordBook.builder()
-                .group(0L)
+        studyGroupWordBook = StudyGroupWordBook.builder()
+                .studyGroup(StudyGroup.builder().build())
                 .name("test")
                 .isUsing(true)
                 .words(new ArrayList<>())
                 .build();
 
-        groupWordBook = wordBookRepository.save(groupWordBook);
+        studyGroupWordBook = wordBookRepository.save(studyGroupWordBook);
     }
 
     @Test

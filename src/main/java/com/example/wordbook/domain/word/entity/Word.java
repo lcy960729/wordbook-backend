@@ -20,7 +20,7 @@ public class Word {
     private Boolean isUsing;
 
     @OneToOne
-    @JoinColumn(name = "wordBook_id")
+    @JoinColumn(name = "wordbook_id")
     private WordBook wordBook;
 
     @Column(name = "voca", unique = true, nullable = false)

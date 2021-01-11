@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.wordbook.repository;
 
-import com.example.wordbook.domain.wordbook.entity.GroupWordBook;
+import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
 import com.example.wordbook.domain.wordbook.entity.UserWordBook;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +43,7 @@ public class WordBookRepositoryTest {
 
         logger.info(objectMapper.writeValueAsString(userWordBook));
         logger.info(objectMapper.writeValueAsString((UserWordBook) wordBookRepository.findById(userWordBook.getId()).orElseThrow(RuntimeException::new)));
-        logger.info(objectMapper.writeValueAsString((GroupWordBook) wordBookRepository.findById(userWordBook.getId()).orElseThrow(RuntimeException::new)));
+        logger.info(objectMapper.writeValueAsString((StudyGroupWordBook) wordBookRepository.findById(userWordBook.getId()).orElseThrow(RuntimeException::new)));
         //then
         assertThat(userWordBook.getId()).isNotNull();
     }

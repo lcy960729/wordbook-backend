@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.user.dto;
 
-import com.example.wordbook.domain.wordbook.dto.WordBookResponseDTO;
+import com.example.wordbook.domain.wordbook.dto.WordBookDetailDTO;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,7 +29,7 @@ public class UserDetailDTO {
     }
 
     @Builder
-    public UserDetailDTO(Long id, String name, List<WordBookResponseDTO.Detail> userWordBookList) {
+    public UserDetailDTO(Long id, String name, List<WordBookDetailDTO> userWordBookList) {
         this.id = id;
         this.name = name;
 

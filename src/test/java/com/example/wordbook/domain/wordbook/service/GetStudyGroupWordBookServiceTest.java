@@ -1,10 +1,11 @@
 package com.example.wordbook.domain.wordbook.service;
 
-import com.example.wordbook.domain.wordbook.entity.GroupWordBook;
+import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
+import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
 import com.example.wordbook.domain.wordbook.entity.WordBook;
 import com.example.wordbook.domain.wordbook.exception.WordBookNotFoundException;
 import com.example.wordbook.domain.wordbook.repository.WordBookRepository;
-import com.example.wordbook.domain.wordbook.service.groupwordbookImpl.GetGroupWordBookService;
+import com.example.wordbook.domain.wordbook.service.groupwordbookImpl.GetStudyGroupWordBookService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,12 +28,12 @@ import static org.mockito.BDDMockito.given;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-public class GetGroupWordBookServiceTest {
+public class GetStudyGroupWordBookServiceTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(GetGroupWordBookServiceTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(GetStudyGroupWordBookServiceTest.class);
 
     @InjectMocks
-    private GetGroupWordBookService getGroupWordBookService;
+    private GetStudyGroupWordBookService getStudyGroupWordBookService;
 
     @Mock
     private WordBookRepository wordBookRepository;
@@ -40,51 +41,51 @@ public class GetGroupWordBookServiceTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final Long groupWordBookId = 0L;
-    private GroupWordBook groupWordBook;
+    private StudyGroupWordBook studyGroupWordBook;
 
     @BeforeAll
     public void createGroupWordBook() {
         String nameConsistingWellFormed = "testWordBook";
-        Long groupIdThatIsValid = 0L;
+        StudyGroup studyGroup = StudyGroup.builder().build();
 
-        groupWordBook = GroupWordBook.builder()
+        studyGroupWordBook = StudyGroupWordBook.builder()
                 .isUsing(true)
                 .name(nameConsistingWellFormed)
-                .group(groupIdThatIsValid)
+                .studyGroup(studyGroup)
                 .build();
-        groupWordBook.setId(groupWordBookId);
+        studyGroupWordBook.setId(groupWordBookId);
     }
 
     @Test
     @DisplayName("정상적으로 개인 단어장을 불러오는 테스트")
     public void getById() throws JsonProcessingException {
         //given
-        Optional<WordBook> optionalGroupWordBook = Optional.of(groupWordBook);
+        Optional<WordBook> optionalGroupWordBook = Optional.of(this.studyGroupWordBook);
 
         Long idThatIsCorrect = groupWordBookId;
         given(wordBookRepository.findById(idThatIsCorrect)).willReturn(optionalGroupWordBook);
 
         //when
-        GroupWordBook groupWordBook = getGroupWordBookService.getEntityById(idThatIsCorrect);
+        StudyGroupWordBook studyGroupWordBook = getStudyGroupWordBookService.getEntityById(idThatIsCorrect);
 
         //then
-        logger.info(objectMapper.writeValueAsString(groupWordBook));
-        assertThat(groupWordBook)
+        logger.info(objectMapper.writeValueAsString(studyGroupWordBook));
+        assertThat(studyGroupWordBook)
                 .usingRecursiveComparison()
-                .isEqualTo(this.groupWordBook);
+                .isEqualTo(this.studyGroupWordBook);
     }
 
     @Test
     @DisplayName("아이디가 null 값인 개인 단어장을 불러올시 에러 발생 테스트")
     public void getById_ErrorTest_NullInput() {
         //given
-        Optional<WordBook> optionalGroupWordBook = Optional.of(groupWordBook);
+        Optional<WordBook> optionalGroupWordBook = Optional.of(studyGroupWordBook);
 
         Long idThatIsNull = null;
         given(wordBookRepository.findById(idThatIsNull)).willReturn(optionalGroupWordBook);
 
         //when
-        Throwable throwable = catchThrowable(() -> getGroupWordBookService.getEntityById(groupWordBookId));
+        Throwable throwable = catchThrowable(() -> getStudyGroupWordBookService.getEntityById(groupWordBookId));
 
         //then
         assertThat(throwable).isInstanceOf(WordBookNotFoundException.class);
@@ -95,13 +96,13 @@ public class GetGroupWordBookServiceTest {
     public void getById_ErrorTest_NotFoundById_Input() {
         //given
         //저장된 유저 워드북의 아이디는 0L
-        Optional<WordBook> optionalGroupWordBook = Optional.of(groupWordBook);
+        Optional<WordBook> optionalGroupWordBook = Optional.of(studyGroupWordBook);
 
         Long idThatDoesNotExist = 1L;
         given(wordBookRepository.findById(idThatDoesNotExist)).willReturn(optionalGroupWordBook);
 
         //when
-        Throwable throwable = catchThrowable(() -> getGroupWordBookService.getEntityById(groupWordBookId));
+        Throwable throwable = catchThrowable(() -> getStudyGroupWordBookService.getEntityById(groupWordBookId));
 
         //then
         assertThat(throwable).isInstanceOf(WordBookNotFoundException.class);

@@ -31,7 +31,7 @@ class UserCreateControllerTest extends UserControllerTest {
     void create() throws Exception {
         //given
         CreateUserDTO userCreateDTOConsistingWellFormedInput = CreateUserDTO.builder()
-                .userId("testId")
+                .email("testId")
                 .name("testName")
                 .pw("testPw")
                 .build();
@@ -52,7 +52,7 @@ class UserCreateControllerTest extends UserControllerTest {
     void create_ErrorTest() throws Exception {
         //given
         CreateUserDTO userCreateDTOConsistingWellFormedInput = CreateUserDTO.builder()
-                .userId(null)
+                .email(null)
                 .name(null)
                 .pw(null)
                 .build();

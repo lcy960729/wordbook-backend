@@ -1,11 +1,12 @@
 package com.example.wordbook.domain.wordbook.service;
 
-import com.example.wordbook.domain.wordbook.dto.WordBookRequestDTO;
-import com.example.wordbook.domain.wordbook.dto.WordBookResponseDTO;
-import com.example.wordbook.domain.wordbook.entity.GroupWordBook;
+import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
+import com.example.wordbook.domain.wordbook.dto.UpdateWordBookDTO;
+import com.example.wordbook.domain.wordbook.dto.WordBookDetailDTO;
+import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
 import com.example.wordbook.domain.wordbook.repository.WordBookRepository;
-import com.example.wordbook.domain.wordbook.service.groupwordbookImpl.GetGroupWordBookService;
-import com.example.wordbook.domain.wordbook.service.groupwordbookImpl.UpdateGroupWordBookService;
+import com.example.wordbook.domain.wordbook.service.groupwordbookImpl.GetStudyGroupWordBookService;
+import com.example.wordbook.domain.wordbook.service.groupwordbookImpl.UpdateStudyGroupWordBookService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -22,31 +23,31 @@ import static org.mockito.BDDMockito.given;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
-public class DeleteGroupWordBookServiceTest {
+public class DeleteStudyStudyGroupWordBookServiceTest {
 
     @InjectMocks
-    private UpdateGroupWordBookService updateGroupWordBookService;
+    private UpdateStudyGroupWordBookService updateStudyGroupWordBookService;
 
     @Mock
-    private GetGroupWordBookService getGroupWordBookService;
+    private GetStudyGroupWordBookService getStudyGroupWordBookService;
 
     @Mock
     private WordBookRepository wordBookRepository;
 
     private final Long wordBookId = 0L;
-    private GroupWordBook groupWordBook;
+    private StudyGroupWordBook studyGroupWordBook;
 
     @BeforeAll
     public void createGroupWordBook() {
         String nameConsistingWellFormed = "WordBook";
-        Long groupIdThatIsValid = 0L;
+        StudyGroup studyGroup = StudyGroup.builder().build();
 
-        groupWordBook = GroupWordBook.builder()
+        studyGroupWordBook = StudyGroupWordBook.builder()
                 .isUsing(true)
                 .name(nameConsistingWellFormed)
-                .group(groupIdThatIsValid)
+                .studyGroup(studyGroup)
                 .build();
-        groupWordBook.setId(wordBookId);
+        studyGroupWordBook.setId(wordBookId);
     }
 
     @Test
@@ -55,16 +56,16 @@ public class DeleteGroupWordBookServiceTest {
         //given
         String nameConsistingWellFormedAfterUpdate = "UpdateWordBook";
 
-        WordBookRequestDTO.Update updateGroupWordBookDTO = WordBookRequestDTO.Update.builder()
+        UpdateWordBookDTO updateGroupWordBookDTO = UpdateWordBookDTO.builder()
                 .id(wordBookId)
                 .name(nameConsistingWellFormedAfterUpdate)
                 .build();
 
-        given(getGroupWordBookService.getEntityById(wordBookId)).willReturn(groupWordBook);
-        given(wordBookRepository.save(any(GroupWordBook.class))).willReturn(groupWordBook);
+        given(getStudyGroupWordBookService.getEntityById(wordBookId)).willReturn(studyGroupWordBook);
+        given(wordBookRepository.save(any(StudyGroupWordBook.class))).willReturn(studyGroupWordBook);
 
         //when
-        WordBookResponseDTO.Detail detailGroupWordBookDTO = updateGroupWordBookService.update_name(wordBookId, updateGroupWordBookDTO);
+        WordBookDetailDTO detailGroupWordBookDTO = updateStudyGroupWordBookService.update_name(wordBookId, updateGroupWordBookDTO);
 
         //then
         assertThat(detailGroupWordBookDTO.getId()).isEqualTo(wordBookId);

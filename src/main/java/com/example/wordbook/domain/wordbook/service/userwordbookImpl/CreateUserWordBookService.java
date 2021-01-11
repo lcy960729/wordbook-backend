@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.wordbook.service.userwordbookImpl;
 
-import com.example.wordbook.domain.wordbook.dto.WordBookRequestDTO;
+import com.example.wordbook.domain.wordbook.dto.CreateWordBookDTO;
 import com.example.wordbook.domain.wordbook.entity.UserWordBook;
 import com.example.wordbook.domain.wordbook.repository.WordBookRepository;
 import com.example.wordbook.domain.wordbook.service.wordbook.CreateWordBookService;
@@ -21,7 +21,7 @@ public class CreateUserWordBookService implements CreateWordBookService {
         this.userWordBookMapper = userWordBookMapper;
     }
 
-    public Long create(@Valid WordBookRequestDTO.Create createUserWordBookDTO) {
+    public Long create(@Valid CreateWordBookDTO createUserWordBookDTO) {
         UserWordBook userWordBook = userWordBookMapper.createUserWordBookDTOToEntity(createUserWordBookDTO);
         userWordBook.setIsUsing(true);
 

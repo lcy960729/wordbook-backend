@@ -1,9 +1,8 @@
 package com.example.wordbook.domain.wordbook.controller;
 
-import com.example.wordbook.domain.wordbook.dto.WordBookRequestDTO;
+import com.example.wordbook.domain.wordbook.dto.CreateWordBookDTO;
 import com.example.wordbook.domain.wordbook.enums.WordBookType;
 import com.example.wordbook.domain.wordbook.service.wordbook.CreateWordBookService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -12,12 +11,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-import javax.validation.Valid;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -29,7 +25,7 @@ public class CreateWordBookControllerTest extends WordBookControllerTest {
 
     private final Long userIdThatIsValid = 0L;
 
-    private ResultActions requestCreateWordBook(WordBookRequestDTO.Create createUserWordBookDTO) throws Exception {
+    private ResultActions requestCreateWordBook(CreateWordBookDTO createUserWordBookDTO) throws Exception {
         return mockMvc.perform(
                 post("/api/v1/wordBooks/")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -39,11 +35,11 @@ public class CreateWordBookControllerTest extends WordBookControllerTest {
     }
 
     @Test
-    @DisplayName("정상적으로 단어장을 생성하는 테스트")
+    @DisplayName("정상적으로 유저 단어장을 생성하는 테스트")
     public void createUserWordBook() throws Exception {
         //given
         String nameConsistingWellFormed = "TestWordBook";
-        WordBookRequestDTO.Create createWordBookDTO = WordBookRequestDTO.Create
+        CreateWordBookDTO createWordBookDTO = CreateWordBookDTO
                 .builder()
                 .name(nameConsistingWellFormed)
                 .wordBookType(WordBookType.USER)
@@ -51,7 +47,7 @@ public class CreateWordBookControllerTest extends WordBookControllerTest {
                 .build();
 
         given(wordBookServiceFactory.getCreateServiceImpl(any(WordBookType.class))).willReturn(createWordBookService);
-        given(createWordBookService.create(any(WordBookRequestDTO.Create.class))).willReturn(0L);
+        given(createWordBookService.create(any(CreateWordBookDTO.class))).willReturn(0L);
 
         //when
         ResultActions resultActions = requestCreateWordBook(createWordBookDTO);
@@ -65,10 +61,36 @@ public class CreateWordBookControllerTest extends WordBookControllerTest {
     }
 
     @Test
+    @DisplayName("정상적으로 그룹 단어장을 생성하는 테스트")
+    public void createGroupWordBook() throws Exception {
+        //given
+        String nameConsistingWellFormed = "TestWordBook";
+        CreateWordBookDTO createWordBookDTO = CreateWordBookDTO
+                .builder()
+                .name(nameConsistingWellFormed)
+                .wordBookType(WordBookType.GROUP)
+                .ownerId(userIdThatIsValid)
+                .build();
+
+        given(wordBookServiceFactory.getCreateServiceImpl(any(WordBookType.class))).willReturn(createWordBookService);
+        given(createWordBookService.create(any(CreateWordBookDTO.class))).willReturn(0L);
+
+        //when
+        ResultActions resultActions = requestCreateWordBook(createWordBookDTO);
+
+        //then
+        resultActions
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(header().exists(HttpHeaders.LOCATION));
+        //.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE));
+    }
+
+    @Test
     @DisplayName("입력값이 비어있을때 에러를 반환하는 테스트")
     public void createUserWordBook_Bad_Request_Empty_Input() throws Exception {
         //given
-        WordBookRequestDTO.Create createUserWordBookDTO = WordBookRequestDTO.Create
+        CreateWordBookDTO createUserWordBookDTO = CreateWordBookDTO
                 .builder()
                 .build();
 
@@ -87,7 +109,7 @@ public class CreateWordBookControllerTest extends WordBookControllerTest {
     public void createUserWordBook_Bad_Request_Wrong_Input() throws Exception {
         //given
         String nameConsistingOnlyOfNumbers = "1234";
-        WordBookRequestDTO.Create createUserWordBookDTO = WordBookRequestDTO.Create
+        CreateWordBookDTO createUserWordBookDTO = CreateWordBookDTO
                 .builder()
                 .name(nameConsistingOnlyOfNumbers)
                 .ownerId(userIdThatIsValid)

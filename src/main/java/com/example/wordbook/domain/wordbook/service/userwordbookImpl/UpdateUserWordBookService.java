@@ -1,7 +1,7 @@
 package com.example.wordbook.domain.wordbook.service.userwordbookImpl;
 
-import com.example.wordbook.domain.wordbook.dto.WordBookRequestDTO;
-import com.example.wordbook.domain.wordbook.dto.WordBookResponseDTO;
+import com.example.wordbook.domain.wordbook.dto.UpdateWordBookDTO;
+import com.example.wordbook.domain.wordbook.dto.WordBookDetailDTO;
 import com.example.wordbook.domain.wordbook.entity.UserWordBook;
 import com.example.wordbook.domain.wordbook.repository.UserWordBookRepository;
 import com.example.wordbook.domain.wordbook.service.wordbook.UpdateWordBookService;
@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @Service
 @Validated
-public class UpdateUserWordBookService implements UpdateWordBookService<WordBookResponseDTO.Detail, WordBookRequestDTO.Update> {
+public class UpdateUserWordBookService implements UpdateWordBookService<WordBookDetailDTO, UpdateWordBookDTO> {
 
     private final GetUserWordBookService getUserWordBookService;
 
@@ -27,13 +27,13 @@ public class UpdateUserWordBookService implements UpdateWordBookService<WordBook
     }
 
 
-    public WordBookResponseDTO.Detail update_name(Long id, @Valid WordBookRequestDTO.Update updateUserWordBookDTO) {
+    public WordBookDetailDTO update_name(Long id, @Valid UpdateWordBookDTO updateUserWordBookDTO) {
         UserWordBook userWordBook = getUserWordBookService.getEntityById(id);
 
         userWordBook.setName(updateUserWordBookDTO.getName());
 
         userWordBook = userWordBookRepository.save(userWordBook);
 
-        return modelMapper.map(userWordBook, WordBookResponseDTO.Detail.class);
+        return modelMapper.map(userWordBook, WordBookDetailDTO.class);
     }
 }

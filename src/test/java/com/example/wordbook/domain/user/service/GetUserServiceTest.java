@@ -38,7 +38,7 @@ class GetUserServiceTest {
                 .id(id)
                 .name("testName")
                 .pw("testPw")
-                .userId("0L")
+                .email("0L")
                 .build();
 
         UserDetailDTO userDetailDTOTemp = UserDetailDTO.builder()

@@ -1,7 +1,6 @@
 package com.example.wordbook.domain.wordbook.controller;
 
-import com.example.wordbook.domain.wordbook.dto.WordBookRequestDTO;
-import com.example.wordbook.domain.wordbook.dto.WordBookResponseDTO;
+import com.example.wordbook.domain.wordbook.dto.*;
 import com.example.wordbook.domain.wordbook.entity.WordBook;
 import com.example.wordbook.domain.wordbook.enums.WordBookType;
 import com.example.wordbook.domain.wordbook.service.WordBookServiceFactory;
@@ -11,8 +10,6 @@ import com.example.wordbook.domain.wordbook.service.wordbook.GetWordBookService;
 import com.example.wordbook.domain.wordbook.service.wordbook.UpdateWordBookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +24,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class WordBookController {
     private static final Logger logger = LoggerFactory.getLogger(WordBookController.class);
 
-    @Autowired
-    private WordBookServiceFactory wordBookServiceFactory;
+    private final WordBookServiceFactory wordBookServiceFactory;
+
+    public WordBookController(WordBookServiceFactory wordBookServiceFactory) {
+        this.wordBookServiceFactory = wordBookServiceFactory;
+    }
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody @Valid WordBookRequestDTO.Create createGroupWordBookDTO){
+    public ResponseEntity<Object> create(@RequestBody @Valid CreateWordBookDTO createGroupWordBookDTO){
         CreateWordBookService createWordBookService = wordBookServiceFactory.getCreateServiceImpl(createGroupWordBookDTO.getWordBookType());
 
         Long wordBookId = createWordBookService.create(createGroupWordBookDTO);
@@ -42,9 +42,9 @@ public class WordBookController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Object> get(@RequestParam("wordBookType") WordBookType wordBookType, @PathVariable String id){
-//        GetWordBookService<WordBookResponseDTO.Detail, WordBook> getWordBookService = wordBookServiceFactory.getGetServiceImpl(wordBookType);
-//        WordBookResponseDTO.Detail groupWordBookDTO = getWordBookService.getDetailDTOById(Long.parseLong(id));
+    public ResponseEntity<Object> get(@PathVariable String id, @RequestParam("wordBookType") WordBookType wordBookType){
+        GetWordBookService<WordBookDetailDTO, WordBook> getWordBookService = wordBookServiceFactory.getGetServiceImpl(wordBookType);
+        WordBookDetailDTO groupWordBookDTO = getWordBookService.getDetailDTOById(Long.parseLong(id));
 
         return ResponseEntity.ok(null);
     }
@@ -55,14 +55,18 @@ public class WordBookController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> update(@PathVariable String id, @RequestBody WordBookRequestDTO.Update updateGroupWordBookDTO){
-//        WordBookResponseDTO.Detail groupWordBookDTO =  updateWordBookService.update_name(Long.parseLong(id), updateGroupWordBookDTO);
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<Object> update(@PathVariable String id, @RequestBody UpdateWordBookDTO updateWordBookDTO){
+        UpdateWordBookService<WordBookDetailDTO, UpdateWordBookDTO> updateWordBookService = wordBookServiceFactory.getUpdateServiceImpl(updateWordBookDTO.getWordBookType());
+        WordBookDetailDTO wordBookDetailDTO =  updateWordBookService.update_name(Long.parseLong(id), updateWordBookDTO);
+
+        return ResponseEntity.ok().body(wordBookDetailDTO);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Object> delete(@PathVariable String id){
-//        deleteWordBookService.deleteById(Long.parseLong(id));
+    public ResponseEntity<Object> delete(@PathVariable String id, @RequestBody DeleteWordBookDTO deleteWordBookDTO){
+        DeleteWordBookService deleteWordBookService = wordBookServiceFactory.getDeleteServiceImpl(deleteWordBookDTO.getWordBookType());
+        deleteWordBookService.deleteById(Long.parseLong(id));
+
         return ResponseEntity.ok("deleted");
     }
 }

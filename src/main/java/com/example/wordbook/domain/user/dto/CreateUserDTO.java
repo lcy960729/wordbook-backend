@@ -11,15 +11,15 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CreateUserDTO {
     @NotNull
-    private String userId;
+    private String email;
     @NotBlank
     private String pw;
     @NotBlank
     private String name;
 
     @Builder
-    public CreateUserDTO(String userId, String pw, String name) {
-        this.userId = userId;
+    public CreateUserDTO(String email, String pw, String name) {
+        this.email = email;
         this.pw = pw;
         this.name = name;
     }

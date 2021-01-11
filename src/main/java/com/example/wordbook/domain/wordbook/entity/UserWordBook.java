@@ -15,13 +15,13 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Setter
 public class UserWordBook extends WordBook {
-    @OneToOne
-    @JoinColumn(name = "userId")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public UserWordBook(Boolean isUsing, String name, List<Word> words, User user) {
-        super(null, isUsing, name, words);
+    public UserWordBook(Long id, Boolean isUsing, String name, List<Word> words, User user) {
+        super(id, isUsing, name, words);
         this.user = user;
     }
 

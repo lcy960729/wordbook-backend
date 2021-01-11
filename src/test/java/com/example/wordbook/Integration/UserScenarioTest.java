@@ -2,7 +2,7 @@ package com.example.wordbook.Integration;
 
 import com.example.wordbook.domain.user.dto.CreateUserDTO;
 import com.example.wordbook.domain.user.dto.UserDetailDTO;
-import com.example.wordbook.domain.wordbook.dto.WordBookRequestDTO;
+import com.example.wordbook.domain.wordbook.dto.CreateWordBookDTO;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class UserScenarioTest extends BaseIntegrationTest {
         //given
         CreateUserDTO createUserDTO = CreateUserDTO.builder()
                 .name("testName")
-                .userId("testId")
+                .email("testId")
                 .pw("testPw")
                 .build();
 
@@ -59,7 +59,7 @@ public class UserScenarioTest extends BaseIntegrationTest {
 
         //CreateWordBook
         //given
-        WordBookRequestDTO.Create createUserWordBookDTO = WordBookRequestDTO.Create.builder()
+        CreateWordBookDTO createUserWordBookDTO = CreateWordBookDTO.builder()
                 .ownerId(Long.parseLong(getUserUrl.substring(getUserUrl.length()-1)))
                 .name("testWordBook")
                 .build();

@@ -1,29 +1,27 @@
 package com.example.wordbook.domain.wordbook.entity;
 
+import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
 import com.example.wordbook.domain.word.entity.Word;
-import com.example.wordbook.domain.wordbook.entity.WordBook;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
 import java.util.List;
 
-@Entity(name = "groupWordBook")
-@DiscriminatorValue("group")
-@PrimaryKeyJoinColumn(name = "groupWordBook_id")
+@Entity(name = "studyGroupWordBook")
+@DiscriminatorValue("studyGroup")
+@PrimaryKeyJoinColumn(name = "studyGroupWordBook_id")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Setter
-public class GroupWordBook extends WordBook {
-    @Column(name = "groupId")
-    private Long groupId;
+public class StudyGroupWordBook extends WordBook {
+    @ManyToOne
+    @JoinColumn(name = "studygroup_id", nullable = false)
+    private StudyGroup studyGroup;
 
     @Builder
-    public GroupWordBook(Boolean isUsing,  String name, List<Word> words, Long group) {
+    public StudyGroupWordBook(Boolean isUsing, String name, List<Word> words, StudyGroup studyGroup) {
         super( null, isUsing, name, words);
-        this.groupId = group;
+        this.studyGroup = studyGroup;
     }
 
     @Override

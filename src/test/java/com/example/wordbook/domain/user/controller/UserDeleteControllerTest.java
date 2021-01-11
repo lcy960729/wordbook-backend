@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.user.controller;
 
-import com.example.wordbook.domain.wordbook.dto.WordBookRequestDTO;
+import com.example.wordbook.domain.wordbook.dto.CreateWordBookDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 class UserDeleteControllerTest extends UserControllerTest {
 
-    private ResultActions requestCreateGroupWordBook(WordBookRequestDTO.Create createGroupWordBookDTO) throws Exception {
+    private ResultActions requestCreateGroupWordBook(CreateWordBookDTO createGroupWordBookDTO) throws Exception {
         return mockMvc.perform(
                 post("/api/v1/groupWordBooks/")
                         .contentType(MediaType.APPLICATION_JSON)

@@ -1,9 +1,11 @@
 package com.example.wordbook.domain.user.entity;
 
+import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.wordbook.entity.UserWordBook;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "user")
@@ -18,23 +20,30 @@ public class User {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "user")
-    private List<UserWordBook> userWordBookList;
-
-    @Column(name = "userId", nullable = false)
-    private String userId;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name ="pw", nullable = false)
     private String pw;
 
-//    @OneToMany(mappedBy = "wordBook")
-//    private List<GroupWordBook> wordBookList;
+    @OneToMany(mappedBy = "user")
+    private List<UserWordBook> userWordBookList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Study> studyList;
 
     @Builder
-    public User(Long id, String name, String userId, String pw) {
+    public User(Long id, String name, String email, String pw) {
         this.id = id;
         this.name = name;
-        this.userId = userId;
+        this.email = email;
         this.pw = pw;
+    }
+
+    public void participateInStudyGroup(Study study){
+        if (studyList == null)
+            studyList = new ArrayList<>();
+
+        this.studyList.add(study);
     }
 }

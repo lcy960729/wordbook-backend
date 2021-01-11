@@ -34,14 +34,14 @@ class CreateUserServiceTest {
     void create() {
         //given
         CreateUserDTO createUserDTO = CreateUserDTO.builder()
-                .userId("testId")
+                .email("testId")
                 .name("testName")
                 .pw("testPw")
                 .build();
 
         User user = User.builder()
                 .id(0L)
-                .userId(createUserDTO.getUserId())
+                .email(createUserDTO.getEmail())
                 .name(createUserDTO.getName())
                 .pw(createUserDTO.getPw())
                 .build();

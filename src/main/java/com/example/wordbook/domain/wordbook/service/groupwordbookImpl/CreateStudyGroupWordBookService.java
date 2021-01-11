@@ -1,7 +1,7 @@
 package com.example.wordbook.domain.wordbook.service.groupwordbookImpl;
 
-import com.example.wordbook.domain.wordbook.dto.WordBookRequestDTO;
-import com.example.wordbook.domain.wordbook.entity.GroupWordBook;
+import com.example.wordbook.domain.wordbook.dto.CreateWordBookDTO;
+import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
 import com.example.wordbook.domain.wordbook.repository.WordBookRepository;
 import com.example.wordbook.domain.wordbook.service.wordbook.CreateWordBookService;
 import org.modelmapper.ModelMapper;
@@ -12,21 +12,21 @@ import javax.validation.Valid;
 
 @Service
 @Validated
-public class CreateGroupWordBookService implements CreateWordBookService {
+public class CreateStudyGroupWordBookService implements CreateWordBookService {
 
     private final WordBookRepository wordBookRepository;
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public CreateGroupWordBookService(WordBookRepository wordBookRepository) {
+    public CreateStudyGroupWordBookService(WordBookRepository wordBookRepository) {
         this.wordBookRepository = wordBookRepository;
     }
 
-    public Long create(@Valid WordBookRequestDTO.Create createGroupWordBookDTO) {
-        GroupWordBook groupWordBook = modelMapper.map(createGroupWordBookDTO, GroupWordBook.class);
+    public Long create(@Valid CreateWordBookDTO createGroupWordBookDTO) {
+        StudyGroupWordBook studyGroupWordBook = modelMapper.map(createGroupWordBookDTO, StudyGroupWordBook.class);
 
-        groupWordBook = wordBookRepository.save(groupWordBook);
+        studyGroupWordBook = wordBookRepository.save(studyGroupWordBook);
 
-        return groupWordBook.getId();
+        return studyGroupWordBook.getId();
     }
 }
