@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.user.service;
 
-import com.example.wordbook.domain.user.dto.CreateUserDTO;
+import com.example.wordbook.domain.user.dto.request.CreateUserRequestDTO;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.global.mapper.UserMapper;
 import com.example.wordbook.domain.user.repository.UserRepository;
@@ -33,7 +33,7 @@ class CreateUserServiceTest {
     @DisplayName(" 유저 생성시 정상적인 입력값에 대한 성공 테스트")
     void create() {
         //given
-        CreateUserDTO createUserDTO = CreateUserDTO.builder()
+        CreateUserRequestDTO createUserRequestDTO = CreateUserRequestDTO.builder()
                 .email("testId")
                 .name("testName")
                 .pw("testPw")
@@ -41,16 +41,16 @@ class CreateUserServiceTest {
 
         User user = User.builder()
                 .id(0L)
-                .email(createUserDTO.getEmail())
-                .name(createUserDTO.getName())
-                .pw(createUserDTO.getPw())
+                .email(createUserRequestDTO.getEmail())
+                .name(createUserRequestDTO.getName())
+                .pw(createUserRequestDTO.getPw())
                 .build();
 
-        given(userMapper.createUserDTOToEntity(any(CreateUserDTO.class))).willReturn(user);
+        given(userMapper.createUserDTOToEntity(any(CreateUserRequestDTO.class))).willReturn(user);
         given(userRepository.save(any(User.class))).willReturn(user);
 
         //when
-        Long id = createUserService.create(createUserDTO);
+        Long id = createUserService.create(createUserRequestDTO).getId();
 
         //then
         assertThat(id).isEqualTo(user.getId());

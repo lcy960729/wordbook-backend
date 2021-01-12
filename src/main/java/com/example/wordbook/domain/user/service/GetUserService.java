@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.user.service;
 
-import com.example.wordbook.domain.user.dto.UserDetailDTO;
+import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.global.mapper.UserMapper;
 import com.example.wordbook.domain.user.repository.UserRepository;
@@ -16,8 +16,8 @@ public class GetUserService {
         this.userMapper = userMapper;
     }
 
-    public UserDetailDTO getDetailDTOById(Long id) throws Exception {
-        return userMapper.userToUserResponseDetailDTO(getEntityById(id));
+    public UserDetailResponseDTO getDetailDTOById(Long id) throws Exception {
+        return userMapper.userToUserDetailDTO(getEntityById(id));
     }
 
     public User getEntityById(Long id) throws Exception {

@@ -1,4 +1,4 @@
-package com.example.wordbook.domain.user.dto;
+package com.example.wordbook.domain.user.dto.request;
 
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
-public class CreateUserDTO {
+public class CreateUserRequestDTO {
     @NotNull
     private String email;
     @NotBlank
@@ -18,7 +18,7 @@ public class CreateUserDTO {
     private String name;
 
     @Builder
-    public CreateUserDTO(String email, String pw, String name) {
+    public CreateUserRequestDTO(String email, String pw, String name) {
         this.email = email;
         this.pw = pw;
         this.name = name;

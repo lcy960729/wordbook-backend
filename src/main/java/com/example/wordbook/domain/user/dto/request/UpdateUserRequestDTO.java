@@ -1,4 +1,4 @@
-package com.example.wordbook.domain.user.dto;
+package com.example.wordbook.domain.user.dto.request;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,12 +8,12 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
-public class UpdateUserDTO {
+public class UpdateUserRequestDTO {
     @NotBlank
     private String name;
 
     @Builder
-    public UpdateUserDTO(@NotBlank String name) {
+    public UpdateUserRequestDTO(@NotBlank String name) {
         this.name = name;
     }
 }

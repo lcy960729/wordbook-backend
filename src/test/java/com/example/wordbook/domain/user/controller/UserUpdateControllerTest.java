@@ -1,7 +1,7 @@
 package com.example.wordbook.domain.user.controller;
 
-import com.example.wordbook.domain.user.dto.UpdateUserDTO;
-import com.example.wordbook.domain.user.dto.UserDetailDTO;
+import com.example.wordbook.domain.user.dto.request.UpdateUserRequestDTO;
+import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class UserUpdateControllerTest extends UserControllerTest {
 
-    private ResultActions requestUpdateUser(Long id, UpdateUserDTO userUpdateDTO) throws Exception {
+    private ResultActions requestUpdateUser(Long id, UpdateUserRequestDTO userUpdateDTO) throws Exception {
         return mockMvc.perform(
                 put("/api/v1/users/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -33,16 +33,16 @@ class UserUpdateControllerTest extends UserControllerTest {
         //given
         Long id = 0L;
 
-        UpdateUserDTO userUpdateDTO = UpdateUserDTO.builder()
+        UpdateUserRequestDTO userUpdateDTO = UpdateUserRequestDTO.builder()
                 .name("testName")
                 .build();
 
-        UserDetailDTO userDetailDTO = UserDetailDTO.builder()
+        UserDetailResponseDTO userDetailResponseDTO = UserDetailResponseDTO.builder()
                 .id(id)
                 .name(userUpdateDTO.getName())
                 .build();
 
-        given(updateUserService.update(anyLong(), any())).willReturn(userDetailDTO);
+        given(updateUserService.update(anyLong(), any())).willReturn(userDetailResponseDTO);
 
         //when
         ResultActions resultActions = requestUpdateUser(id, userUpdateDTO);

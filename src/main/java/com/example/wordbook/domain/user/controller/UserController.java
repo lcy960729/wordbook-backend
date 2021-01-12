@@ -1,17 +1,15 @@
 package com.example.wordbook.domain.user.controller;
 
-import com.example.wordbook.domain.user.dto.CreateUserDTO;
-import com.example.wordbook.domain.user.dto.UpdateUserDTO;
+import com.example.wordbook.domain.user.dto.request.CreateUserRequestDTO;
+import com.example.wordbook.domain.user.dto.request.UpdateUserRequestDTO;
+import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
 import com.example.wordbook.domain.user.service.CreateUserService;
 import com.example.wordbook.domain.user.service.GetUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.net.URI;
 
@@ -22,18 +20,21 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @RequestMapping(value = "/api/v1/users", produces = MediaTypes.HAL_JSON_VALUE)
 public class UserController {
 
-    @Autowired
-    private CreateUserService createUserService;
-    @Autowired
-    private GetUserService getUserService;
+    private final CreateUserService createUserService;
+    private final GetUserService getUserService;
+
+    public UserController(CreateUserService createUserService, GetUserService getUserService) {
+        this.createUserService = createUserService;
+        this.getUserService = getUserService;
+    }
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody @Valid CreateUserDTO userCreateDTO) {
-        Long id = createUserService.create(userCreateDTO);
+    public ResponseEntity<Object> create(@RequestBody @Valid CreateUserRequestDTO createUserRequestDTO) {
+        UserDetailResponseDTO userDetailResponseDTO = createUserService.create(createUserRequestDTO);
 
-        URI createdUri = linkTo(UserController.class).slash(id).toUri();
+        URI createdUri = linkTo(UserController.class).slash(userDetailResponseDTO.getId()).toUri();
 
-        return ResponseEntity.created(createdUri).build();
+        return ResponseEntity.created(createdUri).body(userDetailResponseDTO);
     }
 
     @GetMapping(value = "/{id}")
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> update(@PathVariable("id") Long id, @RequestBody UpdateUserDTO userUpdateDTO) {
+    public ResponseEntity<Object> update(@PathVariable("id") Long id, @RequestBody UpdateUserRequestDTO userUpdateDTO) {
 
         return ResponseEntity.ok().build();
     }

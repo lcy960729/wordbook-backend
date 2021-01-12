@@ -2,7 +2,7 @@ package com.example.wordbook.domain.studyGroup.controller;
 
 import com.example.wordbook.domain.studyGroup.dto.CreateStudyGroupDTO;
 import com.example.wordbook.domain.studyGroup.service.CreateStudyGroupService;
-import com.example.wordbook.domain.user.dto.UpdateUserDTO;
+import com.example.wordbook.domain.user.dto.request.UpdateUserRequestDTO;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,7 +27,7 @@ public class StudyGroupController {
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody @Valid CreateStudyGroupDTO createStudyGroupDTO) throws Exception {
-        Long id = createStudyGroupService.create(createStudyGroupDTO).getId();
+        Long id = createStudyGroupService.create(createStudyGroupDTO);
 
         URI createdUri = linkTo(StudyGroupController.class).slash(id).toUri();
 
@@ -40,7 +40,7 @@ public class StudyGroupController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> update(@PathVariable("id") Long id, @RequestBody UpdateUserDTO userUpdateDTO) {
+    public ResponseEntity<Object> update(@PathVariable("id") Long id, @RequestBody UpdateUserRequestDTO userUpdateDTO) {
 
         return ResponseEntity.ok().build();
     }

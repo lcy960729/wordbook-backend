@@ -3,7 +3,7 @@ package com.example.wordbook.domain.wordbook.service;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
 import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
 import com.example.wordbook.domain.wordbook.entity.WordBook;
-import com.example.wordbook.domain.wordbook.exception.WordBookNotFoundException;
+import com.example.wordbook.domain.wordbook.exception.NotFoundWordBookException;
 import com.example.wordbook.domain.wordbook.repository.WordBookRepository;
 import com.example.wordbook.domain.wordbook.service.groupwordbookImpl.GetStudyGroupWordBookService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -88,7 +88,7 @@ public class GetStudyGroupWordBookServiceTest {
         Throwable throwable = catchThrowable(() -> getStudyGroupWordBookService.getEntityById(groupWordBookId));
 
         //then
-        assertThat(throwable).isInstanceOf(WordBookNotFoundException.class);
+        assertThat(throwable).isInstanceOf(NotFoundWordBookException.class);
     }
 
     @Test
@@ -105,6 +105,6 @@ public class GetStudyGroupWordBookServiceTest {
         Throwable throwable = catchThrowable(() -> getStudyGroupWordBookService.getEntityById(groupWordBookId));
 
         //then
-        assertThat(throwable).isInstanceOf(WordBookNotFoundException.class);
+        assertThat(throwable).isInstanceOf(NotFoundWordBookException.class);
     }
 }

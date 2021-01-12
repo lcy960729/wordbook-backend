@@ -10,14 +10,14 @@ import java.util.List;
 
 @NoArgsConstructor
 @Data
-public class GroupDetailDTO {
+public class StudyGroupDetailDTO {
     private Long id;
     private String name;
     private List<Study> userList;
     private List<StudyGroupWordBook> wordBookList;
 
     @Builder
-    public GroupDetailDTO(Long id, String name, List<Study> userList, List<StudyGroupWordBook> wordBookList) {
+    public StudyGroupDetailDTO(Long id, String name, List<Study> userList, List<StudyGroupWordBook> wordBookList) {
         this.id = id;
         this.name = name;
         this.userList = userList;

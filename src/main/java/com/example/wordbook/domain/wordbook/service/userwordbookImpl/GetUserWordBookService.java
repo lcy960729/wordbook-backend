@@ -2,7 +2,7 @@ package com.example.wordbook.domain.wordbook.service.userwordbookImpl;
 
 import com.example.wordbook.domain.wordbook.dto.WordBookDetailDTO;
 import com.example.wordbook.domain.wordbook.entity.UserWordBook;
-import com.example.wordbook.domain.wordbook.exception.WordBookNotFoundException;
+import com.example.wordbook.domain.wordbook.exception.NotFoundWordBookException;
 import com.example.wordbook.domain.wordbook.service.wordbook.GetWordBookService;
 import com.example.wordbook.global.mapper.UserWordBookMapper;
 import com.example.wordbook.domain.wordbook.repository.UserWordBookRepository;
@@ -24,6 +24,6 @@ public class GetUserWordBookService implements GetWordBookService<WordBookDetail
     }
 
     public UserWordBook getEntityById(Long id) {
-        return userWordBookRepository.findById(id).orElseThrow(() -> new WordBookNotFoundException(id.toString()));
+        return userWordBookRepository.findById(id).orElseThrow(NotFoundWordBookException::new);
     }
 }

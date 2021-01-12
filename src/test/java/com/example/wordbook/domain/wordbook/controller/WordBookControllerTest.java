@@ -15,8 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 @WebMvcTest(controllers = WordBookController.class)
-//@SpringBootTest
-//@AutoConfigureMockMvc
+
 public class WordBookControllerTest extends BaseControllerTest {
     @MockBean
     protected WordBookServiceFactory wordBookServiceFactory;

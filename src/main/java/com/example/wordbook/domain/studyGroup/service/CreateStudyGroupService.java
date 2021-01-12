@@ -19,7 +19,6 @@ public class CreateStudyGroupService {
     private final StudyGroupMapper studyGroupMapper;
 
     private final GetUserService getUserService;
-
     private final CreateStudyService createStudyService;
 
     public CreateStudyGroupService(StudyGroupRepository studyGroupRepository, StudyGroupMapper studyGroupMapper, GetUserService getUserService, CreateStudyService createStudyService) {
@@ -30,7 +29,7 @@ public class CreateStudyGroupService {
     }
 
     @Transactional
-    public StudyGroup create(CreateStudyGroupDTO createStudyGroupDTO) throws Exception {
+    public Long create(CreateStudyGroupDTO createStudyGroupDTO) throws Exception {
         StudyGroup studyGroup = studyGroupMapper.createDTOToEntity(createStudyGroupDTO);
         studyGroup.use();
         studyGroup = studyGroupRepository.save(studyGroup);
@@ -42,6 +41,6 @@ public class CreateStudyGroupService {
         user.participateInStudyGroup(study);
         studyGroup.addStudy(study);
 
-        return studyGroup;
+        return studyGroup.getId();
     }
 }

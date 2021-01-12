@@ -1,7 +1,7 @@
 package com.example.wordbook.global.mapper;
 
 import com.example.wordbook.domain.studyGroup.dto.CreateStudyGroupDTO;
-import com.example.wordbook.domain.studyGroup.dto.GroupDetailDTO;
+import com.example.wordbook.domain.studyGroup.dto.StudyGroupDetailDTO;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,5 +18,5 @@ public interface StudyGroupMapper {
 
     @Mapping(target = "wordBookList", ignore = true)
     @Mapping(target = "userList", ignore = true)
-    GroupDetailDTO EntityToDetailDTO(StudyGroup studyGroup);
+    StudyGroupDetailDTO entityToDetailDTO(StudyGroup studyGroup);
 }

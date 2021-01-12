@@ -5,8 +5,10 @@ import com.example.wordbook.domain.user.service.GetUserService;
 import com.example.wordbook.domain.user.service.UpdateUserService;
 import com.example.wordbook.global.controller.BaseControllerTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+@WebMvcTest(controllers = UserController.class)
 public class UserControllerTest extends BaseControllerTest {
     @MockBean
     protected CreateUserService createUserService;

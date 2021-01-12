@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.user.service;
 
-import com.example.wordbook.domain.user.dto.UserDetailDTO;
+import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.global.mapper.UserMapper;
 import com.example.wordbook.domain.user.repository.UserRepository;
@@ -41,18 +41,18 @@ class GetUserServiceTest {
                 .email("0L")
                 .build();
 
-        UserDetailDTO userDetailDTOTemp = UserDetailDTO.builder()
+        UserDetailResponseDTO userDetailResponseDTOTemp = UserDetailResponseDTO.builder()
                 .id(id)
                 .name("testName")
                 .build();
 
         given(userRepository.findById(id)).willReturn(Optional.of(user));
-        given(userMapper.userToUserResponseDetailDTO(any(User.class))).willReturn(userDetailDTOTemp);
+        given(userMapper.userToUserDetailDTO(any(User.class))).willReturn(userDetailResponseDTOTemp);
 
         //when
-        UserDetailDTO userDetailDTO = getUserService.getDetailDTOById(id);
+        UserDetailResponseDTO userDetailResponseDTO = getUserService.getDetailDTOById(id);
 
         //then
-        assertThat(userDetailDTO).isNotNull();
+        assertThat(userDetailResponseDTO).isNotNull();
     }
 }

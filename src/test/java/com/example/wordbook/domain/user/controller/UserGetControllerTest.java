@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.user.controller;
 
-import com.example.wordbook.domain.user.dto.UserDetailDTO;
+import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
@@ -28,7 +28,7 @@ class UserGetControllerTest extends UserControllerTest {
     void getUser() throws Exception {
         //given
         Long id = 0L;
-        UserDetailDTO detailUserResponseDTO = UserDetailDTO.builder()
+        UserDetailResponseDTO detailUserResponseDTO = UserDetailResponseDTO.builder()
                 .id(id)
                 .name("testUser")
                 .build();
@@ -41,25 +41,5 @@ class UserGetControllerTest extends UserControllerTest {
         //then
         resultActions.andDo(print())
                 .andExpect(status().isOk());
-    }
-
-
-    @Test
-    @DisplayName("눌값 입력시 실패하는 테스트")
-    void getUser_ErrorTest_NullInput() throws Exception {
-        //given
-        Long id = 0L;
-        UserDetailDTO detailUserResponseDTO = UserDetailDTO.builder()
-                .id(id)
-                .name("testUser")
-                .build();
-
-        //when
-        ResultActions resultActions = requestGetUser(id);
-        given(getUserService.getDetailDTOById(id)).willReturn(detailUserResponseDTO);
-
-        //then
-        resultActions.andDo(print())
-                .andExpect(status().isUnprocessableEntity());
     }
 }

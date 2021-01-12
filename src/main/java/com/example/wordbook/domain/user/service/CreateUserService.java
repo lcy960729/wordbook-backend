@@ -1,6 +1,7 @@
 package com.example.wordbook.domain.user.service;
 
-import com.example.wordbook.domain.user.dto.CreateUserDTO;
+import com.example.wordbook.domain.user.dto.request.CreateUserRequestDTO;
+import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.global.mapper.UserMapper;
 import com.example.wordbook.domain.user.repository.UserRepository;
@@ -21,10 +22,10 @@ public class CreateUserService {
         this.userRepository = userRepository;
     }
 
-    public Long create(@Valid CreateUserDTO createUserDTO) {
-        User user = userMapper.createUserDTOToEntity(createUserDTO);
+    public UserDetailResponseDTO create(@Valid CreateUserRequestDTO createUserRequestDTO) {
+        User user = userMapper.createUserDTOToEntity(createUserRequestDTO);
         user = userRepository.save(user);
 
-        return user.getId();
+        return userMapper.userToUserDetailDTO(user);
     }
 }
