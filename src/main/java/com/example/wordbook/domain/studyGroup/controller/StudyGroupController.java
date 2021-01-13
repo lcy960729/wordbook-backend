@@ -1,8 +1,11 @@
 package com.example.wordbook.domain.studyGroup.controller;
 
-import com.example.wordbook.domain.studyGroup.dto.CreateStudyGroupDTO;
+import com.example.wordbook.domain.studyGroup.dto.request.CreateStudyGroupRequestDTO;
+import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailResponseDTO;
 import com.example.wordbook.domain.studyGroup.service.CreateStudyGroupService;
+import com.example.wordbook.domain.studyGroup.service.GetStudyGroupService;
 import com.example.wordbook.domain.user.dto.request.UpdateUserRequestDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,41 +15,48 @@ import javax.validation.Valid;
 import java.net.URI;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Validated
 @RestController
-@RequestMapping(value = "/api/v1/groups", produces = MediaTypes.HAL_JSON_VALUE)
+@RequestMapping(value = "/api/v1/users/{userId}/study-groups", produces = MediaTypes.HAL_JSON_VALUE)
 public class StudyGroupController {
 
     private final CreateStudyGroupService createStudyGroupService;
+    private final GetStudyGroupService getStudyGroupService;
 
-    public StudyGroupController(CreateStudyGroupService createStudyGroupService) {
+    public StudyGroupController(CreateStudyGroupService createStudyGroupService, GetStudyGroupService getStudyGroupService) {
         this.createStudyGroupService = createStudyGroupService;
+        this.getStudyGroupService = getStudyGroupService;
     }
-
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody @Valid CreateStudyGroupDTO createStudyGroupDTO) throws Exception {
-        Long id = createStudyGroupService.create(createStudyGroupDTO);
+    public ResponseEntity<Object> create(@PathVariable("userId") String userId, @RequestBody @Valid CreateStudyGroupRequestDTO createStudyGroupRequestDTO) throws Exception {
 
-        URI createdUri = linkTo(StudyGroupController.class).slash(id).toUri();
+        StudyGroupDetailResponseDTO studyGroupDetailResponseDTO = createStudyGroupService.create(Long.parseLong(userId), createStudyGroupRequestDTO);
 
-        return ResponseEntity.created(createdUri).build();
+        URI createdUri = linkTo(methodOn(StudyGroupController.class).create(userId, null))
+                .slash(studyGroupDetailResponseDTO.getId())
+                .toUri();
+
+        return ResponseEntity.created(createdUri).body(studyGroupDetailResponseDTO);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Object> get(@PathVariable("id") Long id) throws Exception {
+    @GetMapping(value = "/{studyGroupId}")
+    public ResponseEntity<Object> get(@PathVariable("userId") Long userId, @PathVariable("studyGroupId") Long groupId) throws Exception {
+        StudyGroupDetailResponseDTO studyGroupDetailResponseDTO = getStudyGroupService.getDetailDTOById(userId, groupId);
+
+        return ResponseEntity.ok(studyGroupDetailResponseDTO);
+    }
+
+    @PutMapping(value = "/{studyGroupId}")
+    public ResponseEntity<Object> update(@PathVariable("userId") Long userId, @PathVariable("studyGroupId") Long groupId, @RequestBody UpdateUserRequestDTO userUpdateDTO) {
+
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> update(@PathVariable("id") Long id, @RequestBody UpdateUserRequestDTO userUpdateDTO) {
-
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Object> delete() {
+    @DeleteMapping(value = "/{studyGroupId}")
+    public ResponseEntity<Object> delete(@PathVariable("userId") Long userId, @PathVariable("studyGroupId") Long groupId) {
 
         return null;
     }

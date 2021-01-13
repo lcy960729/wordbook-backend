@@ -5,6 +5,7 @@ import com.example.wordbook.domain.user.dto.request.UpdateUserRequestDTO;
 import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
 import com.example.wordbook.domain.user.service.CreateUserService;
 import com.example.wordbook.domain.user.service.GetUserService;
+import com.example.wordbook.domain.user.service.UpdateUserService;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,10 +23,12 @@ public class UserController {
 
     private final CreateUserService createUserService;
     private final GetUserService getUserService;
+    private final UpdateUserService updateUserService;
 
-    public UserController(CreateUserService createUserService, GetUserService getUserService) {
+    public UserController(CreateUserService createUserService, GetUserService getUserService, UpdateUserService updateUserService) {
         this.createUserService = createUserService;
         this.getUserService = getUserService;
+        this.updateUserService = updateUserService;
     }
 
     @PostMapping
@@ -43,9 +46,8 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> update(@PathVariable("id") Long id, @RequestBody UpdateUserRequestDTO userUpdateDTO) {
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Object> update(@PathVariable("id") Long id, @RequestBody UpdateUserRequestDTO updateUserRequestDTO) throws Exception {
+        return ResponseEntity.ok(updateUserService.update(id, updateUserRequestDTO));
     }
 
     @DeleteMapping

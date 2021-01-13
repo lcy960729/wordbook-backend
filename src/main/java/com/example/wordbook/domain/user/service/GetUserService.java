@@ -17,7 +17,7 @@ public class GetUserService {
     }
 
     public UserDetailResponseDTO getDetailDTOById(Long id) throws Exception {
-        return userMapper.userToUserDetailDTO(getEntityById(id));
+        return userMapper.entityToUserDetailDTO(getEntityById(id));
     }
 
     public User getEntityById(Long id) throws Exception {

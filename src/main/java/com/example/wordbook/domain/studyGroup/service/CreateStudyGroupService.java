@@ -1,9 +1,10 @@
 package com.example.wordbook.domain.studyGroup.service;
 
-import com.example.wordbook.domain.studyGroup.dto.CreateStudyGroupDTO;
+import com.example.wordbook.domain.studyGroup.dto.request.CreateStudyGroupRequestDTO;
+import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailResponseDTO;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
 import com.example.wordbook.domain.studyGroup.repository.StudyGroupRepository;
-import com.example.wordbook.domain.study.CreateStudyService;
+import com.example.wordbook.domain.study.service.JoinStudyService;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.domain.user.service.GetUserService;
 import com.example.wordbook.domain.study.entity.Study;
@@ -19,28 +20,28 @@ public class CreateStudyGroupService {
     private final StudyGroupMapper studyGroupMapper;
 
     private final GetUserService getUserService;
-    private final CreateStudyService createStudyService;
+    private final JoinStudyService joinStudyService;
 
-    public CreateStudyGroupService(StudyGroupRepository studyGroupRepository, StudyGroupMapper studyGroupMapper, GetUserService getUserService, CreateStudyService createStudyService) {
+    public CreateStudyGroupService(StudyGroupRepository studyGroupRepository, StudyGroupMapper studyGroupMapper, GetUserService getUserService, JoinStudyService joinStudyService) {
         this.studyGroupRepository = studyGroupRepository;
         this.studyGroupMapper = studyGroupMapper;
-        this.createStudyService = createStudyService;
+        this.joinStudyService = joinStudyService;
         this.getUserService = getUserService;
     }
 
     @Transactional
-    public Long create(CreateStudyGroupDTO createStudyGroupDTO) throws Exception {
-        StudyGroup studyGroup = studyGroupMapper.createDTOToEntity(createStudyGroupDTO);
+    public StudyGroupDetailResponseDTO create(Long userId, CreateStudyGroupRequestDTO createStudyGroupRequestDTO) throws Exception {
+        StudyGroup studyGroup = studyGroupMapper.createDTOToEntity(createStudyGroupRequestDTO);
         studyGroup.use();
         studyGroup = studyGroupRepository.save(studyGroup);
 
-        User user = getUserService.getEntityById(createStudyGroupDTO.getGroupOwnerId());
+        User user = getUserService.getEntityById(userId);
 
-        Study study = createStudyService.create(user, studyGroup);
+        Study study = joinStudyService.create(user, studyGroup);
 
-        user.participateInStudyGroup(study);
+        user.joinToStudy(study);
         studyGroup.addStudy(study);
 
-        return studyGroup.getId();
+        return studyGroupMapper.entityToDetailDTO(userId, studyGroup);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.wordbook.domain.studyGroup.dto;
+package com.example.wordbook.domain.studyGroup.dto.request;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,14 +6,12 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class CreateStudyGroupDTO {
+public class CreateStudyGroupRequestDTO {
     private String name;
-    private Long groupOwnerId;
 
     @Builder
-    public CreateStudyGroupDTO(String name, Long groupOwnerId) {
+    public CreateStudyGroupRequestDTO(String name) {
         this.name = name;
-        this.groupOwnerId = groupOwnerId;
     }
 
     //    public static builder builder = new builder();

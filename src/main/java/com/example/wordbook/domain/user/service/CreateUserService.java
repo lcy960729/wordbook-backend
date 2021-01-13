@@ -26,6 +26,6 @@ public class CreateUserService {
         User user = userMapper.createUserDTOToEntity(createUserRequestDTO);
         user = userRepository.save(user);
 
-        return userMapper.userToUserDetailDTO(user);
+        return userMapper.entityToUserDetailDTO(user);
     }
 }

@@ -1,7 +1,8 @@
 package com.example.wordbook.domain.studyGroup.service;
 
-import com.example.wordbook.domain.studyGroup.dto.StudyGroupDetailDTO;
+import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailResponseDTO;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
+import com.example.wordbook.domain.studyGroup.exception.NotFoundStudyGroupException;
 import com.example.wordbook.domain.studyGroup.repository.StudyGroupRepository;
 import com.example.wordbook.global.mapper.StudyGroupMapper;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,11 @@ public class GetStudyGroupService {
         this.studyGroupMapper = studyGroupMapper;
     }
 
-    public StudyGroupDetailDTO getDetailDTOById(Long id) throws Exception {
-        return studyGroupMapper.entityToDetailDTO(getEntityById(id));
+    public StudyGroupDetailResponseDTO getDetailDTOById(Long userId, Long studyGroupId) throws Exception {
+        return studyGroupMapper.entityToDetailDTO(userId, getEntityById(studyGroupId));
     }
 
-    public StudyGroup getEntityById(Long id) throws Exception {
-        return studyGroupRepository.findById(id).orElseThrow(Exception::new);
+    public StudyGroup getEntityById(Long id) {
+        return studyGroupRepository.findById(id).orElseThrow(NotFoundStudyGroupException::new);
     }
-
 }

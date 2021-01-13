@@ -10,6 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 public class Study {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class UpdateUserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+
     private final GetUserService getUserService;
 
     public UpdateUserService(UserRepository userRepository, UserMapper userMapper, GetUserService getUserService) {
@@ -22,8 +23,9 @@ public class UpdateUserService {
     public UserDetailResponseDTO update(Long id, UpdateUserRequestDTO updateUserRequestDTO) throws Exception {
         User user = getUserService.getEntityById(id);
         user.setName(updateUserRequestDTO.getName());
+
         user = userRepository.save(user);
 
-        return userMapper.userToUserDetailDTO(user);
+        return userMapper.entityToUserDetailDTO(user);
     }
 }

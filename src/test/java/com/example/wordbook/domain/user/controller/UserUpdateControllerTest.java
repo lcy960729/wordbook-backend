@@ -8,12 +8,15 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.ArrayList;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UserUpdateControllerTest extends UserControllerTest {
@@ -31,24 +34,35 @@ class UserUpdateControllerTest extends UserControllerTest {
     @DisplayName("정상적인 입력에 대해 유저 정보 업데이트 성공 테스트")
     void update() throws Exception {
         //given
-        Long id = 0L;
+        Long userId = 0L;
+        String updateName = "updateName";
 
         UpdateUserRequestDTO userUpdateDTO = UpdateUserRequestDTO.builder()
-                .name("testName")
+                .name(updateName)
                 .build();
 
         UserDetailResponseDTO userDetailResponseDTO = UserDetailResponseDTO.builder()
-                .id(id)
-                .name(userUpdateDTO.getName())
+                .id(userId)
+                .name(updateName)
+                .email("testEmail")
+                .wordBookDTOList(new ArrayList<>())
                 .build();
 
         given(updateUserService.update(anyLong(), any())).willReturn(userDetailResponseDTO);
 
         //when
-        ResultActions resultActions = requestUpdateUser(id, userUpdateDTO);
+        ResultActions resultActions = requestUpdateUser(userId, userUpdateDTO);
 
         //then
         resultActions.andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("email").exists())
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.update_user").exists())
+                .andExpect(jsonPath("_links.delete_user").exists())
+                .andExpect(jsonPath("_links.get_studyGroup").exists())
+                .andExpect(jsonPath("_links.get_wordBook").exists());
     }
 }

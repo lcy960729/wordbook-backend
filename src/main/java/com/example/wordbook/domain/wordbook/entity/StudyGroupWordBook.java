@@ -19,8 +19,8 @@ public class StudyGroupWordBook extends WordBook {
     private StudyGroup studyGroup;
 
     @Builder
-    public StudyGroupWordBook(Boolean isUsing, String name, List<Word> words, StudyGroup studyGroup) {
-        super( null, isUsing, name, words);
+    public StudyGroupWordBook(Long id, Boolean isUsing, String name, List<Word> words, StudyGroup studyGroup) {
+        super( id, isUsing, name, words);
         this.studyGroup = studyGroup;
     }
 

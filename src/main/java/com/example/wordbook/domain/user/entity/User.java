@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,27 +24,30 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name ="pw", nullable = false)
+    @Column(name = "pw", nullable = false)
     private String pw;
 
     @OneToMany(mappedBy = "user")
-    private List<UserWordBook> userWordBookList;
+    private final List<UserWordBook> userWordBookList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Study> studyList;
-
+    private final List<Study> studyList = new ArrayList<>();
+    
     @Builder
-    public User(Long id, String name, String email, String pw) {
+    public User(Long id, String name, String email, String pw, List<UserWordBook> userWordBookList, List<Study> studyList) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.pw = pw;
+
+        if (userWordBookList != null)
+            this.userWordBookList.addAll(userWordBookList);
+
+        if (studyList != null)
+            this.studyList.addAll(studyList);
     }
 
-    public void participateInStudyGroup(Study study){
-        if (studyList == null)
-            studyList = new ArrayList<>();
-
+    public void joinToStudy(Study study) {
         this.studyList.add(study);
     }
 }

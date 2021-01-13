@@ -3,6 +3,7 @@ package com.example.wordbook.domain.user.dto.response;
 import com.example.wordbook.domain.studyGroup.controller.StudyGroupController;
 import com.example.wordbook.domain.user.controller.UserController;
 import com.example.wordbook.domain.wordbook.controller.WordBookController;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +14,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -21,48 +23,52 @@ public class UserDetailResponseDTO extends RepresentationModel<UserDetailRespons
     private Long id;
     private String name;
     private String email;
-    private List<UserWordBookDTO> userWordBookList;
+    private List<WordBookDTO> wordBookDTOList;
     private List<StudyGroupDTO> studyGroupList;
 
+    @EqualsAndHashCode(callSuper = true)
     @NoArgsConstructor
     @Data
-    public static class UserWordBookDTO {
+    public static class WordBookDTO extends RepresentationModel<WordBookDTO> {
         private Long id;
         private String name;
 
         @Builder
-        public UserWordBookDTO(Long id, String name) {
+        public WordBookDTO(Long id, String name) {
             this.id = id;
             this.name = name;
+
+            add(linkTo(WordBookController.class).withRel("get_wordBook"));
         }
     }
 
+    @EqualsAndHashCode(callSuper = true)
     @NoArgsConstructor
     @Data
-    public static class StudyGroupDTO {
+    public static class StudyGroupDTO extends RepresentationModel<StudyGroupDTO> {
         private Long id;
         private String name;
 
         @Builder
-        public StudyGroupDTO(Long id, String name) {
+        public StudyGroupDTO(Long userId, Long id, String name) throws Exception {
             this.id = id;
             this.name = name;
+
+            add(linkTo(methodOn(StudyGroupController.class).get(userId, this.id)).withRel("get_studyGroup"));
         }
     }
 
     @Builder
-    public UserDetailResponseDTO(Long id, String name, String email, List<UserWordBookDTO> userWordBookList, List<StudyGroupDTO> studyGroupList) {
+    public UserDetailResponseDTO(Long id, String name, String email, List<WordBookDTO> wordBookDTOList, List<StudyGroupDTO> studyGroupList) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.userWordBookList = userWordBookList;
+        this.wordBookDTOList = wordBookDTOList;
         this.studyGroupList = studyGroupList;
 
         WebMvcLinkBuilder selfLinkBuilder = linkTo(UserController.class).slash(this.id);
         add(selfLinkBuilder.withSelfRel());
         add(selfLinkBuilder.withRel("update_user"));
         add(selfLinkBuilder.withRel("delete_user"));
-        add(linkTo(StudyGroupController.class).withRel("get_studyGroup"));
-        add(linkTo(WordBookController.class).withRel("get_wordBook"));
     }
 }

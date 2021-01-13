@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -29,8 +30,8 @@ class UserCreateControllerTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName("정상적으로 유저가 추가 되었을때 Created를 반환")
-    void create() throws Exception {
+    @DisplayName("스터디 그룹과 단어장이 없을 때 Body와 Created를 반환")
+    void createUser_NotEmptyStudyGroups() throws Exception {
         //given
         CreateUserRequestDTO userCreateDTOConsistingWellFormedInput = CreateUserRequestDTO.builder()
                 .name("testName")
@@ -42,7 +43,6 @@ class UserCreateControllerTest extends UserControllerTest {
                 .id(0L)
                 .name("testName")
                 .email("testEmail")
-                .userWordBookList(new ArrayList<>())
                 .build();
         given(createUserService.create(any(CreateUserRequestDTO.class))).willReturn(userDetailResponseDTO);
 
@@ -56,11 +56,62 @@ class UserCreateControllerTest extends UserControllerTest {
                 .andExpect(jsonPath("id").exists())
                 .andExpect(jsonPath("name").exists())
                 .andExpect(jsonPath("email").exists())
+                .andExpect(jsonPath("wordBookDTOList").isEmpty())
+                .andExpect(jsonPath("studyGroupList").isEmpty())
                 .andExpect(jsonPath("_links.self").exists())
                 .andExpect(jsonPath("_links.update_user").exists())
-                .andExpect(jsonPath("_links.delete_user").exists())
-                .andExpect(jsonPath("_links.get_studyGroup").exists())
-                .andExpect(jsonPath("_links.get_wordBook").exists());
+                .andExpect(jsonPath("_links.delete_user").exists());
+    }
+
+    @Test
+    @DisplayName("스터디 그룹과 단어장이 있을 때 각자의 상태로 가는 링크가 포함된 Body와 Created를 반환")
+    void create() throws Exception {
+        //given
+        CreateUserRequestDTO userCreateDTOConsistingWellFormedInput = CreateUserRequestDTO.builder()
+                .name("testName")
+                .email("testEmail")
+                .pw("testPw")
+                .build();
+
+        List<UserDetailResponseDTO.StudyGroupDTO> studyGroupDTOList = new ArrayList<>();
+
+        for (int i = 0; i < 5; ++i) {
+            studyGroupDTOList.add(new UserDetailResponseDTO.StudyGroupDTO(0L, (long)i, "testGroup" + i));
+        }
+
+        List<UserDetailResponseDTO.WordBookDTO> wordBookDTOList = new ArrayList<>();
+
+        for (int i = 0; i < 5; ++i) {
+            wordBookDTOList.add(new UserDetailResponseDTO.WordBookDTO((long)i, "testWordBook" + i));
+        }
+
+        UserDetailResponseDTO userDetailResponseDTO = UserDetailResponseDTO.builder()
+                .id(0L)
+                .name("testName")
+                .email("testEmail")
+                .studyGroupList(studyGroupDTOList)
+                .wordBookDTOList(wordBookDTOList)
+                .build();
+
+        given(createUserService.create(any(CreateUserRequestDTO.class))).willReturn(userDetailResponseDTO);
+
+        //when
+        ResultActions resultActions = requestCreateUser(userCreateDTOConsistingWellFormedInput);
+
+        //then
+        resultActions.andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(header().exists(HttpHeaders.LOCATION))
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("email").exists())
+                .andExpect(jsonPath("wordBookDTOList").isArray())
+                .andExpect(jsonPath("wordBookDTOList[*]._links.get_wordBook").exists())
+                .andExpect(jsonPath("studyGroupList").isArray())
+                .andExpect(jsonPath("studyGroupList[*]._links.get_studyGroup").exists())
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.update_user").exists())
+                .andExpect(jsonPath("_links.delete_user").exists());
     }
 
 //    @Test

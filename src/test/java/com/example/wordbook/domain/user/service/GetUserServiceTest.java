@@ -47,7 +47,7 @@ class GetUserServiceTest {
                 .build();
 
         given(userRepository.findById(id)).willReturn(Optional.of(user));
-        given(userMapper.userToUserDetailDTO(any(User.class))).willReturn(userDetailResponseDTOTemp);
+        given(userMapper.entityToUserDetailDTO(any(User.class))).willReturn(userDetailResponseDTOTemp);
 
         //when
         UserDetailResponseDTO userDetailResponseDTO = getUserService.getDetailDTOById(id);

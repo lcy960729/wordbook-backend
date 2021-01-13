@@ -17,30 +17,27 @@ public class StudyGroup {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name="isUsing", nullable = false)
+    @Column(name = "isUsing", nullable = false)
     private Boolean isUsing;
 
     @Column(name = "name", nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "studyGroup")
-    private List<StudyGroupWordBook> studyGroupWordBookList;
+    private final List<StudyGroupWordBook> studyGroupWordBookList = new ArrayList<>();
 
     @OneToMany(mappedBy = "studyGroup")
-    private List<Study> studyList;
+    private final List<Study> studyList = new ArrayList<>();
 
-    public void use(){
+    public void use() {
         this.isUsing = true;
     }
 
-    public void disuse(){
+    public void disuse() {
         this.isUsing = false;
     }
 
-    public void addStudy(Study study){
-        if (studyList == null)
-            studyList = new ArrayList<>();
-
+    public void addStudy(Study study) {
         this.studyList.add(study);
     }
 
@@ -49,7 +46,11 @@ public class StudyGroup {
         this.id = id;
         this.isUsing = isUsing;
         this.name = name;
-        this.studyGroupWordBookList = studyGroupWordBookList;
-        this.studyList = studyList;
+
+        if (studyGroupWordBookList != null)
+        this.studyGroupWordBookList.addAll(studyGroupWordBookList);
+
+        if (studyList != null)
+        this.studyList.addAll(studyList);
     }
 }
