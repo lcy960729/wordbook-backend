@@ -21,8 +21,8 @@ public interface StudyGroupMapper {
     StudyGroup createDTOToEntity(CreateStudyGroupRequestDTO createStudyGroupRequestDTO);
 
     @Mapping(target = "id", source = "studyGroup.id")
-    @Mapping(target = "userList", source = "studyGroup.studyList", qualifiedByName = "mapToUserDTOList")
-    @Mapping(target = "wordBookList", source = "studyGroup.studyGroupWordBookList", qualifiedByName = "mapToWordBookDTOList")
+    @Mapping(target = "userDTOList", source = "studyGroup.studyList", qualifiedByName = "mapToUserDTOList")
+    @Mapping(target = "wordBookDTOList", source = "studyGroup.studyGroupWordBookList", qualifiedByName = "mapToWordBookDTOList")
     StudyGroupDetailResponseDTO entityToResponseDTO(Study study, StudyGroup studyGroup) throws Exception;
 
     @Named("mapToUserDTOList")
@@ -36,8 +36,7 @@ public interface StudyGroupMapper {
     }
 
     @Named("mapToWordBookDTOList")
-    default List<StudyGroupDetailResponseDTO.WordBookDTO> mapToWordBookDTOList(List<StudyGroupWordBook> studyGroupWordBookList) {
-
+    default List<StudyGroupDetailResponseDTO.WordBookDTO> mapToWordBookDTOList(List<StudyGroupWordBook> studyGroupWordBookList)  {
         List<StudyGroupDetailResponseDTO.WordBookDTO> wordBookDTOList = new ArrayList<>();
         for (StudyGroupWordBook studyGroupWordBook : studyGroupWordBookList) {
             wordBookDTOList.add(new StudyGroupDetailResponseDTO.WordBookDTO(studyGroupWordBook.getId(), studyGroupWordBook.getName()));
@@ -48,7 +47,6 @@ public interface StudyGroupMapper {
     @AfterMapping
     default StudyGroupDetailResponseDTO StudyGroupCreateResponseDTO(@MappingTarget StudyGroupDetailResponseDTO result, Study study) throws Exception {
         result.makeLinks(study);
-
         return result;
     }
 

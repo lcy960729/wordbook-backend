@@ -31,7 +31,7 @@ class CreateUserServiceTest {
 
     @Test
     @DisplayName(" 유저 생성시 정상적인 입력값에 대한 성공 테스트")
-    void create() {
+    void create() throws Exception {
         //given
         CreateUserRequestDTO createUserRequestDTO = CreateUserRequestDTO.builder()
                 .email("testId")

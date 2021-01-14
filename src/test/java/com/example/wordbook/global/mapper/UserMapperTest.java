@@ -59,7 +59,7 @@ class UserMapperTest {
 
     @Test
     @DisplayName("userToUserDetailDTO 맵핑이 정삭적으로 동작 하는 테스트")
-    void entityToUserDetailDTO() throws JsonProcessingException {
+    void entityToUserDetailDTO() throws Exception {
         //given
         long userId = 0L;
         User user = domainFactory.createUser(userId);
@@ -140,7 +140,7 @@ class UserMapperTest {
 
     @Test
     @DisplayName("userWordBookList를 userWordBookDTOList로 맵핑이 정삭적으로 동작 하는 테스트")
-    void mapToWordBookDTOList() {
+    void mapToWordBookDTOList() throws Exception {
         //given
         List<UserWordBook> userWordBookList = new ArrayList<>();
 

@@ -2,22 +2,17 @@ package com.example.wordbook.domain.studyGroup.dto.response;
 
 import com.example.wordbook.domain.study.StudyGroupRole;
 import com.example.wordbook.domain.study.entity.Study;
-import com.example.wordbook.domain.studyGroup.controller.StudyGroupController;
-import com.example.wordbook.domain.user.controller.UserController;
 
-import com.example.wordbook.domain.wordbook.controller.StudyGroupWordBookController;
-import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
+import com.example.wordbook.global.component.LinkFactory;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -25,8 +20,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class StudyGroupDetailResponseDTO extends RepresentationModel<StudyGroupDetailResponseDTO> {
     private Long id;
     private String name;
-    private List<UserDTO> userList;
-    private List<WordBookDTO> wordBookList;
+    private List<UserDTO> userDTOList;
+    private List<WordBookDTO> wordBookDTOList;
 
     @EqualsAndHashCode(callSuper = true)
     @NoArgsConstructor
@@ -39,8 +34,6 @@ public class StudyGroupDetailResponseDTO extends RepresentationModel<StudyGroupD
         public UserDTO(Long id, String name) {
             this.id = id;
             this.name = name;
-
-//            add(selfLinkBuilder.slash("users").withRel("get_userInGroups"));
         }
     }
 
@@ -55,41 +48,49 @@ public class StudyGroupDetailResponseDTO extends RepresentationModel<StudyGroupD
         public WordBookDTO(Long id, String name) {
             this.id = id;
             this.name = name;
-
-            //add(selfLinkBuilder.slash("wordbooks").withRel("get_wordBooksInGroups"));
         }
     }
 
     @Builder
-    public StudyGroupDetailResponseDTO(Long id, String name, List<UserDTO> userList, List<WordBookDTO> wordBookList) {
+    public StudyGroupDetailResponseDTO(Long id, String name, List<UserDTO> userDTOList, List<WordBookDTO> wordBookDTOList) {
         this.id = id;
         this.name = name;
-        this.userList = userList;
-        this.wordBookList = wordBookList;
+        this.userDTOList = userDTOList;
+        this.wordBookDTOList = wordBookDTOList;
     }
 
     public void makeLinks(Study study) throws Exception {
-        WebMvcLinkBuilder selfLinkBuilder = linkTo(methodOn(StudyGroupController.class).get(
-                study.getUser().getId().toString(),
-                study.getStudyGroup().getId().toString()));
+        Long userId = study.getUser().getId();
+        Long studyGroupId = study.getStudyGroup().getId();
 
-        add(selfLinkBuilder.withSelfRel());
-
-        if (study.getStudyGroupRole() == StudyGroupRole.ADMIN) {
-            makeLinksAdminRole(study, selfLinkBuilder);
-        }
-
-        add(linkTo(methodOn(UserController.class).get(study.getUser().getId())).withRel("pre"));
+        makeLinksAtWordBookDTOList(userId, studyGroupId);
+        makeLinksAtUserDTOList(userId, studyGroupId);
+        makeLinksStudyGroupDetailResponseDTO(study.getStudyGroupRole(), userId, studyGroupId);
     }
 
-    private void makeLinksAdminRole(Study study, WebMvcLinkBuilder selfLinkBuilder) throws Exception {
-        add(selfLinkBuilder.withRel("update_studyGroup"));
-        add(selfLinkBuilder.withRel("delete_studyGroup"));
+    private void makeLinksStudyGroupDetailResponseDTO(StudyGroupRole studyGroupRole, Long userId, Long studyGroupId) throws Exception {
+        add(LinkFactory.StudyGroup.self(userId, studyGroupId));
 
-        add(linkTo(methodOn(StudyGroupWordBookController.class).create(
-                study.getUser().getId().toString(),
-                study.getStudyGroup().getId().toString(),
-                null)).withRel("create_studyGroupWordBook"));
+        if (studyGroupRole == StudyGroupRole.ADMIN) {
+            add(LinkFactory.StudyGroup.update(userId, studyGroupId));
+            //add(LinkFactory.StudyGroup.delete(study.getUser().getId(),study.getStudyGroup().getId()));
+
+            add(LinkFactory.StudyGroupWordBook.create(userId, studyGroupId));
+        }
+
+        add(LinkFactory.User.get(userId));
+    }
+
+    private void makeLinksAtWordBookDTOList(Long userId, Long studyGroupId) throws Exception {
+        for (WordBookDTO wordBookDTO : wordBookDTOList) {
+            wordBookDTO.add(LinkFactory.StudyGroupWordBook.get(userId, studyGroupId, id));
+        }
+    }
+
+    private void makeLinksAtUserDTOList(Long userId, Long studyGroupId) throws Exception {
+        for (UserDTO userDTO : userDTOList) {
+            //userDTO.add(LinkFactory.StudyGroupWordBook.get(userId, studyGroupId, id));
+        }
     }
 }
 

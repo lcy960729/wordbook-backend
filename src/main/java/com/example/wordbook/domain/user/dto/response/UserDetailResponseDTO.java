@@ -1,9 +1,11 @@
 package com.example.wordbook.domain.user.dto.response;
 
+import com.example.wordbook.domain.study.StudyGroupRole;
 import com.example.wordbook.domain.studyGroup.controller.StudyGroupController;
+import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailResponseDTO;
 import com.example.wordbook.domain.user.controller.UserController;
-import com.example.wordbook.domain.wordbook.controller.StudyGroupWordBookController;
 import com.example.wordbook.domain.wordbook.controller.UserWordBookController;
+import com.example.wordbook.global.component.LinkFactory;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,11 +36,9 @@ public class UserDetailResponseDTO extends RepresentationModel<UserDetailRespons
         private String name;
 
         @Builder
-        public WordBookDTO(Long userId, Long id, String name) throws Exception {
+        public WordBookDTO(Long id, String name) {
             this.id = id;
             this.name = name;
-
-            add(linkTo(methodOn(UserWordBookController.class).get(userId.toString(),id.toString())).withRel("get_wordBook"));
         }
     }
 
@@ -50,11 +50,9 @@ public class UserDetailResponseDTO extends RepresentationModel<UserDetailRespons
         private String name;
 
         @Builder
-        public StudyGroupDTO(Long userId, Long id, String name) throws Exception {
+        public StudyGroupDTO(Long id, String name) {
             this.id = id;
             this.name = name;
-
-            add(linkTo(methodOn(StudyGroupController.class).get(userId.toString(), id.toString())).withRel("get_studyGroup"));
         }
     }
 
@@ -68,12 +66,29 @@ public class UserDetailResponseDTO extends RepresentationModel<UserDetailRespons
     }
 
     public void makeLinks() throws Exception {
-        WebMvcLinkBuilder selfLinkBuilder = linkTo(UserController.class).slash(id);
-        add(selfLinkBuilder.withSelfRel());
-        add(selfLinkBuilder.withRel("update_user"));
-        add(selfLinkBuilder.withRel("delete_user"));
+        makeLinksUserDetailResponseDTO();
+        makeLinksAtWordBookDTOList(id);
+        makeLinksAtStudyGroupDTOList(id);
+    }
 
-        add(linkTo(methodOn(StudyGroupController.class).create(id.toString(), null)).withRel("create_studyGroup"));
-        add(linkTo(methodOn(UserWordBookController.class).create(id.toString(), null)).withRel("create_userWordBook"));
+    private void makeLinksUserDetailResponseDTO() throws Exception {
+        add(LinkFactory.User.self(id));
+        add(LinkFactory.User.update(id));
+//        add(selfLinkBuilder.withRel("delete_user"));
+
+        add(LinkFactory.StudyGroup.create(id));
+        add(LinkFactory.UserWordBook.create(id));
+    }
+
+    private void makeLinksAtWordBookDTOList(Long userId) throws Exception {
+        for (UserDetailResponseDTO.WordBookDTO wordBookDTO : wordBookDTOList) {
+            wordBookDTO.add(LinkFactory.UserWordBook.get(userId, wordBookDTO.getId()));
+        }
+    }
+
+    private void makeLinksAtStudyGroupDTOList(Long userId) throws Exception {
+        for (UserDetailResponseDTO.StudyGroupDTO studyGroupDTO : studyGroupList) {
+            studyGroupDTO.add(LinkFactory.StudyGroup.get(userId, studyGroupDTO.getId()));
+        }
     }
 }

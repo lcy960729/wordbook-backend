@@ -84,13 +84,13 @@ class StudyGroupMapperTest {
 
         IntStream.range(0, length).forEach((i) -> {
             User user = studyGroup.getStudyList().get(i).getUser();
-            StudyGroupDetailResponseDTO.UserDTO userDTO = studyGroupDetailResponseDTO.getUserList().get(i);
+            StudyGroupDetailResponseDTO.UserDTO userDTO = studyGroupDetailResponseDTO.getUserDTOList().get(i);
 
             assertThat(userDTO.getId()).isEqualTo(user.getId());
             assertThat(userDTO.getName()).isEqualTo(user.getName());
 
             StudyGroupWordBook studyGroupWordBook = studyGroup.getStudyGroupWordBookList().get(i);
-            StudyGroupDetailResponseDTO.WordBookDTO wordBookDTO = studyGroupDetailResponseDTO.getWordBookList().get(i);
+            StudyGroupDetailResponseDTO.WordBookDTO wordBookDTO = studyGroupDetailResponseDTO.getWordBookDTOList().get(i);
 
             assertThat(wordBookDTO.getId()).isEqualTo(studyGroupWordBook.getId());
             assertThat(wordBookDTO.getName()).isEqualTo(studyGroupWordBook.getName());
@@ -131,7 +131,7 @@ class StudyGroupMapperTest {
 
     @Test
     @DisplayName("StudyList를 UserDTOList로 맵핑이 정상적으로 동작 하는 테스트")
-    void mapToWordBookDTOList() {
+    void mapToWordBookDTOList() throws Exception {
         //given
         StudyGroup studyGroup = domainFactory.createStudyGroup(0L);
 

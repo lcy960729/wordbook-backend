@@ -1,9 +1,6 @@
 package com.example.wordbook.domain.studyGroup.controller;
 
-import com.example.wordbook.domain.study.StudyGroupRole;
-import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailResponseDTO;
-import com.example.wordbook.global.tool.DomainFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
@@ -41,9 +38,8 @@ class StudyGroupGetControllerTest extends StudyGroupControllerTest {
                 .name("testName")
                 .build();
 
-        studyGroupDetailResponseDTO.setWordBookList(new ArrayList<>());
-        studyGroupDetailResponseDTO.setUserList(new ArrayList<>());
-        studyGroupDetailResponseDTO.makeLinks(userId, StudyGroupRole.ADMIN);
+        studyGroupDetailResponseDTO.setWordBookDTOList(new ArrayList<>());
+        studyGroupDetailResponseDTO.setUserDTOList(new ArrayList<>());
 
         given(getStudyGroupService.getDetailDTOById(anyLong(), anyLong())).willReturn(studyGroupDetailResponseDTO);
 
@@ -75,9 +71,8 @@ class StudyGroupGetControllerTest extends StudyGroupControllerTest {
                 .name("testName")
                 .build();
 
-        studyGroupDetailResponseDTO.setWordBookList(new ArrayList<>());
-        studyGroupDetailResponseDTO.setUserList(new ArrayList<>());
-        studyGroupDetailResponseDTO.makeLinks(userId, StudyGroupRole.NORMAL);
+        studyGroupDetailResponseDTO.setWordBookDTOList(new ArrayList<>());
+        studyGroupDetailResponseDTO.setUserDTOList(new ArrayList<>());
 
         given(getStudyGroupService.getDetailDTOById(anyLong(), anyLong())).willReturn(studyGroupDetailResponseDTO);
 

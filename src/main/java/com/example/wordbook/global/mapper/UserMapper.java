@@ -27,7 +27,7 @@ public interface UserMapper {
         ArrayList<UserDetailResponseDTO.StudyGroupDTO> studyGroupDTOArrayList = new ArrayList<>();
 
         for (Study study : user.getStudyList()) {
-            UserDetailResponseDTO.StudyGroupDTO studyGroupDTO = new UserDetailResponseDTO.StudyGroupDTO(user.getId(), study.getStudyGroup().getId(), study.getStudyGroup().getName());
+            UserDetailResponseDTO.StudyGroupDTO studyGroupDTO = new UserDetailResponseDTO.StudyGroupDTO(study.getStudyGroup().getId(), study.getStudyGroup().getName());
             studyGroupDTOArrayList.add(studyGroupDTO);
         }
 
@@ -40,7 +40,7 @@ public interface UserMapper {
         List<UserDetailResponseDTO.WordBookDTO> wordBookDTOList = new ArrayList<>();
 
         for (UserWordBook userWordBook : userWordBooks) {
-            wordBookDTOList.add(new UserDetailResponseDTO.WordBookDTO(userWordBook.getUser().getId(), userWordBook.getId(), userWordBook.getName()));
+            wordBookDTOList.add(new UserDetailResponseDTO.WordBookDTO(userWordBook.getId(), userWordBook.getName()));
         }
 
         return wordBookDTOList;
