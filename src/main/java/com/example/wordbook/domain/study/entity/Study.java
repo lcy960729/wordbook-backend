@@ -32,8 +32,11 @@ public class Study {
     @Column(name = "role", nullable = false)
     private StudyGroupRole studyGroupRole;
 
-    @Builder
+    public void use(){
+        isUsing = true;
+    }
 
+    @Builder
     public Study(Long id, Boolean isUsing, User user, StudyGroup studyGroup, StudyGroupRole studyGroupRole) {
         this.id = id;
         this.isUsing = isUsing;

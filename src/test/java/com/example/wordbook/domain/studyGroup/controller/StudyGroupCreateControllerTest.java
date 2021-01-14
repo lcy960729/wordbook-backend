@@ -40,7 +40,6 @@ class StudyGroupCreateControllerTest extends StudyGroupControllerTest {
 
         StudyGroupDetailResponseDTO studyGroupDetailResponseDTO = StudyGroupDetailResponseDTO.builder()
                 .id(0L)
-                .userId(userId)
                 .name(groupName)
                 .build();
         given(createStudyGroupService.create(anyLong(), any(CreateStudyGroupRequestDTO.class))).willReturn(studyGroupDetailResponseDTO);

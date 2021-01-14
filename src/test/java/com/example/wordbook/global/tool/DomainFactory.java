@@ -19,7 +19,7 @@ public class DomainFactory {
                 .build();
     }
 
-    public StudyGroupWordBook createStudyGroupWordBook(long id){
+    public StudyGroupWordBook createStudyGroupWordBook(Long id){
         return StudyGroupWordBook.builder()
                 .id(id)
                 .isUsing(true)
@@ -27,7 +27,7 @@ public class DomainFactory {
                 .build();
     }
 
-    public UserWordBook createUserWordBook(long id){
+    public UserWordBook createUserWordBook(Long id){
         return UserWordBook.builder()
                 .id(id)
                 .isUsing(true)

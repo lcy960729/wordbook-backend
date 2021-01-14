@@ -1,4 +1,4 @@
-package com.example.wordbook.domain.wordbook.dto;
+package com.example.wordbook.domain.wordbook.dto.request;
 
 import com.example.wordbook.domain.wordbook.enums.WordBookType;
 import com.example.wordbook.global.validators.annotation.NotOnlyNumeric;
@@ -12,20 +12,12 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Data
 public class UpdateWordBookDTO {
-    @NotNull
-    private Long id;
-
-    @NotNull
-    private WordBookType wordBookType;
-
     @NotBlank
     @NotOnlyNumeric
     private String name;
 
     @Builder
-    public UpdateWordBookDTO(@NotNull Long id, @NotNull WordBookType wordBookType, @NotBlank String name) {
-        this.id = id;
-        this.wordBookType = wordBookType;
+    public UpdateWordBookDTO(@NotBlank String name) {
         this.name = name;
     }
 }

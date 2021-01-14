@@ -1,7 +1,7 @@
 package com.example.wordbook.domain.wordbook.controller;
 
-import com.example.wordbook.domain.wordbook.dto.UpdateWordBookDTO;
-import com.example.wordbook.domain.wordbook.dto.WordBookDetailDTO;
+import com.example.wordbook.domain.wordbook.dto.request.UpdateWordBookDTO;
+import com.example.wordbook.domain.wordbook.dto.response.WordBookDetailDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,11 +16,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-public class UpdateWordBookControllerTest extends WordBookControllerTest {
+public class UpdateStudyGroupWordBookControllerTest extends WordBookControllerTest {
 
     private ResultActions requestUpdateUserWordBook(Long id) throws Exception {
         UpdateWordBookDTO updateDTO = UpdateWordBookDTO.builder()
-                .id(0L)
                 .name("Cy의 단어장-전")
                 .build();
 
@@ -40,7 +39,6 @@ public class UpdateWordBookControllerTest extends WordBookControllerTest {
                 .id(0L)
                 .isUsing(true)
                 .name("Cy의 단어장-후")
-                .ownerId(0L)
                 .build();
 
 //        given(updateWordBookService.update_name(anyLong(), any(WordBookRequestDTO.Update.class))).willReturn(userWordBookDTO);

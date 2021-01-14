@@ -8,7 +8,6 @@ import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
 import com.example.wordbook.global.tool.DomainFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,7 +53,7 @@ class StudyGroupMapperTest {
 
     @Test
     @DisplayName("entityToDetailDTO 맵핑이 정상적으로 동작 하는 테스트")
-    void entityToDetailDTO() throws JsonProcessingException {
+    void entityToDetailDTO() throws Exception {
         //given
         StudyGroup studyGroup = domainFactory.createStudyGroup(0L);
 
@@ -70,12 +69,12 @@ class StudyGroupMapperTest {
                     .build();
 
             studyGroup.addStudy(study);
-            studyGroup.getStudyGroupWordBookList().add(domainFactory.createStudyGroupWordBook(i));
+            studyGroup.getStudyGroupWordBookList().add(domainFactory.createStudyGroupWordBook((long)i));
         });
         long userId = 5L;
 
         //when
-        StudyGroupDetailResponseDTO studyGroupDetailResponseDTO = studyGroupMapper.entityToDetailDTO(userId, studyGroup);
+        StudyGroupDetailResponseDTO studyGroupDetailResponseDTO = studyGroupMapper.entityToResponseDTO(studyGroup.getStudyList().get(1), studyGroup);
 
         //then
         logger.info(objectMapper.writeValueAsString(studyGroupDetailResponseDTO));
@@ -138,7 +137,7 @@ class StudyGroupMapperTest {
 
         int userSize = 3;
         IntStream.range(0, userSize).forEach((i) -> {
-            StudyGroupWordBook studyGroupWordBook = domainFactory.createStudyGroupWordBook(i);
+            StudyGroupWordBook studyGroupWordBook = domainFactory.createStudyGroupWordBook((long)i);
             studyGroup.getStudyGroupWordBookList().add(studyGroupWordBook);
         });
 

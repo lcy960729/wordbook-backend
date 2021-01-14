@@ -39,9 +39,10 @@ public class CreateStudyGroupService {
 
         Study study = joinStudyService.create(user, studyGroup);
 
+
         user.joinToStudy(study);
         studyGroup.addStudy(study);
 
-        return studyGroupMapper.entityToDetailDTO(userId, studyGroup);
+        return studyGroupMapper.entityToResponseDTO(study, studyGroup);
     }
 }

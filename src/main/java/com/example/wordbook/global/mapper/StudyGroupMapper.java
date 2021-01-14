@@ -4,10 +4,9 @@ import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.studyGroup.dto.request.CreateStudyGroupRequestDTO;
 import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailResponseDTO;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
+import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +20,17 @@ public interface StudyGroupMapper {
     @Mapping(target = "id", ignore = true)
     StudyGroup createDTOToEntity(CreateStudyGroupRequestDTO createStudyGroupRequestDTO);
 
+    @Mapping(target = "id", source = "studyGroup.id")
     @Mapping(target = "userList", source = "studyGroup.studyList", qualifiedByName = "mapToUserDTOList")
     @Mapping(target = "wordBookList", source = "studyGroup.studyGroupWordBookList", qualifiedByName = "mapToWordBookDTOList")
-    StudyGroupDetailResponseDTO entityToDetailDTO(Long userId, StudyGroup studyGroup);
+    StudyGroupDetailResponseDTO entityToResponseDTO(Study study, StudyGroup studyGroup) throws Exception;
 
     @Named("mapToUserDTOList")
     default List<StudyGroupDetailResponseDTO.UserDTO> mapToUserDTOList(List<Study> studyList) {
         List<StudyGroupDetailResponseDTO.UserDTO> userDTOList = new ArrayList<>();
         for (Study study : studyList) {
-            userDTOList.add(new StudyGroupDetailResponseDTO.UserDTO(study.getUser().getId(), study.getUser().getName()));
+            User user = study.getUser();
+            userDTOList.add(new StudyGroupDetailResponseDTO.UserDTO(user.getId(), user.getName()));
         }
         return userDTOList;
     }
@@ -43,4 +44,12 @@ public interface StudyGroupMapper {
         }
         return wordBookDTOList;
     }
+
+    @AfterMapping
+    default StudyGroupDetailResponseDTO StudyGroupCreateResponseDTO(@MappingTarget StudyGroupDetailResponseDTO result, Study study) throws Exception {
+        result.makeLinks(study);
+
+        return result;
+    }
+
 }

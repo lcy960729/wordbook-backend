@@ -1,8 +1,12 @@
 package com.example.wordbook.domain.studyGroup.dto.response;
 
+import com.example.wordbook.domain.study.StudyGroupRole;
+import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.studyGroup.controller.StudyGroupController;
 import com.example.wordbook.domain.user.controller.UserController;
 
+import com.example.wordbook.domain.wordbook.controller.StudyGroupWordBookController;
+import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -57,20 +61,35 @@ public class StudyGroupDetailResponseDTO extends RepresentationModel<StudyGroupD
     }
 
     @Builder
-    public StudyGroupDetailResponseDTO(Long userId, Long id, String name, List<UserDTO> userList, List<WordBookDTO> wordBookList) throws Exception {
+    public StudyGroupDetailResponseDTO(Long id, String name, List<UserDTO> userList, List<WordBookDTO> wordBookList) {
         this.id = id;
         this.name = name;
         this.userList = userList;
         this.wordBookList = wordBookList;
+    }
 
-        WebMvcLinkBuilder selfLinkBuilder = linkTo(methodOn(StudyGroupController.class).create(userId.toString(), null)).slash(this.id);
+    public void makeLinks(Study study) throws Exception {
+        WebMvcLinkBuilder selfLinkBuilder = linkTo(methodOn(StudyGroupController.class).get(
+                study.getUser().getId().toString(),
+                study.getStudyGroup().getId().toString()));
+
         add(selfLinkBuilder.withSelfRel());
 
-        //TODO 그룹 권한 에 따라 달라져야함
+        if (study.getStudyGroupRole() == StudyGroupRole.ADMIN) {
+            makeLinksAdminRole(study, selfLinkBuilder);
+        }
+
+        add(linkTo(methodOn(UserController.class).get(study.getUser().getId())).withRel("pre"));
+    }
+
+    private void makeLinksAdminRole(Study study, WebMvcLinkBuilder selfLinkBuilder) throws Exception {
         add(selfLinkBuilder.withRel("update_studyGroup"));
         add(selfLinkBuilder.withRel("delete_studyGroup"));
 
-        add(linkTo(UserController.class).slash(userId).withRel("pre"));
+        add(linkTo(methodOn(StudyGroupWordBookController.class).create(
+                study.getUser().getId().toString(),
+                study.getStudyGroup().getId().toString(),
+                null)).withRel("create_studyGroupWordBook"));
     }
 }
 

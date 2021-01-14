@@ -22,7 +22,7 @@ public class CreateUserService {
         this.userRepository = userRepository;
     }
 
-    public UserDetailResponseDTO create(@Valid CreateUserRequestDTO createUserRequestDTO) {
+    public UserDetailResponseDTO create(@Valid CreateUserRequestDTO createUserRequestDTO) throws Exception {
         User user = userMapper.createUserDTOToEntity(createUserRequestDTO);
         user = userRepository.save(user);
 

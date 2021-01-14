@@ -1,6 +1,6 @@
 package com.example.wordbook.NotUseClass;
 
-import com.example.wordbook.domain.wordbook.dto.CreateWordBookDTO;
+import com.example.wordbook.domain.wordbook.dto.request.CreateWordBookDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 

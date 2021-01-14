@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody @Valid CreateUserRequestDTO createUserRequestDTO) {
+    public ResponseEntity<Object> create(@RequestBody @Valid CreateUserRequestDTO createUserRequestDTO) throws Exception {
         UserDetailResponseDTO userDetailResponseDTO = createUserService.create(createUserRequestDTO);
 
         URI createdUri = linkTo(UserController.class).slash(userDetailResponseDTO.getId()).toUri();

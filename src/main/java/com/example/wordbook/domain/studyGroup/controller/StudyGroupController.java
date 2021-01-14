@@ -5,7 +5,6 @@ import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailRespo
 import com.example.wordbook.domain.studyGroup.service.CreateStudyGroupService;
 import com.example.wordbook.domain.studyGroup.service.GetStudyGroupService;
 import com.example.wordbook.domain.user.dto.request.UpdateUserRequestDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -43,20 +42,22 @@ public class StudyGroupController {
     }
 
     @GetMapping(value = "/{studyGroupId}")
-    public ResponseEntity<Object> get(@PathVariable("userId") Long userId, @PathVariable("studyGroupId") Long groupId) throws Exception {
-        StudyGroupDetailResponseDTO studyGroupDetailResponseDTO = getStudyGroupService.getDetailDTOById(userId, groupId);
+    public ResponseEntity<Object> get(@PathVariable("userId") String userId, @PathVariable("studyGroupId") String groupId) throws Exception {
+        StudyGroupDetailResponseDTO studyGroupAdminResponseDTO = getStudyGroupService.getDetailDTOById(Long.parseLong(userId), Long.parseLong(groupId));
 
-        return ResponseEntity.ok(studyGroupDetailResponseDTO);
+        return ResponseEntity.ok(studyGroupAdminResponseDTO);
     }
 
     @PutMapping(value = "/{studyGroupId}")
-    public ResponseEntity<Object> update(@PathVariable("userId") Long userId, @PathVariable("studyGroupId") Long groupId, @RequestBody UpdateUserRequestDTO userUpdateDTO) {
+    public ResponseEntity<Object> update(@PathVariable("userId") String userId,
+                                         @PathVariable("studyGroupId") String groupId,
+                                         @RequestBody UpdateUserRequestDTO userUpdateDTO) {
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(value = "/{studyGroupId}")
-    public ResponseEntity<Object> delete(@PathVariable("userId") Long userId, @PathVariable("studyGroupId") Long groupId) {
+    public ResponseEntity<Object> delete(@PathVariable("userId") String userId, @PathVariable("studyGroupId") String groupId) {
 
         return null;
     }

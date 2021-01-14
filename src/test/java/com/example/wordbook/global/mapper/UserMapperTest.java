@@ -67,7 +67,7 @@ class UserMapperTest {
         int length = 3;
         IntStream.range(0, length).forEach((i) -> {
             StudyGroup studyGroup = domainFactory.createStudyGroup(i);
-            UserWordBook userWordBook = domainFactory.createUserWordBook(i);
+            UserWordBook userWordBook = domainFactory.createUserWordBook((long) i);
 
             Study study = Study.builder()
                     .id((long) i)
@@ -112,11 +112,11 @@ class UserMapperTest {
         User user = domainFactory.createUser(0L);
 
         int length = 5;
-        IntStream.range(0, length).forEach((i) ->{
+        IntStream.range(0, length).forEach((i) -> {
             StudyGroup studyGroup = domainFactory.createStudyGroup(i);
 
             Study study = Study.builder()
-                    .id((long)i)
+                    .id((long) i)
                     .user(user)
                     .studyGroup(studyGroup)
                     .studyGroupRole(StudyGroupRole.ADMIN)
@@ -129,7 +129,7 @@ class UserMapperTest {
         List<UserDetailResponseDTO.StudyGroupDTO> studyGroupDTOList = userMapper.mapToStudyGroupDTOList(user);
 
         //then
-        IntStream.range(0, length).forEach((i) ->{
+        IntStream.range(0, length).forEach((i) -> {
             UserDetailResponseDTO.StudyGroupDTO studyGroupDTO = studyGroupDTOList.get(i);
             StudyGroup studyGroup = user.getStudyList().get(i).getStudyGroup();
 
@@ -145,15 +145,15 @@ class UserMapperTest {
         List<UserWordBook> userWordBookList = new ArrayList<>();
 
         int length = 5;
-        IntStream.range(0, length).forEach((i) ->{
-            userWordBookList.add(domainFactory.createUserWordBook(i));
+        IntStream.range(0, length).forEach((i) -> {
+            userWordBookList.add(domainFactory.createUserWordBook((long) i));
         });
 
         //when
         List<UserDetailResponseDTO.WordBookDTO> wordBookDTOList = userMapper.mapToWordBookDTOList(userWordBookList);
 
         //then
-        IntStream.range(0, length).forEach((i) ->{
+        IntStream.range(0, length).forEach((i) -> {
             UserDetailResponseDTO.WordBookDTO wordBookDTO = wordBookDTOList.get(i);
             UserWordBook userWordBook = userWordBookList.get(i);
 

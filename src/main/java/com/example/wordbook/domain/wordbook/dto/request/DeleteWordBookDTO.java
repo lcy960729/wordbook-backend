@@ -1,4 +1,4 @@
-package com.example.wordbook.domain.wordbook.dto;
+package com.example.wordbook.domain.wordbook.dto.request;
 
 import com.example.wordbook.domain.wordbook.enums.WordBookType;
 import lombok.Builder;

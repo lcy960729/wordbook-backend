@@ -2,8 +2,8 @@ package com.example.wordbook.domain.user.dto.response;
 
 import com.example.wordbook.domain.studyGroup.controller.StudyGroupController;
 import com.example.wordbook.domain.user.controller.UserController;
-import com.example.wordbook.domain.wordbook.controller.WordBookController;
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import com.example.wordbook.domain.wordbook.controller.StudyGroupWordBookController;
+import com.example.wordbook.domain.wordbook.controller.UserWordBookController;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,11 +34,11 @@ public class UserDetailResponseDTO extends RepresentationModel<UserDetailRespons
         private String name;
 
         @Builder
-        public WordBookDTO(Long id, String name) {
+        public WordBookDTO(Long userId, Long id, String name) throws Exception {
             this.id = id;
             this.name = name;
 
-            add(linkTo(WordBookController.class).withRel("get_wordBook"));
+            add(linkTo(methodOn(UserWordBookController.class).get(userId.toString(),id.toString())).withRel("get_wordBook"));
         }
     }
 
@@ -54,7 +54,7 @@ public class UserDetailResponseDTO extends RepresentationModel<UserDetailRespons
             this.id = id;
             this.name = name;
 
-            add(linkTo(methodOn(StudyGroupController.class).get(userId, this.id)).withRel("get_studyGroup"));
+            add(linkTo(methodOn(StudyGroupController.class).get(userId.toString(), id.toString())).withRel("get_studyGroup"));
         }
     }
 
@@ -65,10 +65,15 @@ public class UserDetailResponseDTO extends RepresentationModel<UserDetailRespons
         this.email = email;
         this.wordBookDTOList = wordBookDTOList;
         this.studyGroupList = studyGroupList;
+    }
 
-        WebMvcLinkBuilder selfLinkBuilder = linkTo(UserController.class).slash(this.id);
+    public void makeLinks() throws Exception {
+        WebMvcLinkBuilder selfLinkBuilder = linkTo(UserController.class).slash(id);
         add(selfLinkBuilder.withSelfRel());
         add(selfLinkBuilder.withRel("update_user"));
         add(selfLinkBuilder.withRel("delete_user"));
+
+        add(linkTo(methodOn(StudyGroupController.class).create(id.toString(), null)).withRel("create_studyGroup"));
+        add(linkTo(methodOn(UserWordBookController.class).create(id.toString(), null)).withRel("create_userWordBook"));
     }
 }

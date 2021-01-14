@@ -1,6 +1,7 @@
 package com.example.wordbook.domain.wordbook.controller;
 
-import com.example.wordbook.domain.wordbook.dto.WordBookDetailDTO;
+import com.example.wordbook.domain.wordbook.dto.response.WordBookDetailDTO;
+import com.example.wordbook.global.controller.BaseControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
@@ -11,7 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class DeleteWordBookControllerTest extends WordBookControllerTest {
+public class DeleteStudyGroupWordBookControllerTest extends WordBookControllerTest {
 
     private ResultActions requestDeleteUserWordBook(Long id) throws Exception {
         return mockMvc.perform(
@@ -28,7 +29,6 @@ public class DeleteWordBookControllerTest extends WordBookControllerTest {
         WordBookDetailDTO userWordBook = WordBookDetailDTO.builder()
                 .isUsing(true)
                 .name("Cy의 단어장")
-                .ownerId(0L)
                 .build();
         userWordBook.setId(0L);
 

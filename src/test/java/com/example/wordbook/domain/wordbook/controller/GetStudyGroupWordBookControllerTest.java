@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.wordbook.controller;
 
-import com.example.wordbook.domain.wordbook.dto.WordBookDetailDTO;
+import com.example.wordbook.domain.wordbook.dto.response.WordBookDetailDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-public class GetWordBookControllerTest extends WordBookControllerTest {
+public class GetStudyGroupWordBookControllerTest extends WordBookControllerTest {
 
     private ResultActions requestGetUserWordBook(Long id) throws Exception {
         return mockMvc.perform(
@@ -30,7 +30,6 @@ public class GetWordBookControllerTest extends WordBookControllerTest {
         WordBookDetailDTO userWordBook = WordBookDetailDTO.builder()
                 .isUsing(true)
                 .name("Cy의 단어장")
-                .ownerId(0L)
                 .build();
         userWordBook.setId(0L);
 //        given(getWordBookService.getDetailDTOById(anyLong())).willReturn(userWordBook);

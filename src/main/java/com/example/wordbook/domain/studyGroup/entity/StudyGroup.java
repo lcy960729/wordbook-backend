@@ -41,6 +41,10 @@ public class StudyGroup {
         this.studyList.add(study);
     }
 
+    public void addWordBook(StudyGroupWordBook studyGroupWordBook) {
+        this.studyGroupWordBookList.add(studyGroupWordBook);
+    }
+
     @Builder
     public StudyGroup(Long id, Boolean isUsing, String name, List<StudyGroupWordBook> studyGroupWordBookList, List<Study> studyList) {
         this.id = id;

@@ -1,4 +1,4 @@
-package com.example.wordbook.domain.wordbook.dto;
+package com.example.wordbook.domain.wordbook.dto.request;
 
 import com.example.wordbook.domain.wordbook.enums.WordBookType;
 import com.example.wordbook.global.validators.annotation.NotOnlyNumeric;
@@ -16,16 +16,8 @@ public class CreateWordBookDTO {
     @NotOnlyNumeric
     private String name;
 
-    @NotNull
-    private WordBookType wordBookType;
-
-    @NotNull
-    private Long ownerId;
-
     @Builder
-    public CreateWordBookDTO(@NotBlank String name, @NotNull WordBookType wordBookType, @NotNull Long ownerId) {
+    public CreateWordBookDTO(@NotBlank String name) {
         this.name = name;
-        this.wordBookType = wordBookType;
-        this.ownerId = ownerId;
     }
 }

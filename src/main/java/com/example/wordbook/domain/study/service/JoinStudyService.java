@@ -19,8 +19,10 @@ public class JoinStudyService {
         Study study = Study.builder()
                 .studyGroup(studyGroup)
                 .user(user)
+                .isUsing(true)
                 .studyGroupRole(StudyGroupRole.ADMIN)
                 .build();
+
         return studyRepository.save(study);
     }
 }

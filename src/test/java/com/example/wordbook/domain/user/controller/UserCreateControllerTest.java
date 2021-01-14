@@ -75,18 +75,19 @@ class UserCreateControllerTest extends UserControllerTest {
 
         List<UserDetailResponseDTO.StudyGroupDTO> studyGroupDTOList = new ArrayList<>();
 
+        long userId = 0L;
         for (int i = 0; i < 5; ++i) {
-            studyGroupDTOList.add(new UserDetailResponseDTO.StudyGroupDTO(0L, (long)i, "testGroup" + i));
+            studyGroupDTOList.add(new UserDetailResponseDTO.StudyGroupDTO(userId, (long)i, "testGroup" + i));
         }
 
         List<UserDetailResponseDTO.WordBookDTO> wordBookDTOList = new ArrayList<>();
 
         for (int i = 0; i < 5; ++i) {
-            wordBookDTOList.add(new UserDetailResponseDTO.WordBookDTO((long)i, "testWordBook" + i));
+            wordBookDTOList.add(new UserDetailResponseDTO.WordBookDTO(userId, (long)i, "testWordBook" + i));
         }
 
         UserDetailResponseDTO userDetailResponseDTO = UserDetailResponseDTO.builder()
-                .id(0L)
+                .id(userId)
                 .name("testName")
                 .email("testEmail")
                 .studyGroupList(studyGroupDTOList)

@@ -1,15 +1,23 @@
 package com.example.wordbook.domain.wordbook.repository;
 
+import com.example.wordbook.domain.study.StudyGroupRole;
+import com.example.wordbook.domain.study.entity.Study;
+import com.example.wordbook.domain.study.repository.StudyRepository;
+import com.example.wordbook.domain.study.service.JoinStudyService;
 import com.example.wordbook.domain.studyGroup.dto.request.CreateStudyGroupRequestDTO;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
+import com.example.wordbook.domain.studyGroup.repository.StudyGroupRepository;
 import com.example.wordbook.domain.studyGroup.service.CreateStudyGroupService;
 import com.example.wordbook.domain.studyGroup.service.GetStudyGroupService;
 import com.example.wordbook.domain.user.dto.request.CreateUserRequestDTO;
+import com.example.wordbook.domain.user.entity.User;
+import com.example.wordbook.domain.user.repository.UserRepository;
 import com.example.wordbook.domain.user.service.CreateUserService;
 import com.example.wordbook.domain.user.service.GetUserService;
 import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
 import com.example.wordbook.domain.wordbook.entity.UserWordBook;
 import com.example.wordbook.domain.wordbook.exception.NotFoundWordBookException;
+import com.example.wordbook.global.tool.DomainFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -20,6 +28,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,25 +44,12 @@ public class WordBookRepositoryTest {
     private WordBookRepository wordBookRepository;
 
     @Autowired
-    private CreateStudyGroupService createStudyGroupService;
-    @Autowired
-    private GetStudyGroupService getStudyGroupService;
-
-    @Autowired
-    private CreateUserService createUserService;
-    @Autowired
-    private GetUserService getUserService;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private DomainFactory domainFactory;
 
     @Test
     public void createUserWordBook() {
         //given
-        UserWordBook userWordBook = UserWordBook.builder()
-                .isUsing(true)
-                .name("testWordBook")
-                .words(new ArrayList<>())
-                .build();
+        UserWordBook userWordBook = domainFactory.createUserWordBook(null);
 
         //when
         userWordBook = wordBookRepository.save(userWordBook);
@@ -65,51 +61,12 @@ public class WordBookRepositoryTest {
     @Test
     public void createStudyGroupWordBook() {
         //given
-        StudyGroupWordBook studyGroupWordBook = StudyGroupWordBook.builder()
-                .isUsing(true)
-                .name("testWordBook")
-                .build();
+        StudyGroupWordBook studyGroupWordBook = domainFactory.createStudyGroupWordBook(null);
 
         //when
         studyGroupWordBook = wordBookRepository.save(studyGroupWordBook);
 
         //then
         assertThat(studyGroupWordBook.getId()).isNotNull();
-    }
-
-    @Test
-    @Transactional
-    public void getUserWordBook() throws Exception {
-        //given
-//        CreateUserRequestDTO createUserRequestDTO = CreateUserRequestDTO.builder()
-//                .email("lcy960729")
-//                .name("testName")
-//                .pw("testPw")
-//                .build();
-//        Long userId = createUserService.create(createUserRequestDTO).getId();
-//
-//        CreateStudyGroupRequestDTO createStudyGroupRequestDTO = CreateStudyGroupRequestDTO.builder()
-//                .name("testGroup")
-//                .groupOwnerId(userId)
-//                .build();
-//        Long studyGroupId = createStudyGroupService.create(userId, createStudyGroupRequestDTO);
-//
-//        StudyGroup studyGroup = getStudyGroupService.getEntityById(studyGroupId);
-//
-//        StudyGroupWordBook tempStudyGroupWordBook = StudyGroupWordBook.builder()
-//                .isUsing(true)
-//                .name("testWordBook")
-//                .studyGroup(studyGroup)
-//                .build();
-//        tempStudyGroupWordBook = wordBookRepository.save(tempStudyGroupWordBook);
-//
-//        //when
-//        StudyGroupWordBook studyGroupWordBook = (StudyGroupWordBook) wordBookRepository.findById(tempStudyGroupWordBook.getId()).orElseThrow(NotFoundWordBookException::new);
-//
-//        //then
-//        assertThat(studyGroupWordBook)
-//                .isNotNull()
-//                .usingRecursiveComparison()
-//                .isEqualTo(tempStudyGroupWordBook);
     }
 }

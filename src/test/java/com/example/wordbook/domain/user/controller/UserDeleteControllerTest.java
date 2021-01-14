@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.user.controller;
 
-import com.example.wordbook.domain.wordbook.dto.CreateWordBookDTO;
+import com.example.wordbook.domain.wordbook.dto.request.CreateWordBookDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;

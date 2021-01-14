@@ -5,10 +5,7 @@ import com.example.wordbook.domain.user.dto.request.CreateUserRequestDTO;
 import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.domain.wordbook.entity.UserWordBook;
-import org.mapstruct.MapMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +20,7 @@ public interface UserMapper {
 
     @Mapping(target = "wordBookDTOList",  source = "user.userWordBookList", qualifiedByName = "mapToWordBookDTOList")
     @Mapping(target = "studyGroupList", source = "user", qualifiedByName = "mapToStudyGroupDTOList")
-    UserDetailResponseDTO entityToUserDetailDTO(User user);
+    UserDetailResponseDTO entityToUserDetailDTO(User user) throws Exception;
 
     @Named("mapToStudyGroupDTOList")
     default List<UserDetailResponseDTO.StudyGroupDTO> mapToStudyGroupDTOList(User user) throws Exception {
@@ -39,13 +36,19 @@ public interface UserMapper {
 
 
     @Named("mapToWordBookDTOList")
-    default List<UserDetailResponseDTO.WordBookDTO> mapToWordBookDTOList(List<UserWordBook> userWordBooks) {
+    default List<UserDetailResponseDTO.WordBookDTO> mapToWordBookDTOList(List<UserWordBook> userWordBooks) throws Exception {
         List<UserDetailResponseDTO.WordBookDTO> wordBookDTOList = new ArrayList<>();
 
         for (UserWordBook userWordBook : userWordBooks) {
-            wordBookDTOList.add(new UserDetailResponseDTO.WordBookDTO(userWordBook.getId(), userWordBook.getName()));
+            wordBookDTOList.add(new UserDetailResponseDTO.WordBookDTO(userWordBook.getUser().getId(), userWordBook.getId(), userWordBook.getName()));
         }
 
         return wordBookDTOList;
+    }
+
+    @AfterMapping
+    default UserDetailResponseDTO makeLinks(@MappingTarget UserDetailResponseDTO result) throws Exception {
+        result.makeLinks();
+        return result;
     }
 }
