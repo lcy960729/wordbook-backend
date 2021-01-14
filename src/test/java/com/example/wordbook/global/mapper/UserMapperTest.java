@@ -1,5 +1,6 @@
 package com.example.wordbook.global.mapper;
 
+import com.example.wordbook.domain.study.StudyGroupRole;
 import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
 import com.example.wordbook.domain.user.dto.request.CreateUserRequestDTO;
@@ -72,6 +73,7 @@ class UserMapperTest {
                     .id((long) i)
                     .studyGroup(studyGroup)
                     .user(user)
+                    .studyGroupRole(StudyGroupRole.ADMIN)
                     .build();
 
             user.joinToStudy(study);
@@ -117,6 +119,7 @@ class UserMapperTest {
                     .id((long)i)
                     .user(user)
                     .studyGroup(studyGroup)
+                    .studyGroupRole(StudyGroupRole.ADMIN)
                     .build();
 
             user.getStudyList().add(study);

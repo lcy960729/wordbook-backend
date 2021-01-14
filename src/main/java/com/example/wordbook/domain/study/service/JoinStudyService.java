@@ -1,5 +1,6 @@
 package com.example.wordbook.domain.study.service;
 
+import com.example.wordbook.domain.study.StudyGroupRole;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
 import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.study.repository.StudyRepository;
@@ -18,6 +19,7 @@ public class JoinStudyService {
         Study study = Study.builder()
                 .studyGroup(studyGroup)
                 .user(user)
+                .studyGroupRole(StudyGroupRole.ADMIN)
                 .build();
         return studyRepository.save(study);
     }

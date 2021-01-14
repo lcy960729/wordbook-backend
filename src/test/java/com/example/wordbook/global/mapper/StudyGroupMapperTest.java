@@ -1,10 +1,10 @@
 package com.example.wordbook.global.mapper;
 
+import com.example.wordbook.domain.study.StudyGroupRole;
 import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.studyGroup.dto.request.CreateStudyGroupRequestDTO;
 import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailResponseDTO;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
-import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
 import com.example.wordbook.global.tool.DomainFactory;
@@ -17,13 +17,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.assertj.core.api.InstanceOfAssertFactories.predicate;
 
 
 @SpringBootTest(classes = {DomainFactory.class, ObjectMapper.class, StudyGroupMapperImpl.class})
@@ -68,6 +65,7 @@ class StudyGroupMapperTest {
             Study study = Study.builder()
                     .id((long) i)
                     .studyGroup(studyGroup)
+                    .studyGroupRole(StudyGroupRole.ADMIN)
                     .user(user)
                     .build();
 
@@ -113,6 +111,7 @@ class StudyGroupMapperTest {
             Study study = Study.builder()
                     .id((long) i)
                     .studyGroup(studyGroup)
+                    .studyGroupRole(StudyGroupRole.ADMIN)
                     .user(user)
                     .build();
 

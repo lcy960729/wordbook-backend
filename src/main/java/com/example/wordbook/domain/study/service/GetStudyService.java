@@ -5,8 +5,6 @@ import com.example.wordbook.domain.study.exception.NotFoundStudyException;
 import com.example.wordbook.domain.study.repository.StudyRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class GetStudyService {
 

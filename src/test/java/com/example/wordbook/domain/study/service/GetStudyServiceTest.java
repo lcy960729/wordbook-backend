@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.study.service;
 
-import com.example.wordbook.domain.study.StudyGroupRule;
+import com.example.wordbook.domain.study.StudyGroupRole;
 import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.study.exception.NotFoundStudyException;
 import com.example.wordbook.domain.study.repository.StudyRepository;
@@ -8,12 +8,10 @@ import com.example.wordbook.global.tool.DomainFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
@@ -26,7 +24,7 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 class GetStudyServiceTest {
 
-    @MockBean
+    @Mock
     private StudyRepository studyRepository;
 
     @Autowired
@@ -46,7 +44,7 @@ class GetStudyServiceTest {
                 .id(studyId)
                 .user(domainFactory.createUser(userId))
                 .studyGroup(domainFactory.createStudyGroup(studyGroupId))
-                .studyGroupRule(StudyGroupRule.NORMAL)
+                .studyGroupRole(StudyGroupRole.NORMAL)
                 .build();
 
         given(studyRepository.findByUserIdAndStudyGroupId(anyLong(), anyLong())).willReturn(Optional.of(mockStudy));

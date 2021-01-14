@@ -50,4 +50,6 @@ public class User {
     public void joinToStudy(Study study) {
         this.studyList.add(study);
     }
+    public void signOutToStudy(Study study) {
+        this.studyList.remove(study);}
 }
