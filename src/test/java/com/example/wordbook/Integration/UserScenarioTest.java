@@ -1,7 +1,7 @@
 package com.example.wordbook.Integration;
 
-import com.example.wordbook.domain.user.dto.request.CreateUserRequestDTO;
-import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
+import com.example.wordbook.domain.user.dto.request.CreateUserDTO;
+import com.example.wordbook.domain.user.dto.response.UserDetailDTO;
 import com.example.wordbook.domain.wordbook.dto.request.CreateWordBookDTO;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -41,14 +41,14 @@ public class UserScenarioTest extends BaseIntegrationTest {
     void createUser_CreateWordBook_CreateWord() throws Exception {
         //createUser
         //given
-        CreateUserRequestDTO createUserRequestDTO = CreateUserRequestDTO.builder()
+        CreateUserDTO createUserDTO = CreateUserDTO.builder()
                 .name("testName")
                 .email("testId")
                 .pw("testPw")
                 .build();
 
         //when
-        ResultActions resultActions = postRequest("/api/v1/users", createUserRequestDTO);
+        ResultActions resultActions = postRequest("/api/v1/users", createUserDTO);
 
         //then
         resultActions.andDo(print())
@@ -81,7 +81,7 @@ public class UserScenarioTest extends BaseIntegrationTest {
         resultActions.andDo(print())
                 .andExpect(status().isOk());
 
-        UserDetailResponseDTO userDetailResponseDTO = objectMapper.readValue(resultActions.andReturn().getResponse().getContentAsString(), UserDetailResponseDTO.class);
-        logger.info(objectMapper.writeValueAsString(userDetailResponseDTO));
+        UserDetailDTO userDetailDTO = objectMapper.readValue(resultActions.andReturn().getResponse().getContentAsString(), UserDetailDTO.class);
+        logger.info(objectMapper.writeValueAsString(userDetailDTO));
     }
 }

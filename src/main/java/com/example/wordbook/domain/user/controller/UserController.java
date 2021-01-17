@@ -1,11 +1,12 @@
 package com.example.wordbook.domain.user.controller;
 
-import com.example.wordbook.domain.user.dto.request.CreateUserRequestDTO;
-import com.example.wordbook.domain.user.dto.request.UpdateUserRequestDTO;
-import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
+import com.example.wordbook.domain.user.dto.request.CreateUserDTO;
+import com.example.wordbook.domain.user.dto.request.UpdateUserDTO;
+import com.example.wordbook.domain.user.dto.response.UserDetailDTO;
 import com.example.wordbook.domain.user.service.CreateUserService;
 import com.example.wordbook.domain.user.service.GetUserService;
 import com.example.wordbook.domain.user.service.UpdateUserService;
+import com.example.wordbook.global.enums.DomainLink;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -32,27 +33,27 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody @Valid CreateUserRequestDTO createUserRequestDTO) throws Exception {
-        UserDetailResponseDTO userDetailResponseDTO = createUserService.create(createUserRequestDTO);
+    public ResponseEntity<Object> create(@RequestBody @Valid CreateUserDTO createUserDTO) {
+        UserDetailDTO userDetailDTO = createUserService.create(createUserDTO);
 
-        URI createdUri = linkTo(UserController.class).slash(userDetailResponseDTO.getId()).toUri();
+        URI createdUri = DomainLink.User.get(userDetailDTO.getId()).toUri();
 
-        return ResponseEntity.created(createdUri).body(userDetailResponseDTO);
+        return ResponseEntity.created(createdUri).body(userDetailDTO);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Object> get(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<Object> get(@PathVariable("id") Long id) {
         return ResponseEntity.ok().body(getUserService.getDetailDTOById(id));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> update(@PathVariable("id") Long id, @RequestBody UpdateUserRequestDTO updateUserRequestDTO) throws Exception {
-        return ResponseEntity.ok(updateUserService.update(id, updateUserRequestDTO));
+    public ResponseEntity<Object> update(@PathVariable("id") Long id,
+                                         @RequestBody @Valid UpdateUserDTO updateUserDTO) {
+        return ResponseEntity.ok(updateUserService.update(id, updateUserDTO));
     }
 
     @DeleteMapping
     public ResponseEntity<Object> delete() {
-
         return null;
     }
 }

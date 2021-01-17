@@ -13,20 +13,20 @@ import java.util.Optional;
 
 @Service
 public class WithdrawStudyService {
-    private final StudyRepository studyRepository;
-
+    private final DeleteStudyService deleteStudyService;
     private final GetStudyService getStudyService;
-    public WithdrawStudyService(StudyRepository studyRepository, GetStudyService getStudyService) {
-        this.studyRepository = studyRepository;
+
+    public WithdrawStudyService(GetStudyService getStudyService, DeleteStudyService deleteStudyService) {
         this.getStudyService = getStudyService;
+        this.deleteStudyService = deleteStudyService;
     }
 
     public void withdraw(User user, StudyGroup studyGroup) {
         Study study = getStudyService.getEntityByFindByUserIdAndStudyGroupsId(user.getId(), studyGroup.getId());
 
-        studyRepository.delete(study);
-
-        user.getStudyList().remove(study);
-        studyGroup.getStudyList().remove(study);
+        deleteStudyService.deleteByEntity(study);
+//
+//        user.getStudyList().remove(study);
+//        studyGroup.getStudyList().remove(study);
     }
 }

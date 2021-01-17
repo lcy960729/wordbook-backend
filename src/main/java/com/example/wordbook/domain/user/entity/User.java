@@ -5,6 +5,9 @@ import com.example.wordbook.domain.wordbook.entity.UserWordBook;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,19 +21,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "email", nullable = false)
+    @Email
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @NotBlank
     @Column(name = "pw", nullable = false)
     private String pw;
 
-    @OneToMany(mappedBy = "user")
+    @NotNull
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private final List<UserWordBook> userWordBookList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @NotNull
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private final List<Study> studyList = new ArrayList<>();
     
     @Builder
@@ -50,6 +58,8 @@ public class User {
     public void joinToStudy(Study study) {
         this.studyList.add(study);
     }
+
     public void signOutToStudy(Study study) {
-        this.studyList.remove(study);}
+        this.studyList.remove(study);
+    }
 }

@@ -4,18 +4,15 @@ import com.example.wordbook.domain.study.service.GetStudyService;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
 import com.example.wordbook.domain.studyGroup.exception.NotFoundStudyGroupException;
 import com.example.wordbook.domain.studyGroup.repository.StudyGroupRepository;
-import com.example.wordbook.global.mapper.StudyGroupMapper;
+import com.example.wordbook.domain.studyGroup.mapper.StudyToStudyGroupDetailDtoMapper;
 import com.example.wordbook.global.tool.DomainFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
@@ -30,8 +27,10 @@ public class GetStudyGroupServiceTest {
 
     @Mock
     private StudyGroupRepository studyGroupRepository;
+
     @Mock
-    private StudyGroupMapper studyGroupMapper;
+    private StudyToStudyGroupDetailDtoMapper studyToStudyGroupDetailDtoMapper;
+
     @Mock
     private GetStudyService getStudyService;
 
@@ -42,7 +41,7 @@ public class GetStudyGroupServiceTest {
     @DisplayName("정상적으로 스터디 그룹을 반환하는 테스트")
     void getEntityByIdTest() {
         //given
-        GetStudyGroupService getStudyGroupService = new GetStudyGroupService(studyGroupRepository, studyGroupMapper, getStudyService);
+        GetStudyGroupService getStudyGroupService = new GetStudyGroupService(getStudyService, studyToStudyGroupDetailDtoMapper);
 
         long studyGroupId = 0L;
 
@@ -60,7 +59,7 @@ public class GetStudyGroupServiceTest {
     @DisplayName("요청한 스터디 그룹이 유효하지 않을때 에러를 반환하는 테스")
     void getEntityById_isNull_ErrorTest() {
         //given
-        GetStudyGroupService getStudyGroupService = new GetStudyGroupService(studyGroupRepository, studyGroupMapper, getStudyService);
+        GetStudyGroupService getStudyGroupService = new GetStudyGroupService(getStudyService, studyToStudyGroupDetailDtoMapper);
 
         long studyGroupId = 0L;
 

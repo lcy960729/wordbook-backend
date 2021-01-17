@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.study.service;
 
-import com.example.wordbook.domain.study.StudyGroupRole;
+import com.example.wordbook.global.enums.StudyGroupRole;
 import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.study.exception.NotFoundStudyException;
 import com.example.wordbook.domain.study.repository.StudyRepository;

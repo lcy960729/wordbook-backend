@@ -1,8 +1,8 @@
 package com.example.wordbook.domain.user.service;
 
-import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
+import com.example.wordbook.domain.user.dto.response.UserDetailDTO;
 import com.example.wordbook.domain.user.entity.User;
-import com.example.wordbook.global.mapper.UserMapper;
+import com.example.wordbook.domain.user.mapper.UserToUserDetailDtoMapper;
 import com.example.wordbook.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ class GetUserServiceTest {
     private UserRepository userRepository;
 
     @MockBean
-    private UserMapper userMapper;
+    private UserToUserDetailDtoMapper userToUserDetailDtoMapper;
 
     @Test
     void getDetailDTOById() throws Exception {
@@ -41,18 +41,18 @@ class GetUserServiceTest {
                 .email("0L")
                 .build();
 
-        UserDetailResponseDTO userDetailResponseDTOTemp = UserDetailResponseDTO.builder()
+        UserDetailDTO userDetailDTOTemp = UserDetailDTO.builder()
                 .id(id)
                 .name("testName")
                 .build();
 
         given(userRepository.findById(id)).willReturn(Optional.of(user));
-        given(userMapper.entityToUserDetailDTO(any(User.class))).willReturn(userDetailResponseDTOTemp);
+        given(userToUserDetailDtoMapper.entityToUserDetailDTO(any(User.class))).willReturn(userDetailDTOTemp);
 
         //when
-        UserDetailResponseDTO userDetailResponseDTO = getUserService.getDetailDTOById(id);
+        UserDetailDTO userDetailDTO = getUserService.getDetailDTOById(id);
 
         //then
-        assertThat(userDetailResponseDTO).isNotNull();
+        assertThat(userDetailDTO).isNotNull();
     }
 }

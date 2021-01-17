@@ -13,8 +13,8 @@ public class DeleteStudyService {
         this.studyRepository = studyRepository;
     }
 
-    public void deleteByEntity(Long studyId){
-        studyRepository.deleteById(studyId);
+    public void deleteByEntity(Study study){
+        studyRepository.delete(study);
     }
 
 }

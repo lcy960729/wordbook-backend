@@ -1,8 +1,8 @@
 package com.example.wordbook.domain.user.service;
 
-import com.example.wordbook.domain.user.dto.request.CreateUserRequestDTO;
+import com.example.wordbook.domain.user.dto.request.CreateUserDTO;
 import com.example.wordbook.domain.user.entity.User;
-import com.example.wordbook.global.mapper.UserMapper;
+import com.example.wordbook.domain.user.mapper.UserToUserDetailDtoMapper;
 import com.example.wordbook.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,13 +27,13 @@ class CreateUserServiceTest {
     private UserRepository userRepository;
 
     @MockBean
-    private UserMapper userMapper;
+    private UserToUserDetailDtoMapper userToUserDetailDtoMapper;
 
     @Test
     @DisplayName(" 유저 생성시 정상적인 입력값에 대한 성공 테스트")
     void create() throws Exception {
         //given
-        CreateUserRequestDTO createUserRequestDTO = CreateUserRequestDTO.builder()
+        CreateUserDTO createUserDTO = CreateUserDTO.builder()
                 .email("testId")
                 .name("testName")
                 .pw("testPw")
@@ -41,16 +41,16 @@ class CreateUserServiceTest {
 
         User user = User.builder()
                 .id(0L)
-                .email(createUserRequestDTO.getEmail())
-                .name(createUserRequestDTO.getName())
-                .pw(createUserRequestDTO.getPw())
+                .email(createUserDTO.getEmail())
+                .name(createUserDTO.getName())
+                .pw(createUserDTO.getPw())
                 .build();
 
-        given(userMapper.createUserDTOToEntity(any(CreateUserRequestDTO.class))).willReturn(user);
+        given(userToUserDetailDtoMapper.createUserDTOToEntity(any(CreateUserDTO.class))).willReturn(user);
         given(userRepository.save(any(User.class))).willReturn(user);
 
         //when
-        Long id = createUserService.create(createUserRequestDTO).getId();
+        Long id = createUserService.create(createUserDTO).getId();
 
         //then
         assertThat(id).isEqualTo(user.getId());

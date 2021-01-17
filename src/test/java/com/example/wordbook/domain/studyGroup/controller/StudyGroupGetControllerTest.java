@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.studyGroup.controller;
 
-import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailResponseDTO;
+import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
@@ -33,15 +33,15 @@ class StudyGroupGetControllerTest extends StudyGroupControllerTest {
         Long userId = 0L;
         Long studyGroupId = 0L;
 
-        StudyGroupDetailResponseDTO studyGroupDetailResponseDTO = StudyGroupDetailResponseDTO.builder()
+        StudyGroupDetailDTO studyGroupDetailDTO = StudyGroupDetailDTO.builder()
                 .id(studyGroupId)
                 .name("testName")
                 .build();
 
-        studyGroupDetailResponseDTO.setWordBookDTOList(new ArrayList<>());
-        studyGroupDetailResponseDTO.setUserDTOList(new ArrayList<>());
+        studyGroupDetailDTO.setWordBookDTOList(new ArrayList<>());
+        studyGroupDetailDTO.setUserDTOList(new ArrayList<>());
 
-        given(getStudyGroupService.getDetailDTOById(anyLong(), anyLong())).willReturn(studyGroupDetailResponseDTO);
+        given(getStudyGroupService.getDetailDTOByUserIdAndStudyGroupId(anyLong(), anyLong())).willReturn(studyGroupDetailDTO);
 
         //when
         ResultActions resultActions = requestGetUser(userId, studyGroupId);
@@ -66,15 +66,15 @@ class StudyGroupGetControllerTest extends StudyGroupControllerTest {
         Long userId = 0L;
         Long studyGroupId = 0L;
 
-        StudyGroupDetailResponseDTO studyGroupDetailResponseDTO = StudyGroupDetailResponseDTO.builder()
+        StudyGroupDetailDTO studyGroupDetailDTO = StudyGroupDetailDTO.builder()
                 .id(studyGroupId)
                 .name("testName")
                 .build();
 
-        studyGroupDetailResponseDTO.setWordBookDTOList(new ArrayList<>());
-        studyGroupDetailResponseDTO.setUserDTOList(new ArrayList<>());
+        studyGroupDetailDTO.setWordBookDTOList(new ArrayList<>());
+        studyGroupDetailDTO.setUserDTOList(new ArrayList<>());
 
-        given(getStudyGroupService.getDetailDTOById(anyLong(), anyLong())).willReturn(studyGroupDetailResponseDTO);
+        given(getStudyGroupService.getDetailDTOByUserIdAndStudyGroupId(anyLong(), anyLong())).willReturn(studyGroupDetailDTO);
 
         //when
         ResultActions resultActions = requestGetUser(userId, studyGroupId);

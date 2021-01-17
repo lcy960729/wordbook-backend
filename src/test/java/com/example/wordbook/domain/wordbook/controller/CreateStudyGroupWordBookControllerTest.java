@@ -1,22 +1,9 @@
 package com.example.wordbook.domain.wordbook.controller;
 
-import com.example.wordbook.domain.wordbook.dto.request.CreateWordBookDTO;
-import com.example.wordbook.domain.wordbook.enums.WordBookType;
-import com.example.wordbook.domain.wordbook.service.wordbook.CreateWordBookService;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.hateoas.MediaTypes;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultActions;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class CreateStudyGroupWordBookControllerTest extends WordBookControllerTest {
 //

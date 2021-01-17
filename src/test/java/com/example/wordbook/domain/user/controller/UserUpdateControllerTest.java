@@ -1,15 +1,13 @@
 package com.example.wordbook.domain.user.controller;
 
-import com.example.wordbook.domain.user.dto.request.UpdateUserRequestDTO;
-import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
-import com.example.wordbook.global.component.LinkName;
+import com.example.wordbook.domain.user.dto.request.UpdateUserDTO;
+import com.example.wordbook.domain.user.dto.response.UserDetailDTO;
+import com.example.wordbook.global.enums.DomainLink;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
-
-import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -22,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class UserUpdateControllerTest extends UserControllerTest {
 
-    private ResultActions requestUpdateUser(Long id, UpdateUserRequestDTO userUpdateDTO) throws Exception {
+    private ResultActions requestUpdateUser(Long id, UpdateUserDTO userUpdateDTO) throws Exception {
         return mockMvc.perform(
                 put("/api/v1/users/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -37,17 +35,17 @@ class UserUpdateControllerTest extends UserControllerTest {
         //given
         String updateName = "updateName";
 
-        UpdateUserRequestDTO userUpdateDTO = UpdateUserRequestDTO.builder()
+        UpdateUserDTO userUpdateDTO = UpdateUserDTO.builder()
                 .name(updateName)
                 .build();
 
-        UserDetailResponseDTO userDetailResponseDTO = getUserDetailResponseDTO();
-        userDetailResponseDTO.setName(updateName);
+        UserDetailDTO userDetailDTO = getUserDetailResponseDTO();
+        userDetailDTO.setName(updateName);
 
-        given(updateUserService.update(anyLong(), any())).willReturn(userDetailResponseDTO);
+        given(updateUserService.update(anyLong(), any())).willReturn(userDetailDTO);
 
         //when
-        ResultActions resultActions = requestUpdateUser(userDetailResponseDTO.getId(), userUpdateDTO);
+        ResultActions resultActions = requestUpdateUser(userDetailDTO.getId(), userUpdateDTO);
 
         //then
         resultActions.andDo(print())
@@ -56,12 +54,12 @@ class UserUpdateControllerTest extends UserControllerTest {
                 .andExpect(jsonPath("name").exists())
                 .andExpect(jsonPath("email").exists());
 
-        urlExistCheck(resultActions, "wordBookDTOList[*]", LinkName.GET_USER_WORDBOOK);
-        urlExistCheck(resultActions, "studyGroupList[*]", LinkName.GET_STUDY_GROUP);
-        urlExistCheck(resultActions, LinkName.SELF);
-        urlExistCheck(resultActions, LinkName.UPDATE_USER);
+        urlExistCheck(resultActions, "wordBookDTOList[*]", DomainLink.GET_USER_WORDBOOK);
+        urlExistCheck(resultActions, "studyGroupList[*]", DomainLink.GET_STUDY_GROUP);
+        urlExistCheck(resultActions, DomainLink.SELF);
+        urlExistCheck(resultActions, DomainLink.UPDATE_USER);
 //        urlExistCheck(resultActions, LinkName.DELETE_USER);
-        urlExistCheck(resultActions, LinkName.CREATE_STUDY_GROUP);
-        urlExistCheck(resultActions, LinkName.CREATE_USER_WORDBOOK);
+        urlExistCheck(resultActions, DomainLink.CREATE_STUDY_GROUP);
+        urlExistCheck(resultActions, DomainLink.CREATE_USER_WORDBOOK);
     }
 }

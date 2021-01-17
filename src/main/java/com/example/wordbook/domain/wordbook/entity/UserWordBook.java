@@ -21,7 +21,12 @@ public class UserWordBook extends WordBook {
 
     @Builder
     public UserWordBook(Long id, Boolean isUsing, String name, List<Word> words, User user) {
-        super(id, isUsing, name, words);
+        super(id, isUsing, name);
+
+        if (words != null) {
+            getWords().addAll(words);
+        }
+
         this.user = user;
     }
 

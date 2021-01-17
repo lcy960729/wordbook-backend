@@ -1,7 +1,7 @@
 package com.example.wordbook.domain.studyGroup.controller;
 
-import com.example.wordbook.domain.studyGroup.dto.request.CreateStudyGroupRequestDTO;
-import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailResponseDTO;
+import com.example.wordbook.domain.studyGroup.dto.request.CreateStudyGroupDTO;
+import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
@@ -18,12 +18,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class StudyGroupCreateControllerTest extends StudyGroupControllerTest {
 
-    private ResultActions requestCreateStudyGroup(Long userId, CreateStudyGroupRequestDTO createStudyGroupRequestDTO) throws Exception {
+    private ResultActions requestCreateStudyGroup(Long userId, CreateStudyGroupDTO createStudyGroupDTO) throws Exception {
         return mockMvc.perform(
                 post("/api/v1/users/{userId}/study-groups", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaTypes.HAL_JSON)
-                        .content(objectMapper.writeValueAsString(createStudyGroupRequestDTO))
+                        .content(objectMapper.writeValueAsString(createStudyGroupDTO))
         );
     }
 
@@ -34,18 +34,18 @@ class StudyGroupCreateControllerTest extends StudyGroupControllerTest {
         long userId = 0L;
         String groupName = "testName";
 
-        CreateStudyGroupRequestDTO createStudyGroupRequestDTO = CreateStudyGroupRequestDTO.builder()
+        CreateStudyGroupDTO createStudyGroupDTO = CreateStudyGroupDTO.builder()
                 .name(groupName)
                 .build();
 
-        StudyGroupDetailResponseDTO studyGroupDetailResponseDTO = StudyGroupDetailResponseDTO.builder()
+        StudyGroupDetailDTO studyGroupDetailDTO = StudyGroupDetailDTO.builder()
                 .id(0L)
                 .name(groupName)
                 .build();
-        given(createStudyGroupService.create(anyLong(), any(CreateStudyGroupRequestDTO.class))).willReturn(studyGroupDetailResponseDTO);
+        given(createStudyGroupService.create(anyLong(), any(CreateStudyGroupDTO.class))).willReturn(studyGroupDetailDTO);
 
         //when
-        ResultActions resultActions = requestCreateStudyGroup(userId, createStudyGroupRequestDTO);
+        ResultActions resultActions = requestCreateStudyGroup(userId, createStudyGroupDTO);
 
         //then
         resultActions.andDo(print())

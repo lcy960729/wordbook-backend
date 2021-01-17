@@ -1,18 +1,12 @@
 package com.example.wordbook.domain.user.controller;
 
-import com.example.wordbook.domain.user.dto.request.CreateUserRequestDTO;
-import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
-import com.example.wordbook.global.component.LinkName;
+import com.example.wordbook.domain.user.dto.response.UserDetailDTO;
+import com.example.wordbook.global.enums.DomainLink;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -34,12 +28,12 @@ class UserGetControllerTest extends UserControllerTest {
     @DisplayName("정상적으로 유저를 불러오는 테스트")
     void getUser() throws Exception {
         //given
-        UserDetailResponseDTO userDetailResponseDTO = getUserDetailResponseDTO();
+        UserDetailDTO userDetailDTO = getUserDetailResponseDTO();
 
-        given(getUserService.getDetailDTOById(anyLong())).willReturn(userDetailResponseDTO);
+        given(getUserService.getDetailDTOById(anyLong())).willReturn(userDetailDTO);
 
         //when
-        ResultActions resultActions = requestGetUser(userDetailResponseDTO.getId());
+        ResultActions resultActions = requestGetUser(userDetailDTO.getId());
 
         //then
         resultActions.andDo(print())
@@ -48,12 +42,12 @@ class UserGetControllerTest extends UserControllerTest {
                 .andExpect(jsonPath("name").exists())
                 .andExpect(jsonPath("email").exists());
 
-        urlExistCheck(resultActions, "wordBookDTOList[*]", LinkName.GET_USER_WORDBOOK);
-        urlExistCheck(resultActions, "studyGroupList[*]", LinkName.GET_STUDY_GROUP);
-        urlExistCheck(resultActions, LinkName.SELF);
-        urlExistCheck(resultActions, LinkName.UPDATE_USER);
+        urlExistCheck(resultActions, "wordBookDTOList[*]", DomainLink.GET_USER_WORDBOOK);
+        urlExistCheck(resultActions, "studyGroupList[*]", DomainLink.GET_STUDY_GROUP);
+        urlExistCheck(resultActions, DomainLink.SELF);
+        urlExistCheck(resultActions, DomainLink.UPDATE_USER);
 //        urlExistCheck(resultActions, LinkName.DELETE_USER);
-        urlExistCheck(resultActions, LinkName.CREATE_STUDY_GROUP);
-        urlExistCheck(resultActions, LinkName.CREATE_USER_WORDBOOK);
+        urlExistCheck(resultActions, DomainLink.CREATE_STUDY_GROUP);
+        urlExistCheck(resultActions, DomainLink.CREATE_USER_WORDBOOK);
     }
 }

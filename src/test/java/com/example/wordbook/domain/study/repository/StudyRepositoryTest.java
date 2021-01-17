@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.study.repository;
 
-import com.example.wordbook.domain.study.StudyGroupRole;
+import com.example.wordbook.global.enums.StudyGroupRole;
 import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
 import com.example.wordbook.domain.studyGroup.repository.StudyGroupRepository;

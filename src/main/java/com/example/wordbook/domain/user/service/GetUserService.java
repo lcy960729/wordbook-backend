@@ -1,26 +1,36 @@
 package com.example.wordbook.domain.user.service;
 
-import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
+import com.example.wordbook.domain.user.dto.response.UserDetailDTO;
 import com.example.wordbook.domain.user.entity.User;
-import com.example.wordbook.global.mapper.UserMapper;
+import com.example.wordbook.domain.user.exception.UserNotFoundException;
+import com.example.wordbook.domain.user.mapper.UserToUserDetailDtoMapper;
 import com.example.wordbook.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Service
+@Validated
 public class GetUserService {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final UserToUserDetailDtoMapper userToUserDetailDtoMapper;
 
-    public GetUserService(UserRepository userRepository, UserMapper userMapper) {
+    public GetUserService(UserRepository userRepository, UserToUserDetailDtoMapper userToUserDetailDtoMapper) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
+        this.userToUserDetailDtoMapper = userToUserDetailDtoMapper;
     }
 
-    public UserDetailResponseDTO getDetailDTOById(Long id) throws Exception {
-        return userMapper.entityToUserDetailDTO(getEntityById(id));
+    public UserDetailDTO getDetailDTOById(@NotNull Long id) {
+        return userToUserDetailDtoMapper.entityToUserDetailDTO(getEntityById(id));
     }
 
-    public User getEntityById(Long id) throws Exception {
-        return userRepository.findById(id).orElseThrow(Exception::new);
+    public User getEntityById(@NotNull Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    public boolean isExistingByEmail(@NotBlank String email) {
+        return userRepository.findByEmail(email).isPresent();
     }
 }

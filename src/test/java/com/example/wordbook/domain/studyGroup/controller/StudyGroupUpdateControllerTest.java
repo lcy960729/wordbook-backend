@@ -1,22 +1,9 @@
 package com.example.wordbook.domain.studyGroup.controller;
 
-import com.example.wordbook.domain.user.dto.request.UpdateUserRequestDTO;
-import com.example.wordbook.domain.user.dto.response.UserDetailResponseDTO;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.hateoas.MediaTypes;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultActions;
-
-import java.util.ArrayList;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class StudyGroupUpdateControllerTest extends StudyGroupControllerTest {
 //

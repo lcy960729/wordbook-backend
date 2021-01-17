@@ -20,7 +20,12 @@ public class StudyGroupWordBook extends WordBook {
 
     @Builder
     public StudyGroupWordBook(Long id, Boolean isUsing, String name, List<Word> words, StudyGroup studyGroup) {
-        super( id, isUsing, name, words);
+        super( id, isUsing, name);
+
+        if (words != null){
+            getWords().addAll(words);
+        }
+
         this.studyGroup = studyGroup;
     }
 

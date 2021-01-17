@@ -1,6 +1,6 @@
 package com.example.wordbook.domain.studyGroup.service;
 
-import com.example.wordbook.domain.study.StudyGroupRole;
+import com.example.wordbook.global.enums.StudyGroupRole;
 import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.study.service.DeleteStudyService;
 import com.example.wordbook.domain.study.service.GetStudyService;
@@ -42,7 +42,7 @@ class DeleteStudyGroupServiceTest {
     @DisplayName("단어장을 정상적으로 삭제하는 테스트")
     void delete() {
         //given
-        DeleteStudyGroupService deleteStudyGroupService = new DeleteStudyGroupService(getStudyService, deleteStudyService, studyGroupRepository);
+        DeleteStudyGroupService deleteStudyGroupService = new DeleteStudyGroupService(getStudyService, studyGroupRepository);
 
         long userId = 0L;
         User user = domainFactory.createUser(userId);

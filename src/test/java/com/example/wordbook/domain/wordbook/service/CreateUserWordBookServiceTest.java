@@ -1,27 +1,11 @@
 package com.example.wordbook.domain.wordbook.service;
 
-import com.example.wordbook.domain.user.entity.User;
-import com.example.wordbook.domain.wordbook.dto.request.CreateWordBookDTO;
-import com.example.wordbook.domain.wordbook.entity.UserWordBook;
-import com.example.wordbook.domain.wordbook.enums.WordBookType;
-import com.example.wordbook.domain.wordbook.repository.WordBookRepository;
-import com.example.wordbook.domain.wordbook.service.userwordbookImpl.CreateUserWordBookService;
-import com.example.wordbook.global.mapper.UserWordBookMapper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 
 @ExtendWith(SpringExtension.class)
 @ExtendWith(MockitoExtension.class)
