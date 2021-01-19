@@ -4,6 +4,6 @@ import com.example.wordbook.global.exception.EntityNotFoundException;
 
 public class NotFoundWordBookException extends EntityNotFoundException {
     public NotFoundWordBookException() {
-        super("");
+        super("WordBook");
     }
 }

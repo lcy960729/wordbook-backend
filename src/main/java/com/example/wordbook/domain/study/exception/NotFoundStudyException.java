@@ -3,7 +3,7 @@ package com.example.wordbook.domain.study.exception;
 import com.example.wordbook.global.exception.EntityNotFoundException;
 
 public class NotFoundStudyException extends EntityNotFoundException {
-    public NotFoundStudyException(String message) {
-        super(message);
+    public NotFoundStudyException() {
+        super("Study");
     }
 }

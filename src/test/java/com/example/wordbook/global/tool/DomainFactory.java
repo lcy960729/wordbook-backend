@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class DomainFactory {
 
-    public User createUser(long id){
+    public static User createUser(long id){
         return User.builder()
                 .id(id)
                 .name("testUserName")
                 .pw("testPw")
-                .email("testEmail")
+                .email("testEmail@test.com")
                 .build();
     }
 
-    public StudyGroupWordBook createStudyGroupWordBook(Long id){
+    public static StudyGroupWordBook createStudyGroupWordBook(Long id){
         return StudyGroupWordBook.builder()
                 .id(id)
                 .isUsing(true)
@@ -27,7 +27,7 @@ public class DomainFactory {
                 .build();
     }
 
-    public UserWordBook createUserWordBook(Long id){
+    public static UserWordBook createUserWordBook(Long id){
         return UserWordBook.builder()
                 .id(id)
                 .isUsing(true)
@@ -35,7 +35,7 @@ public class DomainFactory {
                 .build();
     }
 
-    public StudyGroup createStudyGroup(long id){
+    public static StudyGroup createStudyGroup(long id){
         return StudyGroup.builder()
                 .id(id)
                 .name("testUserName")

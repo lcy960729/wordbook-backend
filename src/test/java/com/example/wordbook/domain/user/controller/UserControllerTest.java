@@ -26,19 +26,14 @@ public class UserControllerTest extends BaseControllerTest {
     @MockBean
     protected UpdateUserService updateUserService;
 
-    public void urlExistCheck(ResultActions resultActions, DomainLink domainLink) throws Exception {
-        resultActions
-                .andExpect(jsonPath("_links." + domainLink).exists());
-//              .andExpect(jsonPath(url + ".href").value(link.toUri().toString()));
-    }
 
-    protected UserDetailDTO getUserDetailResponseDTO() throws Exception {
-        long userId = 0L;
+
+    protected UserDetailDTO getUserDetailResponseDTO(String name, String email) {
         UserDetailDTO userDetailDTO = UserDetailDTO.builder()
-                .id(userId)
-                .name("testName")
-                .email("testEmail")
-                .studyGroupList(new ArrayList<>())
+                .id(0L)
+                .name(name)
+                .email(email)
+                .studyGroupDTOList(new ArrayList<>())
                 .wordBookDTOList(new ArrayList<>())
                 .build();
 

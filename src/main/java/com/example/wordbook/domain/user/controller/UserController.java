@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 @Validated
 @RestController
 @RequestMapping(value = "/api/v1/users", produces = MediaTypes.HAL_JSON_VALUE)

@@ -19,6 +19,7 @@ import java.nio.file.AccessDeniedException;
 public class GlobalExceptionHandler {
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<Object> methodArgumentNotValidExceptionHandle(MethodArgumentNotValidException e){
+
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE, e.getBindingResult());
 
         return ResponseEntity.badRequest().body(errorResponse);
@@ -54,7 +55,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({BusinessException.class})
     public ResponseEntity<Object> businessExceptionHandle(BusinessException e){
-        ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode());
+        ErrorResponse errorResponse = ErrorResponse.of(e);
 
         return ResponseEntity.badRequest().body(errorResponse);
     }

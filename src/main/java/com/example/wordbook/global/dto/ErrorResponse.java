@@ -1,6 +1,7 @@
 package com.example.wordbook.global.dto;
 
 import com.example.wordbook.global.enums.ErrorCode;
+import com.example.wordbook.global.exception.BusinessException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,6 +61,14 @@ public class ErrorResponse {
 
     public static ErrorResponse of(ErrorCode code) {
         ErrorResponse errorResponse = new ErrorResponse(code);
+        errorResponse.errors = new ArrayList<>();
+
+        return errorResponse;
+    }
+
+    public static ErrorResponse of(BusinessException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getErrorCode());
+        errorResponse.message = e.getMessage();
         errorResponse.errors = new ArrayList<>();
 
         return errorResponse;

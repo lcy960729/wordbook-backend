@@ -1,6 +1,7 @@
 package com.example.wordbook.global.controller;
 
 import com.example.wordbook.global.enums.DomainLink;
+import com.example.wordbook.global.tool.DomainFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,13 +22,21 @@ public class BaseControllerTest {
     @Autowired
     protected ObjectMapper objectMapper;
 
-    public void urlExistCheck(ResultActions resultActions, String fieldName, DomainLink domainLink) throws Exception {
+    protected final static DomainFactory domainFactory = new DomainFactory();
+
+    public void urlExistCheck(ResultActions resultActions, DomainLink domainLink) throws Exception {
+        resultActions
+                .andExpect(jsonPath("_links." + domainLink).exists());
+//              .andExpect(jsonPath(url + ".href").value(link.toUri().toString()));
+    }
+
+    protected void urlExistCheck(ResultActions resultActions, String fieldName, DomainLink domainLink) throws Exception {
         resultActions
                 .andExpect(jsonPath(fieldName + "._links." + domainLink).exists());
 //              .andExpect(jsonPath(url + ".href").value(link.toUri().toString()));
     }
 
-    public void fieldExistCheck(ResultActions resultActions, String fieldName) throws Exception {
+    protected void fieldExistCheck(ResultActions resultActions, String fieldName) throws Exception {
         resultActions
                 .andExpect(jsonPath(fieldName).exists());
     }

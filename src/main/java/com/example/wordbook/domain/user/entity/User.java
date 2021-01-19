@@ -59,6 +59,10 @@ public class User {
         this.studyList.add(study);
     }
 
+    public void addWordBook(UserWordBook userWordBook){
+        this.userWordBookList.add(userWordBook);
+    }
+
     public void signOutToStudy(Study study) {
         this.studyList.remove(study);
     }

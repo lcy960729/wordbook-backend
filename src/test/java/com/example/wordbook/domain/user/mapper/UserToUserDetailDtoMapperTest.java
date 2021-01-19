@@ -1,18 +1,20 @@
-package com.example.wordbook.global.mapper;
+package com.example.wordbook.domain.user.mapper;
 
-import com.example.wordbook.domain.user.dto.request.CreateUserDTO;
-import com.example.wordbook.domain.user.dto.response.UserDetailDTO;
-import com.example.wordbook.domain.user.mapper.UserToUserDetailDtoMapper;
-import com.example.wordbook.global.enums.StudyGroupRole;
 import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
+import com.example.wordbook.domain.user.dto.request.CreateUserDTO;
+import com.example.wordbook.domain.user.dto.response.UserDetailDTO;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.domain.wordbook.entity.UserWordBook;
+import com.example.wordbook.global.enums.StudyGroupRole;
 import com.example.wordbook.global.tool.DomainFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,72 +23,43 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
-@SpringBootTest(classes = {DomainFactory.class, ObjectMapper.class, UserToUserDetailDtoMapperImpl.class})
 class UserToUserDetailDtoMapperTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserToUserDetailDtoMapperTest.class);
-
-    @Autowired
-    private DomainFactory domainFactory;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private UserToUserDetailDtoMapper userToUserDetailDtoMapper;
-
-    @Test
-    @DisplayName("createUserDTOToEntity 맵핑이 정삭적으로 동작 하는 테스트")
-    void createUserDTOToEntity() throws JsonProcessingException {
-        //given
-        CreateUserDTO createUserDTO = CreateUserDTO.builder()
-                .name("testName")
-                .email("testEmail")
-                .pw("testPw")
-                .build();
-
-        //when
-        User user = userToUserDetailDtoMapper.createUserDTOToEntity(createUserDTO);
-
-        //then
-        logger.info(objectMapper.writeValueAsString(user));
-
-        assertThat(user.getName()).isEqualTo(createUserDTO.getName());
-        assertThat(user.getEmail()).isEqualTo(createUserDTO.getEmail());
-    }
+    private final UserToUserDetailDtoMapper userToUserDetailDtoMapper = Mockito.spy(Mappers.getMapper(UserToUserDetailDtoMapper.class));
 
     @Test
     @DisplayName("userToUserDetailDTO 맵핑이 정삭적으로 동작 하는 테스트")
-    void entityToUserDetailDTO() throws Exception {
+    void entityToUserDetailDTO() {
         //given
         long userId = 0L;
-        User user = domainFactory.createUser(userId);
+        User user = DomainFactory.createUser(userId);
 
         int length = 3;
-        IntStream.range(0, length).forEach((i) -> {
-            StudyGroup studyGroup = domainFactory.createStudyGroup(i);
-            UserWordBook userWordBook = domainFactory.createUserWordBook((long) i);
+        LongStream.range(0, length).forEach((i) -> {
+            StudyGroup studyGroup = DomainFactory.createStudyGroup(i);
+            UserWordBook userWordBook = DomainFactory.createUserWordBook(i);
 
             Study study = Study.builder()
-                    .id((long) i)
+                    .id(i)
                     .studyGroup(studyGroup)
                     .user(user)
                     .studyGroupRole(StudyGroupRole.ADMIN)
                     .build();
 
             user.joinToStudy(study);
-            user.getUserWordBookList().add(userWordBook);
+            user.addWordBook(userWordBook);
         });
 
         //when
         UserDetailDTO userDetailDTO = userToUserDetailDtoMapper.entityToUserDetailDTO(user);
 
         //then
-        logger.info(objectMapper.writeValueAsString(userDetailDTO));
-
         assertThat(userDetailDTO.getId()).isEqualTo(user.getId());
         assertThat(userDetailDTO.getEmail()).isEqualTo(user.getEmail());
         assertThat(userDetailDTO.getName()).isEqualTo(user.getName());
@@ -104,26 +77,28 @@ class UserToUserDetailDtoMapperTest {
             assertThat(wordBookDTO.getId()).isEqualTo(userWordBook.getId());
             assertThat(wordBookDTO.getName()).isEqualTo(userWordBook.getName());
         });
+
+        verify(userToUserDetailDtoMapper).makeLinks(any(UserDetailDTO.class));
     }
 
     @Test
     @DisplayName("User를 StudyGroupDTOList 맵핑이 정삭적으로 동작 하는 테스트")
-    void mapToStudyGroupDTOList() throws Exception {
+    void mapToStudyGroupDTOList() {
         //given
-        User user = domainFactory.createUser(0L);
+        User user = DomainFactory.createUser(0L);
 
         int length = 5;
-        IntStream.range(0, length).forEach((i) -> {
-            StudyGroup studyGroup = domainFactory.createStudyGroup(i);
+        LongStream.range(0, length).forEach((i) -> {
+            StudyGroup studyGroup = DomainFactory.createStudyGroup(i);
 
             Study study = Study.builder()
-                    .id((long) i)
+                    .id(i)
                     .user(user)
                     .studyGroup(studyGroup)
                     .studyGroupRole(StudyGroupRole.ADMIN)
                     .build();
 
-            user.getStudyList().add(study);
+            user.joinToStudy(study);
         });
 
         //when
@@ -141,13 +116,13 @@ class UserToUserDetailDtoMapperTest {
 
     @Test
     @DisplayName("userWordBookList를 userWordBookDTOList로 맵핑이 정삭적으로 동작 하는 테스트")
-    void mapToWordBookDTOList() throws Exception {
+    void mapToWordBookDTOList() {
         //given
         List<UserWordBook> userWordBookList = new ArrayList<>();
 
         int length = 5;
-        IntStream.range(0, length).forEach((i) -> {
-            userWordBookList.add(domainFactory.createUserWordBook((long) i));
+        LongStream.range(0, length).forEach((i) -> {
+            userWordBookList.add(DomainFactory.createUserWordBook(i));
         });
 
         //when

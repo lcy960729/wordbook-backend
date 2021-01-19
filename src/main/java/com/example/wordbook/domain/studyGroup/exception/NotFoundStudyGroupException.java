@@ -5,6 +5,6 @@ import com.example.wordbook.global.exception.EntityNotFoundException;
 public class NotFoundStudyGroupException extends EntityNotFoundException {
 
     public NotFoundStudyGroupException() {
-        super("");
+        super("StudyGroup");
     }
 }

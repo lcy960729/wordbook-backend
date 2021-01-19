@@ -19,7 +19,7 @@ public class ControllerLogAdvice {
     private final Logger logger = LoggerFactory.getLogger(ControllerLogAdvice.class);
 
     @Around("execution(* com.example.wordbook.domain.*.controller.*.*(..))")
-    public Object logging(ProceedingJoinPoint pjp) {
+    public Object logging(ProceedingJoinPoint pjp) throws Throwable {
 
         LocalDateTime time = LocalDateTime.now();
         Long startTime = System.currentTimeMillis();
@@ -31,14 +31,10 @@ public class ControllerLogAdvice {
                 methodSignature.getMethod().getName(), pjp.getArgs(), time);
 
         ResponseEntity<Object> result = null;
-        try {
-            result = (ResponseEntity<Object>) pjp.proceed();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
+        result = (ResponseEntity<Object>) pjp.proceed();
 
         Long endTime = System.currentTimeMillis();
-        logger.info("TIME = " + (endTime-startTime));
+        logger.info("TIME = " + (endTime - startTime));
         logger.info("--------------------------------------------------------------------------------------------------");
 
         return result;

@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-class UserDeleteControllerTest extends UserControllerTest {
+class DeleteUserControllerTest extends UserControllerTest {
 
     private ResultActions requestCreateGroupWordBook(CreateWordBookDTO createGroupWordBookDTO) throws Exception {
         return mockMvc.perform(

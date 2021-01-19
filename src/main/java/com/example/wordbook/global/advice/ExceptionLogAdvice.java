@@ -1,6 +1,7 @@
 package com.example.wordbook.global.advice;
 
 import com.example.wordbook.global.dto.ErrorResponse;
+import com.example.wordbook.global.exception.BusinessException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,6 +24,10 @@ public class ExceptionLogAdvice {
 
         LocalDateTime time = LocalDateTime.now();
         MethodSignature methodSignature = ((MethodSignature) pjp.getSignature());
+
+        for (Object arg : pjp.getArgs()) {
+            ((Exception) arg).printStackTrace();
+        }
 
         logger.error("--------------------------------------------------------------------------------------------------");
 

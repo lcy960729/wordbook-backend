@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class UserGetControllerTest extends UserControllerTest {
+class GetUserControllerTest extends UserControllerTest {
 
     private ResultActions requestGetUser(Long id) throws Exception {
         return mockMvc.perform(
@@ -25,10 +25,13 @@ class UserGetControllerTest extends UserControllerTest {
     }
 
     @Test
-    @DisplayName("정상적으로 유저를 불러오는 테스트")
+    @DisplayName("정상적으로 유저를 반환하는 테스트")
     void getUser() throws Exception {
-        //given
-        UserDetailDTO userDetailDTO = getUserDetailResponseDTO();
+        //given는
+        String name = "testName";
+        String email = "testEmail";
+
+        UserDetailDTO userDetailDTO = getUserDetailResponseDTO(name, email);
 
         given(getUserService.getDetailDTOById(anyLong())).willReturn(userDetailDTO);
 
@@ -37,16 +40,20 @@ class UserGetControllerTest extends UserControllerTest {
 
         //then
         resultActions.andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id").exists())
-                .andExpect(jsonPath("name").exists())
-                .andExpect(jsonPath("email").exists());
+                .andExpect(status().isCreated());
+
+        fieldExistCheck(resultActions, "id");
+        fieldExistCheck(resultActions, "name");
+        fieldExistCheck(resultActions, "email");
+        fieldExistCheck(resultActions, "wordBookDTOList");
+        fieldExistCheck(resultActions, "studyGroupDTOList");
 
         urlExistCheck(resultActions, "wordBookDTOList[*]", DomainLink.GET_USER_WORDBOOK);
-        urlExistCheck(resultActions, "studyGroupList[*]", DomainLink.GET_STUDY_GROUP);
+        urlExistCheck(resultActions, "studyGroupDTOList[*]", DomainLink.GET_STUDY_GROUP);
+
         urlExistCheck(resultActions, DomainLink.SELF);
         urlExistCheck(resultActions, DomainLink.UPDATE_USER);
-//        urlExistCheck(resultActions, LinkName.DELETE_USER);
+        urlExistCheck(resultActions, DomainLink.DELETE_USER);
         urlExistCheck(resultActions, DomainLink.CREATE_STUDY_GROUP);
         urlExistCheck(resultActions, DomainLink.CREATE_USER_WORDBOOK);
     }

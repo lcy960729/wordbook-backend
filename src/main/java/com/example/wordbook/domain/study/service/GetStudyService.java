@@ -18,7 +18,7 @@ public class GetStudyService {
 
     public Study getEntityByFindByUserIdAndStudyGroupsId(Long userId, Long studyGroupId) {
         return studyRepository.findByUserIdAndStudyGroupId(userId, studyGroupId)
-                .orElseThrow(() -> new NotFoundStudyException(""));
+                .orElseThrow(NotFoundStudyException::new);
     }
 
     public Study getEntityByFindByAdminIdAndStudyGroupsId(Long adminId, Long studyGroupId) {

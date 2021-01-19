@@ -4,6 +4,7 @@ import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailDTO;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
+import com.example.wordbook.global.enums.StudyGroupRole;
 import org.mapstruct.*;
 
 import java.util.ArrayList;
@@ -38,7 +39,11 @@ public interface StudyToStudyGroupDetailDtoMapper {
 
     @AfterMapping
     default StudyGroupDetailDTO StudyGroupResponseDTO(@MappingTarget StudyGroupDetailDTO studyGroupDetailDTO, Study study) {
-        studyGroupDetailDTO.makeLinks(study);
+        Long userId = study.getUser().getId();
+        Long studyGroupId = study.getStudyGroup().getId();
+        StudyGroupRole studyGroupRole = study.getStudyGroupRole();
+
+        studyGroupDetailDTO.makeLinks(userId, studyGroupId, studyGroupRole);
 
         return studyGroupDetailDTO;
     }

@@ -2,7 +2,7 @@ package com.example.wordbook.domain.user.service;
 
 import com.example.wordbook.domain.user.dto.response.UserDetailDTO;
 import com.example.wordbook.domain.user.entity.User;
-import com.example.wordbook.domain.user.exception.UserNotFoundException;
+import com.example.wordbook.domain.user.exception.NotFoundUserException;
 import com.example.wordbook.domain.user.mapper.UserToUserDetailDtoMapper;
 import com.example.wordbook.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class GetUserService {
     }
 
     public User getEntityById(@NotNull Long id) {
-        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        return userRepository.findById(id).orElseThrow(NotFoundUserException::new);
     }
 
     public boolean isExistingByEmail(@NotBlank String email) {

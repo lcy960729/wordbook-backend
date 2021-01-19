@@ -2,6 +2,8 @@ package com.example.wordbook.domain.studyGroup.controller;
 
 import com.example.wordbook.domain.studyGroup.dto.request.CreateStudyGroupDTO;
 import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailDTO;
+import com.example.wordbook.global.enums.DomainLink;
+import com.example.wordbook.global.enums.StudyGroupRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
@@ -16,7 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class StudyGroupCreateControllerTest extends StudyGroupControllerTest {
+class CreateStudyGroupControllerTest extends StudyGroupControllerTest {
 
     private ResultActions requestCreateStudyGroup(Long userId, CreateStudyGroupDTO createStudyGroupDTO) throws Exception {
         return mockMvc.perform(
@@ -28,36 +30,42 @@ class StudyGroupCreateControllerTest extends StudyGroupControllerTest {
     }
 
     @Test
-    @DisplayName("정상적으로 유저가 추가 되었을때 Created를 반환")
+    @DisplayName("정상적으로 그룹이 생성 됐을때 Created를 반환")
     void create() throws Exception {
         //given
-        long userId = 0L;
-        String groupName = "testName";
+        String studyGroupName = "testName";
 
         CreateStudyGroupDTO createStudyGroupDTO = CreateStudyGroupDTO.builder()
-                .name(groupName)
+                .name(studyGroupName)
                 .build();
 
-        StudyGroupDetailDTO studyGroupDetailDTO = StudyGroupDetailDTO.builder()
-                .id(0L)
-                .name(groupName)
-                .build();
+        StudyGroupDetailDTO studyGroupDetailDTO = getStudyGroupDetailDTO(studyGroupName, StudyGroupRole.ADMIN);
+
         given(createStudyGroupService.create(anyLong(), any(CreateStudyGroupDTO.class))).willReturn(studyGroupDetailDTO);
 
         //when
+        long userId = 0L;
         ResultActions resultActions = requestCreateStudyGroup(userId, createStudyGroupDTO);
 
         //then
         resultActions.andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(jsonPath("id").exists())
-                .andExpect(jsonPath("name").exists())
-                .andExpect(jsonPath("_links.self").exists())
-                .andExpect(jsonPath("_links.update_studyGroup").exists())
-                .andExpect(jsonPath("_links.delete_studyGroup").exists())
-                .andExpect(jsonPath("_links.get_wordBooksInGroups").exists())
-                .andExpect(jsonPath("_links.get_userInGroups").exists())
-                .andExpect(jsonPath("_links.pre").exists());
+                .andExpect(status().isCreated());
+
+        fieldExistCheck(resultActions, "id");
+        fieldExistCheck(resultActions, "name");
+        fieldExistCheck(resultActions, "userDTOList");
+        fieldExistCheck(resultActions, "wordBookDTOList");
+
+        urlExistCheck(resultActions, "userDTOList[*]", DomainLink.GET_USER);
+        urlExistCheck(resultActions, "wordBookDTOList[*]", DomainLink.GET_STUDY_GROUP_WORDBOOK);
+
+        urlExistCheck(resultActions, DomainLink.SELF);
+
+        urlExistCheck(resultActions, DomainLink.UPDATE_STUDY_GROUP);
+        urlExistCheck(resultActions, DomainLink.DELETE_STUDY_GROUP);
+        urlExistCheck(resultActions, DomainLink.CREATE_STUDY_GROUP_WORDBOOK);
+
+        urlExistCheck(resultActions, DomainLink.GET_USER);
+
     }
 }

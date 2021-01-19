@@ -22,19 +22,12 @@ public class GetUserWordBookService {
         this.userWordBookToWordBookDetailDtoMapper = userWordBookToWordBookDetailDtoMapper;
     }
 
-    public WordBookDetailDTO getDetailDTOById(@NotNull Long id) {
-        return userWordBookToWordBookDetailDtoMapper.entityToResponseDetailDTO(this.getEntityById(id));
-    }
-
     public WordBookDetailDTO getDetailDTOByUserIdAndWordBookId(@NotNull Long userId, @NotNull Long wordBookId) {
         return userWordBookToWordBookDetailDtoMapper.entityToResponseDetailDTO(this.getEntityByUserIdAndWordBookId(userId, wordBookId));
     }
 
     public UserWordBook getEntityByUserIdAndWordBookId(@NotNull Long userId, @NotNull Long wordBookId) {
-        return userWordBookRepository.findByIdAndUserId(wordBookId, userId).orElseThrow(NotFoundWordBookException::new);
-    }
-
-    public UserWordBook getEntityById(@NotNull Long id) {
-        return userWordBookRepository.findById(id).orElseThrow(NotFoundWordBookException::new);
+        return userWordBookRepository.findByIdAndUserId(wordBookId, userId)
+                .orElseThrow(NotFoundWordBookException::new);
     }
 }

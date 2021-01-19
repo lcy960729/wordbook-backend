@@ -67,13 +67,10 @@ public class StudyGroupDetailDTO extends RepresentationModel<StudyGroupDetailDTO
         this.wordBookDTOList = wordBookDTOList;
     }
 
-    public void makeLinks(Study study) {
-        Long userId = study.getUser().getId();
-        Long studyGroupId = study.getStudyGroup().getId();
-
+    public void makeLinks(Long userId, Long studyGroupId, StudyGroupRole studyGroupRole) {
         makeLinksAtWordBookDTOList(userId, studyGroupId);
         makeLinksAtUserDTOList(userId, studyGroupId);
-        makeLinksStudyGroupDetailResponseDTO(study.getStudyGroupRole(), userId, studyGroupId);
+        makeLinksStudyGroupDetailResponseDTO(studyGroupRole, userId, studyGroupId);
     }
 
     private void makeLinksStudyGroupDetailResponseDTO(StudyGroupRole studyGroupRole, Long userId, Long studyGroupId) {
