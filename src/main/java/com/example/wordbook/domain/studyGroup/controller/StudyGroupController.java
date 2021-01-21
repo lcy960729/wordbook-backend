@@ -1,12 +1,15 @@
 package com.example.wordbook.domain.studyGroup.controller;
 
 import com.example.wordbook.domain.studyGroup.dto.request.CreateStudyGroupDTO;
+import com.example.wordbook.domain.studyGroup.dto.request.UpdateStudyGroupDTO;
 import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailDTO;
 import com.example.wordbook.domain.studyGroup.service.CreateStudyGroupService;
 import com.example.wordbook.domain.studyGroup.service.DeleteStudyGroupService;
 import com.example.wordbook.domain.studyGroup.service.GetStudyGroupService;
+import com.example.wordbook.domain.studyGroup.service.UpdateStudyGroupService;
 import com.example.wordbook.domain.user.dto.request.UpdateUserDTO;
 import com.example.wordbook.global.enums.DomainLink;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +25,14 @@ public class StudyGroupController {
 
     private final CreateStudyGroupService createStudyGroupService;
     private final GetStudyGroupService getStudyGroupService;
+    private final UpdateStudyGroupService updateStudyGroupService;
     private final DeleteStudyGroupService deleteStudyGroupService;
 
-    public StudyGroupController(CreateStudyGroupService createStudyGroupService, GetStudyGroupService getStudyGroupService, DeleteStudyGroupService deleteStudyGroupService) {
+    public StudyGroupController(CreateStudyGroupService createStudyGroupService, GetStudyGroupService getStudyGroupService, DeleteStudyGroupService deleteStudyGroupService, UpdateStudyGroupService updateStudyGroupService) {
         this.createStudyGroupService = createStudyGroupService;
         this.getStudyGroupService = getStudyGroupService;
         this.deleteStudyGroupService = deleteStudyGroupService;
+        this.updateStudyGroupService = updateStudyGroupService;
     }
 
     @PostMapping
@@ -51,9 +56,11 @@ public class StudyGroupController {
     @PutMapping(value = "/{studyGroupId}")
     public ResponseEntity<Object> update(@PathVariable("userId") Long userId,
                                          @PathVariable("studyGroupId") Long studyGroupId,
-                                         @RequestBody @Valid UpdateUserDTO userUpdateDTO) {
+                                         @RequestBody @Valid UpdateStudyGroupDTO updateStudyGroupDTO) {
 
-        return ResponseEntity.ok().build();
+        StudyGroupDetailDTO studyGroupDetailDTO = updateStudyGroupService.update(userId, studyGroupId, updateStudyGroupDTO);
+
+        return ResponseEntity.ok(studyGroupDetailDTO);
     }
 
     @DeleteMapping(value = "/{studyGroupId}")
@@ -61,7 +68,7 @@ public class StudyGroupController {
                                          @PathVariable("studyGroupId") Long studyGroupId) {
 
         deleteStudyGroupService.delete(userId, studyGroupId);
-        
+
         return null;
     }
 }

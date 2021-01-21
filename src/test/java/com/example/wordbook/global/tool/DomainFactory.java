@@ -5,12 +5,13 @@ import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
 import com.example.wordbook.domain.wordbook.entity.UserWordBook;
+import com.example.wordbook.global.enums.StudyGroupRole;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DomainFactory {
 
-    public static User createUser(long id){
+    public static User createUser(long id) {
         return User.builder()
                 .id(id)
                 .name("testUserName")
@@ -19,7 +20,7 @@ public class DomainFactory {
                 .build();
     }
 
-    public static StudyGroupWordBook createStudyGroupWordBook(Long id){
+    public static StudyGroupWordBook createStudyGroupWordBook(Long id) {
         return StudyGroupWordBook.builder()
                 .id(id)
                 .isUsing(true)
@@ -27,7 +28,7 @@ public class DomainFactory {
                 .build();
     }
 
-    public static UserWordBook createUserWordBook(Long id){
+    public static UserWordBook createUserWordBook(Long id) {
         return UserWordBook.builder()
                 .id(id)
                 .isUsing(true)
@@ -35,11 +36,32 @@ public class DomainFactory {
                 .build();
     }
 
-    public static StudyGroup createStudyGroup(long id){
+    public static StudyGroup createStudyGroup(long id) {
         return StudyGroup.builder()
                 .id(id)
                 .name("testUserName")
                 .isUsing(true)
+                .build();
+    }
+
+    public static Study createStudyOfAdminUser(Long studyId, StudyGroup studyGroup, User user) {
+        return Study.builder()
+                .id(studyId)
+                .isUsing(true)
+                .studyGroupRole(StudyGroupRole.ADMIN)
+                .user(user)
+                .studyGroup(studyGroup)
+                .build();
+    }
+
+
+    public static Study createStudyOfNormalUser(Long studyId, StudyGroup studyGroup, User user) {
+        return Study.builder()
+                .id(studyId)
+                .isUsing(true)
+                .studyGroupRole(StudyGroupRole.NORMAL)
+                .user(user)
+                .studyGroup(studyGroup)
                 .build();
     }
 }

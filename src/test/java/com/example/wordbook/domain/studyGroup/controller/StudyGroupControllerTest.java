@@ -3,11 +3,14 @@ package com.example.wordbook.domain.studyGroup.controller;
 import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailDTO;
 import com.example.wordbook.domain.studyGroup.service.CreateStudyGroupService;
+import com.example.wordbook.domain.studyGroup.service.DeleteStudyGroupService;
 import com.example.wordbook.domain.studyGroup.service.GetStudyGroupService;
+import com.example.wordbook.domain.studyGroup.service.UpdateStudyGroupService;
 import com.example.wordbook.domain.user.dto.response.UserDetailDTO;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.global.controller.BaseControllerTest;
 import com.example.wordbook.global.enums.StudyGroupRole;
+import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -21,6 +24,13 @@ public class StudyGroupControllerTest extends BaseControllerTest {
 
     @MockBean
     protected GetStudyGroupService getStudyGroupService;
+
+    @MockBean
+    private DeleteStudyGroupService deleteStudyGroupService;
+
+    @MockBean
+    protected UpdateStudyGroupService updateStudyGroupService;
+
 
     protected StudyGroupDetailDTO getStudyGroupDetailDTO(String name, StudyGroupRole studyGroupRole) {
         StudyGroupDetailDTO studyGroupDetailDTO = StudyGroupDetailDTO.builder()

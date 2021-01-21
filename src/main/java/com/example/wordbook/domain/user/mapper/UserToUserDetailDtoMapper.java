@@ -40,7 +40,7 @@ public interface UserToUserDetailDtoMapper {
     }
 
     @AfterMapping
-    default UserDetailDTO makeLinks(@MappingTarget UserDetailDTO userDetailDTO) {
+    default UserDetailDTO makeLinksAfterMapping(@MappingTarget UserDetailDTO userDetailDTO) {
         userDetailDTO.makeLinks();
 
         return userDetailDTO;

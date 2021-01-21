@@ -25,12 +25,12 @@ public class CreateStudyGroupService {
     private final GetUserService getUserService;
     private final CreateStudyService createStudyService;
 
-    public CreateStudyGroupService(StudyGroupRepository studyGroupRepository, CreateDtoToStudyGroupMapper createDtoToStudyGroupMapper, GetUserService getUserService, CreateStudyService createStudyService, StudyToStudyGroupDetailDtoMapper studyToStudyGroupDetailDtoMapper) {
+    public CreateStudyGroupService(StudyGroupRepository studyGroupRepository, CreateDtoToStudyGroupMapper createDtoToStudyGroupMapper, StudyToStudyGroupDetailDtoMapper studyToStudyGroupDetailDtoMapper, GetUserService getUserService, CreateStudyService createStudyService) {
         this.studyGroupRepository = studyGroupRepository;
         this.createDtoToStudyGroupMapper = createDtoToStudyGroupMapper;
-        this.createStudyService = createStudyService;
-        this.getUserService = getUserService;
         this.studyToStudyGroupDetailDtoMapper = studyToStudyGroupDetailDtoMapper;
+        this.getUserService = getUserService;
+        this.createStudyService = createStudyService;
     }
 
     @Transactional

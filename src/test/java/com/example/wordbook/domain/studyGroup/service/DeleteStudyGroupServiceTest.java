@@ -22,21 +22,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
-@SpringBootTest(classes = {DomainFactory.class})
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest(classes = {StudyGroupRepository.class})
 class DeleteStudyGroupServiceTest {
 
     @Mock
     private GetStudyService getStudyService;
 
-    @Mock
-    private DeleteStudyService deleteStudyService;
-
-    @Mock
-    private StudyGroupRepository studyGroupRepository;
-
     @Autowired
-    private DomainFactory domainFactory;
+    private StudyGroupRepository studyGroupRepository;
 
     @Test
     @DisplayName("단어장을 정상적으로 삭제하는 테스트")
@@ -45,28 +38,22 @@ class DeleteStudyGroupServiceTest {
         DeleteStudyGroupService deleteStudyGroupService = new DeleteStudyGroupService(getStudyService, studyGroupRepository);
 
         long userId = 0L;
-        User user = domainFactory.createUser(userId);
+        User user = DomainFactory.createUser(userId);
 
         long studyGroupId = 0L;
-        StudyGroup studyGroup = domainFactory.createStudyGroup(studyGroupId);
+        StudyGroup studyGroup = DomainFactory.createStudyGroup(studyGroupId);
 
         long studyId = 0L;
-        Study study = Study.builder()
-                .id(studyId)
-                .user(user)
-                .studyGroup(studyGroup)
-                .studyGroupRole(StudyGroupRole.ADMIN)
-                .build();
+        Study study = DomainFactory.createStudyOfAdminUser(studyId, studyGroup, user);
 
-        given(getStudyService.getEntityByFindByUserIdAndStudyGroupsId(anyLong(),anyLong())).willReturn(study);
+        given(getStudyService.getEntityByFindByAdminIdAndStudyGroupsId(anyLong(), anyLong())).willReturn(study);
 
         //when
-        Throwable throwable =  catchThrowable(()->deleteStudyGroupService.delete(userId, studyGroupId));
+        deleteStudyGroupService.delete(userId, studyGroupId);
 
         //then
-        assertThat(throwable).isNull();;
         assertThat(user.getStudyList()).isEmpty();
-    }
 
-    //TODO 삭제시 문제될점 생각해보기
+        //TODO 삭제 테스트 코드를 어떻게 작성할지 생각
+    }
 }

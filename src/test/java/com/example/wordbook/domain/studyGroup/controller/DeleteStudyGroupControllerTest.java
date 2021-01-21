@@ -2,7 +2,7 @@ package com.example.wordbook.domain.studyGroup.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-class StudyGroupDeleteControllerTest extends StudyGroupControllerTest {
+class DeleteStudyGroupControllerTest extends StudyGroupControllerTest {
 
 //    private ResultActions requestCreateGroupWordBook(CreateWordBookDTO createGroupWordBookDTO) throws Exception {
 //        return mockMvc.perform(

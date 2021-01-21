@@ -38,7 +38,7 @@ public interface StudyToStudyGroupDetailDtoMapper {
     }
 
     @AfterMapping
-    default StudyGroupDetailDTO StudyGroupResponseDTO(@MappingTarget StudyGroupDetailDTO studyGroupDetailDTO, Study study) {
+    default StudyGroupDetailDTO makeLinksAfterMapping(@MappingTarget StudyGroupDetailDTO studyGroupDetailDTO, Study study) {
         Long userId = study.getUser().getId();
         Long studyGroupId = study.getStudyGroup().getId();
         StudyGroupRole studyGroupRole = study.getStudyGroupRole();

@@ -1,55 +1,54 @@
 package com.example.wordbook.domain.studyGroup.controller;
 
-import com.example.wordbook.domain.studyGroup.dto.request.CreateStudyGroupDTO;
+import com.example.wordbook.domain.studyGroup.dto.request.UpdateStudyGroupDTO;
 import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailDTO;
 import com.example.wordbook.global.enums.DomainLink;
 import com.example.wordbook.global.enums.StudyGroupRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.MediaTypes;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class CreateStudyGroupControllerTest extends StudyGroupControllerTest {
+class UpdateStudyGroupControllerTest extends StudyGroupControllerTest {
 
-    private ResultActions requestCreateStudyGroup(Long userId, CreateStudyGroupDTO createStudyGroupDTO) throws Exception {
+    private ResultActions requestUpdateStudyGroup(Long userId, Long studyGroupId, UpdateStudyGroupDTO updateStudyGroupDTO) throws Exception {
         return mockMvc.perform(
-                post("/api/v1/users/{userId}/study-groups", userId)
+                put("/api/v1/users/{userId}/study-groups/{studyGroupId}", userId, studyGroupId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaTypes.HAL_JSON)
-                        .content(objectMapper.writeValueAsString(createStudyGroupDTO))
+                        .content(objectMapper.writeValueAsString(updateStudyGroupDTO))
         );
     }
 
     @Test
-    @DisplayName("정상적으로 그룹이 생성 됐을때 Created를 반환")
-    void create() throws Exception {
+    @DisplayName("조회 요청한 사용자가 그룹 관리자일 경우 그룹 정보를 반환하는 테스트")
+    void getStudyGroup_userIsAdmin_test() throws Exception {
         //given
-        String studyGroupName = "testName";
+        Long userId = 0L;
+        Long studyGroupId = 0L;
 
-        CreateStudyGroupDTO createStudyGroupDTO = CreateStudyGroupDTO.builder()
-                .name(studyGroupName)
-                .build();
+        UpdateStudyGroupDTO updateStudyGroupDTO = new UpdateStudyGroupDTO("updateName");
 
-        StudyGroupDetailDTO studyGroupDetailDTO = getStudyGroupDetailDTO(studyGroupName, StudyGroupRole.ADMIN);
+        StudyGroupDetailDTO studyGroupDetailDTO = getStudyGroupDetailDTO(updateStudyGroupDTO.getName(), StudyGroupRole.ADMIN);
 
-        given(createStudyGroupService.create(anyLong(), any(CreateStudyGroupDTO.class))).willReturn(studyGroupDetailDTO);
+        given(updateStudyGroupService.update(anyLong(), anyLong(), any(UpdateStudyGroupDTO.class))).willReturn(studyGroupDetailDTO);
 
         //when
-        long userId = 0L;
-        ResultActions resultActions = requestCreateStudyGroup(userId, createStudyGroupDTO);
+        ResultActions resultActions = requestUpdateStudyGroup(userId, studyGroupId, updateStudyGroupDTO);
 
         //then
         resultActions.andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
 
         fieldExistCheck(resultActions, "id");
         fieldExistCheck(resultActions, "name");
@@ -66,6 +65,5 @@ class CreateStudyGroupControllerTest extends StudyGroupControllerTest {
         urlExistCheck(resultActions, DomainLink.CREATE_STUDY_GROUP_WORDBOOK);
 
         urlExistCheck(resultActions, DomainLink.GET_USER);
-
     }
 }

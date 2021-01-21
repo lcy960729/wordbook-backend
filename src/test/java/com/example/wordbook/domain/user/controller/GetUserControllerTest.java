@@ -40,7 +40,7 @@ class GetUserControllerTest extends UserControllerTest {
 
         //then
         resultActions.andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
 
         fieldExistCheck(resultActions, "id");
         fieldExistCheck(resultActions, "name");

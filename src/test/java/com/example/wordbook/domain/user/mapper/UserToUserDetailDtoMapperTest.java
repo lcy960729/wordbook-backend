@@ -77,8 +77,6 @@ class UserToUserDetailDtoMapperTest {
             assertThat(wordBookDTO.getId()).isEqualTo(userWordBook.getId());
             assertThat(wordBookDTO.getName()).isEqualTo(userWordBook.getName());
         });
-
-        verify(userToUserDetailDtoMapper).makeLinks(any(UserDetailDTO.class));
     }
 
     @Test
@@ -136,5 +134,11 @@ class UserToUserDetailDtoMapperTest {
             assertThat(wordBookDTO.getId()).isEqualTo(userWordBook.getId());
             assertThat(wordBookDTO.getName()).isEqualTo(userWordBook.getName());
         });
+    }
+
+    @Test
+    void makeLinksAfterMapping() {
+        entityToUserDetailDTO();
+        verify(userToUserDetailDtoMapper).makeLinksAfterMapping(any(UserDetailDTO.class));
     }
 }
