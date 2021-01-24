@@ -2,7 +2,7 @@ package com.example.wordbook.global.enums;
 
 import com.example.wordbook.domain.studyGroup.controller.StudyGroupController;
 import com.example.wordbook.domain.user.controller.UserController;
-import com.example.wordbook.domain.word.controller.WordStudyGroupWordBookController;
+import com.example.wordbook.domain.word.controller.WordOfStudyGroupWordBookController;
 import com.example.wordbook.domain.word.controller.WordOfUserWordBookController;
 import com.example.wordbook.domain.wordbook.controller.StudyGroupWordBookController;
 import com.example.wordbook.domain.wordbook.controller.UserWordBookController;
@@ -187,22 +187,22 @@ public enum DomainLink {
 
     public static class WordOfStudyGroupWordBook {
         public static Link add(Long userId, Long studyGroupId, Long wordBookId) {
-            return linkTo(methodOn(WordStudyGroupWordBookController.class).add(userId, studyGroupId, wordBookId, null))
+            return linkTo(methodOn(WordOfStudyGroupWordBookController.class).add(userId, studyGroupId, wordBookId, null))
                     .withRel(ADD_WORD.toString());
         }
 
         public static Link update(Long userId, Long studyGroupId, Long wordBookId, Long wordId) {
-            return linkTo(methodOn(WordStudyGroupWordBookController.class).update(userId, studyGroupId, wordBookId, wordId, null))
+            return linkTo(methodOn(WordOfStudyGroupWordBookController.class).update(userId, studyGroupId, wordBookId, wordId, null))
                     .withRel(UPDATE_WORD.toString());
         }
 
         public static Link delete(Long userId, Long studyGroupId, Long wordBookId, Long wordId) {
-            return linkTo(methodOn(WordStudyGroupWordBookController.class).delete(userId, studyGroupId, wordBookId, wordId))
+            return linkTo(methodOn(WordOfStudyGroupWordBookController.class).delete(userId, studyGroupId, wordBookId, wordId))
                     .withRel(DELETE_WORD.toString());
         }
 
         public static Link self(Long userId, Long studyGroupId, Long wordBookId, Long wordId) {
-            return linkTo(methodOn(WordStudyGroupWordBookController.class).delete(userId, studyGroupId, wordBookId, wordId))
+            return linkTo(methodOn(WordOfStudyGroupWordBookController.class).delete(userId, studyGroupId, wordBookId, wordId))
                     .withSelfRel();
         }
     }

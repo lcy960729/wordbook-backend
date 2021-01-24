@@ -3,9 +3,10 @@ package com.example.wordbook.domain.word.controller;
 import com.example.wordbook.domain.word.dto.request.CreateWordDTO;
 import com.example.wordbook.domain.word.dto.request.UpdateWordDTO;
 import com.example.wordbook.domain.word.dto.response.WordDetailDTO;
-import com.example.wordbook.domain.word.service.AddWordService;
-import com.example.wordbook.domain.word.service.DeleteWordService;
-import com.example.wordbook.domain.word.service.UpdateWordService;
+import com.example.wordbook.domain.word.service.studygroupwordbook.AddWordOfStudyGroupWordBookService;
+import com.example.wordbook.domain.word.service.studygroupwordbook.DeleteWordOfStudyGroupWordBookService;
+import com.example.wordbook.domain.word.service.studygroupwordbook.UpdateWordOfStudyGroupWordBookService;
+
 import com.example.wordbook.global.enums.DomainLink;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
@@ -14,20 +15,18 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 @RestController
 @RequestMapping(value = "/api/v1/users/{userId}/study-groups/{studyGroupId}/wordbooks/{wordBookId}/words", produces = MediaTypes.HAL_JSON_VALUE)
-public class WordStudyGroupWordBookController {
+public class WordOfStudyGroupWordBookController {
 
-    private final AddWordService addWordService;
-    private final UpdateWordService updateWordService;
-    private final DeleteWordService deleteWordService;
+    private final AddWordOfStudyGroupWordBookService addWordOfStudyGroupWordBookService;
+    private final UpdateWordOfStudyGroupWordBookService updateWordOfStudyGroupWordBookService;
+    private final DeleteWordOfStudyGroupWordBookService deleteWordOfStudyGroupWordBookService;
 
-    public WordStudyGroupWordBookController(AddWordService addWordService, UpdateWordService updateWordService, DeleteWordService deleteWordService) {
-        this.addWordService = addWordService;
-        this.updateWordService = updateWordService;
-        this.deleteWordService = deleteWordService;
+    public WordOfStudyGroupWordBookController(AddWordOfStudyGroupWordBookService addWordOfStudyGroupWordBookService, UpdateWordOfStudyGroupWordBookService updateWordOfStudyGroupWordBookService, DeleteWordOfStudyGroupWordBookService deleteWordOfStudyGroupWordBookService) {
+        this.addWordOfStudyGroupWordBookService = addWordOfStudyGroupWordBookService;
+        this.updateWordOfStudyGroupWordBookService = updateWordOfStudyGroupWordBookService;
+        this.deleteWordOfStudyGroupWordBookService = deleteWordOfStudyGroupWordBookService;
     }
 
     @PostMapping
@@ -36,9 +35,9 @@ public class WordStudyGroupWordBookController {
                                       @PathVariable("wordBookId") Long wordBookId,
                                       @RequestBody @Valid CreateWordDTO createWordDTO) {
 
-        WordDetailDTO wordDetailDTO = addWordService.addAtStudyGroupWordBook(userId, studyGroupId, wordBookId, createWordDTO);
+        WordDetailDTO wordDetailDTO = addWordOfStudyGroupWordBookService.add(userId, studyGroupId, wordBookId, createWordDTO);
 
-        URI createdUri = DomainLink.WordOfStudyGroupWordBook.delete(userId, studyGroupId, wordBookId, wordDetailDTO.getId()).toUri();
+        URI createdUri = DomainLink.WordOfStudyGroupWordBook.self(userId, studyGroupId, wordBookId, wordDetailDTO.getId()).toUri();
 
         return ResponseEntity.created(createdUri).body(wordDetailDTO);
     }
@@ -50,7 +49,7 @@ public class WordStudyGroupWordBookController {
                                          @PathVariable("wordId") Long wordId,
                                          @RequestBody UpdateWordDTO updateWordDTO) {
 
-        WordDetailDTO wordDetailDTO = updateWordService.updateAtStudyGroupWordBook(userId, studyGroupId, wordBookId, wordId, updateWordDTO);
+        WordDetailDTO wordDetailDTO = updateWordOfStudyGroupWordBookService.update(userId, studyGroupId, wordBookId, wordId, updateWordDTO);
 
         return ResponseEntity.ok().body(wordDetailDTO);
     }
@@ -61,7 +60,7 @@ public class WordStudyGroupWordBookController {
                                          @PathVariable("wordBookId") Long wordBookId,
                                          @PathVariable("wordId") Long wordId) {
 
-        deleteWordService.deleteAtStudyGroupWordBook(userId, studyGroupId, wordBookId, wordId);
+        deleteWordOfStudyGroupWordBookService.delete(userId, studyGroupId, wordBookId, wordId);
 
         return ResponseEntity.ok("deleted");
     }

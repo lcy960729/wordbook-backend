@@ -1,4 +1,4 @@
-package com.example.wordbook.NotUseClass.serializer;
+package com.example.wordbook.NotUseClass;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

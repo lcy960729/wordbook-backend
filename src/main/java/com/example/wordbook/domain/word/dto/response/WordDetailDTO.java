@@ -23,6 +23,8 @@ public class WordDetailDTO extends RepresentationModel<WordDetailDTO> {
     }
 
     public void makeLinks(Long userId, Long wordBookId, Long wordId) {
+        add(DomainLink.WordOfUserWordBook.self(userId, wordBookId, wordId));
+
         add(DomainLink.WordOfUserWordBook.update(userId, wordBookId, wordId));
         add(DomainLink.WordOfUserWordBook.delete(userId, wordBookId, wordId));
 
@@ -30,6 +32,8 @@ public class WordDetailDTO extends RepresentationModel<WordDetailDTO> {
     }
 
     public void makeLinks(Long userId, Long studyGroupId, Long wordBookId, Long wordId) {
+        add(DomainLink.WordOfStudyGroupWordBook.self(userId, studyGroupId, wordBookId, wordId));
+
         add(DomainLink.WordOfStudyGroupWordBook.update(userId, studyGroupId, wordBookId, wordId));
         add(DomainLink.WordOfStudyGroupWordBook.delete(userId, studyGroupId, wordBookId, wordId));
 
