@@ -30,6 +30,19 @@ public class BaseControllerTest {
 //              .andExpect(jsonPath(url + ".href").value(link.toUri().toString()));
     }
 
+
+    public void urlNotExistCheck(ResultActions resultActions, DomainLink domainLink) throws Exception {
+        resultActions
+                .andExpect(jsonPath("_links." + domainLink).doesNotExist());
+//              .andExpect(jsonPath(url + ".href").value(link.toUri().toString()));
+    }
+
+    protected void urlNotExistCheck(ResultActions resultActions, String fieldName, DomainLink domainLink) throws Exception {
+        resultActions
+                .andExpect(jsonPath(fieldName + "._links." + domainLink).doesNotExist());
+//              .andExpect(jsonPath(url + ".href").value(link.toUri().toString()));
+    }
+
     protected void urlExistCheck(ResultActions resultActions, String fieldName, DomainLink domainLink) throws Exception {
         resultActions
                 .andExpect(jsonPath(fieldName + "._links." + domainLink).exists());

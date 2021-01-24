@@ -9,6 +9,7 @@ import com.example.wordbook.domain.wordbook.repository.WordBookRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.slf4j.Logger;
@@ -27,7 +28,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class WordOfStudyGroupWordBookRepositoryTest {
-    private static final Logger logger = LoggerFactory.getLogger(WordOfStudyGroupWordBookRepositoryTest.class);
 
     @Autowired
     private WordRepository wordRepository;
@@ -35,12 +35,10 @@ public class WordOfStudyGroupWordBookRepositoryTest {
     @Autowired
     private WordBookRepository wordBookRepository;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     private UserWordBook userWordBook;
     private StudyGroupWordBook studyGroupWordBook;
 
-    @BeforeAll
+    @BeforeEach
     public void setUp(){
         userWordBook = UserWordBook.builder()
                 .user(User.builder().build())
@@ -52,7 +50,6 @@ public class WordOfStudyGroupWordBookRepositoryTest {
         userWordBook = wordBookRepository.save(userWordBook);
 
         studyGroupWordBook = StudyGroupWordBook.builder()
-                .studyGroup(StudyGroup.builder().build())
                 .name("test")
                 .isUsing(true)
                 .words(new ArrayList<>())
@@ -62,9 +59,9 @@ public class WordOfStudyGroupWordBookRepositoryTest {
     }
 
     @Test
-    public void createUserWordBook() throws JsonProcessingException {
+    public void createUserWordBook() {
         //given
-        UserWordBook wordBook = (UserWordBook) wordBookRepository.findById(1L).get();
+        UserWordBook wordBook = (UserWordBook) wordBookRepository.findById(userWordBook.getId()).get();
 
         Word word = Word.builder()
                 .isUsing(true)

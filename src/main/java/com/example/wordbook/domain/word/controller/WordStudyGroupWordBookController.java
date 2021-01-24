@@ -18,13 +18,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping(value = "/api/v1/users/{userId}/study-groups/{studyGroupId}/wordbooks/{wordBookId}/words", produces = MediaTypes.HAL_JSON_VALUE)
-public class StudyGroupWordBookWordController {
+public class WordStudyGroupWordBookController {
 
     private final AddWordService addWordService;
     private final UpdateWordService updateWordService;
     private final DeleteWordService deleteWordService;
 
-    public StudyGroupWordBookWordController(AddWordService addWordService, UpdateWordService updateWordService, DeleteWordService deleteWordService) {
+    public WordStudyGroupWordBookController(AddWordService addWordService, UpdateWordService updateWordService, DeleteWordService deleteWordService) {
         this.addWordService = addWordService;
         this.updateWordService = updateWordService;
         this.deleteWordService = deleteWordService;

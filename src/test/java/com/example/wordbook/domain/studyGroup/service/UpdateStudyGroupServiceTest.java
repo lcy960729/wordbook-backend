@@ -49,25 +49,24 @@ class UpdateStudyGroupServiceTest extends StudyGroupServiceTest {
         //given
         UpdateStudyGroupDTO updateStudyGroupDTO = new UpdateStudyGroupDTO("updateName");
 
-        long adminId = 0;
-        long studyGroupId = 10;
+        Study study = domainFactory.getStudyOfStudyGroupAdmin();
+        StudyGroup studyGroup = study.getStudyGroup();
+        User user = study.getUser();
 
-        StudyGroup studyGroup = DomainFactory.createStudyGroup(studyGroupId);
         studyGroup.setName(updateStudyGroupDTO.getName());
-
-        User user = DomainFactory.createUser(adminId);
-
-        Study study = DomainFactory.createStudyOfAdminUser(0L, studyGroup, user);
 
         given(studyGroupRepository.save(any(StudyGroup.class))).willReturn(studyGroup);
         given(getStudyService.getEntityByFindByAdminIdAndStudyGroupsId(anyLong(), anyLong())).willReturn(study);
 
         //when
+        Long studyGroupId = studyGroup.getId();
+        Long adminId = user.getId();
+
         StudyGroupDetailDTO studyGroupDetailDTO = updateStudyGroupService.update(adminId, studyGroupId, updateStudyGroupDTO);
 
         //then
         assertThat(studyGroupDetailDTO).isNotNull();
-        assertThat(studyGroupDetailDTO.getId()).isEqualTo(studyGroup.getId());
+        assertThat(studyGroupDetailDTO.getId()).isEqualTo(studyGroupId);
         assertThat(studyGroupDetailDTO.getName()).isEqualTo(studyGroup.getName());
     }
 
@@ -77,10 +76,10 @@ class UpdateStudyGroupServiceTest extends StudyGroupServiceTest {
         //given
         UpdateStudyGroupDTO updateStudyGroupDTO = new UpdateStudyGroupDTO("updateName");
 
-        long adminId = 0;
-        long studyGroupId = 10;
+        Study study = domainFactory.getStudyOfStudyGroupNormal();
+        StudyGroup studyGroup = study.getStudyGroup();
+        User user = study.getUser();
 
-        StudyGroup studyGroup = DomainFactory.createStudyGroup(studyGroupId);
         studyGroup.setName(updateStudyGroupDTO.getName());
 
         given(studyGroupRepository.save(any(StudyGroup.class))).willReturn(studyGroup);
@@ -89,7 +88,12 @@ class UpdateStudyGroupServiceTest extends StudyGroupServiceTest {
         given(getStudyService.getEntityByFindByAdminIdAndStudyGroupsId(anyLong(), anyLong())).willThrow(businessException);
 
         //when
-        Throwable throwable = catchThrowable(()-> updateStudyGroupService.update(adminId, studyGroupId, updateStudyGroupDTO));
+        Throwable throwable = catchThrowable(() -> {
+            Long studyGroupId = studyGroup.getId();
+            Long userId = user.getId();
+
+            updateStudyGroupService.update(userId, studyGroupId, updateStudyGroupDTO);
+        });
 
         //then
         assertThat(throwable).isInstanceOf(BusinessException.class);

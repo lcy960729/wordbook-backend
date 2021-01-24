@@ -1,7 +1,7 @@
 package com.example.wordbook.domain.word.service;
 
 import com.example.wordbook.domain.wordbook.entity.WordBook;
-import com.example.wordbook.domain.wordbook.service.groupwordbook.GetStudyGroupWordBookService;
+import com.example.wordbook.domain.wordbook.service.studygroupwordbook.GetStudyGroupWordBookService;
 import com.example.wordbook.domain.wordbook.service.userwordbook.GetUserWordBookService;
 import org.springframework.stereotype.Service;
 

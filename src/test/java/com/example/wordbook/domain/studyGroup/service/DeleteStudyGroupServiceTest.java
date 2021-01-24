@@ -22,13 +22,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
-@SpringBootTest(classes = {StudyGroupRepository.class})
-class DeleteStudyGroupServiceTest {
+class DeleteStudyGroupServiceTest extends StudyGroupServiceTest{
 
     @Mock
     private GetStudyService getStudyService;
 
-    @Autowired
+    @Mock
     private StudyGroupRepository studyGroupRepository;
 
     @Test
@@ -37,22 +36,18 @@ class DeleteStudyGroupServiceTest {
         //given
         DeleteStudyGroupService deleteStudyGroupService = new DeleteStudyGroupService(getStudyService, studyGroupRepository);
 
-        long userId = 0L;
-        User user = DomainFactory.createUser(userId);
-
-        long studyGroupId = 0L;
-        StudyGroup studyGroup = DomainFactory.createStudyGroup(studyGroupId);
-
-        long studyId = 0L;
-        Study study = DomainFactory.createStudyOfAdminUser(studyId, studyGroup, user);
+        Study study = domainFactory.getStudyOfStudyGroupAdmin();
 
         given(getStudyService.getEntityByFindByAdminIdAndStudyGroupsId(anyLong(), anyLong())).willReturn(study);
 
         //when
-        deleteStudyGroupService.delete(userId, studyGroupId);
+        Long studyGroupId = study.getStudyGroup().getId();
+        Long adminId = study.getUser().getId();
+
+        deleteStudyGroupService.delete(adminId, studyGroupId);
 
         //then
-        assertThat(user.getStudyList()).isEmpty();
+//        assertThat(study.getUser().getStudyList()).isIn().isEmpty();
 
         //TODO 삭제 테스트 코드를 어떻게 작성할지 생각
     }

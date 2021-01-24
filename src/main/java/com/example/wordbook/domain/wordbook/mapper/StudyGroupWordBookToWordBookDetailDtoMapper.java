@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface StudyGroupWordToStudyGroupWordDetailDtoMapper {
+public interface StudyGroupWordBookToWordBookDetailDtoMapper {
     @Mapping(target = "wordDTOList", source = "studyGroupWordBook.words", qualifiedByName = "mapToWordDTOList")
     WordBookDetailDTO entityToResponseDetailDTO(Long userId, StudyGroupWordBook studyGroupWordBook);
 

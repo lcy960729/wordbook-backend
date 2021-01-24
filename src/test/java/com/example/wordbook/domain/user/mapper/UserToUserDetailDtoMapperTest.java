@@ -33,28 +33,13 @@ class UserToUserDetailDtoMapperTest {
 
     private final UserToUserDetailDtoMapper userToUserDetailDtoMapper = Mockito.spy(Mappers.getMapper(UserToUserDetailDtoMapper.class));
 
+    private final DomainFactory domainFactory = new DomainFactory();
+
     @Test
     @DisplayName("userToUserDetailDTO 맵핑이 정삭적으로 동작 하는 테스트")
     void entityToUserDetailDTO() {
         //given
-        long userId = 0L;
-        User user = DomainFactory.createUser(userId);
-
-        int length = 3;
-        LongStream.range(0, length).forEach((i) -> {
-            StudyGroup studyGroup = DomainFactory.createStudyGroup(i);
-            UserWordBook userWordBook = DomainFactory.createUserWordBook(i);
-
-            Study study = Study.builder()
-                    .id(i)
-                    .studyGroup(studyGroup)
-                    .user(user)
-                    .studyGroupRole(StudyGroupRole.ADMIN)
-                    .build();
-
-            user.joinToStudy(study);
-            user.addWordBook(userWordBook);
-        });
+        User user = domainFactory.getUserOfStudyGroupAdmin();
 
         //when
         UserDetailDTO userDetailDTO = userToUserDetailDtoMapper.entityToUserDetailDTO(user);
@@ -64,13 +49,17 @@ class UserToUserDetailDtoMapperTest {
         assertThat(userDetailDTO.getEmail()).isEqualTo(user.getEmail());
         assertThat(userDetailDTO.getName()).isEqualTo(user.getName());
 
-        IntStream.range(0, length).forEach((i) -> {
+        int studyGroupListSize = user.getStudyList().size();
+        IntStream.range(0, studyGroupListSize).forEach((i) -> {
             UserDetailDTO.StudyGroupDTO studyGroupDTO = userDetailDTO.getStudyGroupDTOList().get(i);
             StudyGroup studyGroup = user.getStudyList().get(i).getStudyGroup();
 
             assertThat(studyGroupDTO.getId()).isEqualTo(studyGroup.getId());
             assertThat(studyGroupDTO.getName()).isEqualTo(studyGroup.getName());
+        });
 
+        int userWordBookListSize = user.getUserWordBookList().size();
+        IntStream.range(0, userWordBookListSize).forEach((i) -> {
             UserDetailDTO.WordBookDTO wordBookDTO = userDetailDTO.getWordBookDTOList().get(i);
             UserWordBook userWordBook = user.getUserWordBookList().get(i);
 
@@ -83,27 +72,14 @@ class UserToUserDetailDtoMapperTest {
     @DisplayName("User를 StudyGroupDTOList 맵핑이 정삭적으로 동작 하는 테스트")
     void mapToStudyGroupDTOList() {
         //given
-        User user = DomainFactory.createUser(0L);
-
-        int length = 5;
-        LongStream.range(0, length).forEach((i) -> {
-            StudyGroup studyGroup = DomainFactory.createStudyGroup(i);
-
-            Study study = Study.builder()
-                    .id(i)
-                    .user(user)
-                    .studyGroup(studyGroup)
-                    .studyGroupRole(StudyGroupRole.ADMIN)
-                    .build();
-
-            user.joinToStudy(study);
-        });
+        User user = domainFactory.getUserOfStudyGroupAdmin();
 
         //when
         List<UserDetailDTO.StudyGroupDTO> studyGroupDTOList = userToUserDetailDtoMapper.mapToStudyGroupDTOList(user.getStudyList());
 
         //then
-        IntStream.range(0, length).forEach((i) -> {
+        int studyGroupListSize = user.getStudyList().size();
+        IntStream.range(0, studyGroupListSize).forEach((i) -> {
             UserDetailDTO.StudyGroupDTO studyGroupDTO = studyGroupDTOList.get(i);
             StudyGroup studyGroup = user.getStudyList().get(i).getStudyGroup();
 
@@ -116,18 +92,14 @@ class UserToUserDetailDtoMapperTest {
     @DisplayName("userWordBookList를 userWordBookDTOList로 맵핑이 정삭적으로 동작 하는 테스트")
     void mapToWordBookDTOList() {
         //given
-        List<UserWordBook> userWordBookList = new ArrayList<>();
-
-        int length = 5;
-        LongStream.range(0, length).forEach((i) -> {
-            userWordBookList.add(DomainFactory.createUserWordBook(i));
-        });
+        List<UserWordBook> userWordBookList = domainFactory.getUserOfStudyGroupAdmin().getUserWordBookList();
 
         //when
         List<UserDetailDTO.WordBookDTO> wordBookDTOList = userToUserDetailDtoMapper.mapToWordBookDTOList(userWordBookList);
 
         //then
-        IntStream.range(0, length).forEach((i) -> {
+        int userWordBookListSize = userWordBookList.size();
+        IntStream.range(0, userWordBookListSize).forEach((i) -> {
             UserDetailDTO.WordBookDTO wordBookDTO = wordBookDTOList.get(i);
             UserWordBook userWordBook = userWordBookList.get(i);
 
@@ -137,6 +109,7 @@ class UserToUserDetailDtoMapperTest {
     }
 
     @Test
+    @DisplayName("맵핑 후 makeLinks 함수가 정상적으로 동작하는 테스트")
     void makeLinksAfterMapping() {
         entityToUserDetailDTO();
         verify(userToUserDetailDtoMapper).makeLinksAfterMapping(any(UserDetailDTO.class));

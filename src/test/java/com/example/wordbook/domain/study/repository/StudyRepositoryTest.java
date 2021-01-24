@@ -30,7 +30,7 @@ class StudyRepositoryTest {
         return userRepository.save(User.builder()
                 .name("testName")
                 .pw("testPw")
-                .email("testEmail")
+                .email("testEmail@email.com")
                 .build());
     }
 
@@ -45,9 +45,13 @@ class StudyRepositoryTest {
     void findByUserIdAndStudyGroupId() {
         // given
         User user = getUser();
+        user = userRepository.save(user);
+
         StudyGroup studyGroup = getStudyGroup();
+        studyGroup = studyGroupRepository.save(studyGroup);
 
         Study study = Study.builder()
+                .isUsing(true)
                 .user(user)
                 .studyGroup(studyGroup)
                 .studyGroupRole(StudyGroupRole.ADMIN)

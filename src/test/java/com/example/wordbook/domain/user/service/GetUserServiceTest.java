@@ -26,8 +26,10 @@ class GetUserServiceTest extends UserServiceTest {
         //given
         GetUserService getUserService = new GetUserService(userRepository, userToUserDetailDtoMapper);
 
+        User user = domainFactory.getUserOfStudyGroupNormal();
+
         long userId = 0L;
-        given(userRepository.findById(anyLong())).willReturn(Optional.of(DomainFactory.createUser(userId)));
+        given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
 
         //when
         UserDetailDTO userDetailDTO = getUserService.getDetailDTOById(userId);
@@ -39,10 +41,12 @@ class GetUserServiceTest extends UserServiceTest {
     @Test
     @DisplayName("유효한 Id일 User를 반환하는 테스트")
     void getEntityById() {
-        //given때
+        //given
+        User _user = domainFactory.getUserOfStudyGroupNormal();
+
         GetUserService getUserService = new GetUserService(userRepository, userToUserDetailDtoMapper);
 
-        given(userRepository.findById(anyLong())).willReturn(Optional.of(DomainFactory.createUser(0L)));
+        given(userRepository.findById(anyLong())).willReturn(Optional.of(_user));
 
         //when
         User user = getUserService.getEntityById(0L);
@@ -73,7 +77,8 @@ class GetUserServiceTest extends UserServiceTest {
         //given
         GetUserService getUserService = new GetUserService(userRepository, userToUserDetailDtoMapper);
 
-        User user = DomainFactory.createUser(0L);
+        User user = domainFactory.getUserOfStudyGroupNormal();
+
         given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
 
         //when

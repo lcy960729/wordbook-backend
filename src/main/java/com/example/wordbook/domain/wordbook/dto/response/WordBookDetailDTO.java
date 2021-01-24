@@ -59,7 +59,7 @@ public class WordBookDetailDTO extends RepresentationModel<WordBookDetailDTO> {
         makeLinks_StudyGroupWordBookWord(userId, studyGroupId, id);
     }
 
-    public void makeLinks_StudyGroupWordBookWord(Long userId, Long studyGroupId, Long wordBookId) {
+    private void makeLinks_StudyGroupWordBookWord(Long userId, Long studyGroupId, Long wordBookId) {
         for (WordDTO word : wordDTOList) {
             word.add(DomainLink.WordOfStudyGroupWordBook.update(userId, studyGroupId, wordBookId, word.getId()));
             word.add(DomainLink.WordOfStudyGroupWordBook.delete(userId, studyGroupId, wordBookId, word.getId()));
@@ -81,7 +81,7 @@ public class WordBookDetailDTO extends RepresentationModel<WordBookDetailDTO> {
         makeLinks_userWordBookWord(userId, id);
     }
 
-    public void makeLinks_userWordBookWord(Long userId, Long wordBookId) {
+    private void makeLinks_userWordBookWord(Long userId, Long wordBookId) {
         for (WordDTO word : wordDTOList) {
             word.add(DomainLink.WordOfUserWordBook.update(userId, wordBookId, word.getId()));
             word.add(DomainLink.WordOfUserWordBook.delete(userId, wordBookId, word.getId()));

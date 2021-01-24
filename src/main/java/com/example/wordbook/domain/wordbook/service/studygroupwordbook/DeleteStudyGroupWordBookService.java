@@ -1,8 +1,7 @@
-package com.example.wordbook.domain.wordbook.service.groupwordbook;
+package com.example.wordbook.domain.wordbook.service.studygroupwordbook;
 
 import com.example.wordbook.domain.wordbook.entity.StudyGroupWordBook;
 import com.example.wordbook.domain.wordbook.repository.WordBookRepository;
-import com.example.wordbook.NotUseClass.wordbook.DeleteWordBookService;
 import org.springframework.stereotype.Service;
 
 @Service

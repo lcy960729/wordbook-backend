@@ -11,5 +11,5 @@ public interface CreateDtoToStudyGroupWordBookMapper {
     @Mapping(target = "studyGroup", ignore = true)
     @Mapping(target = "words", ignore = true)
     @Mapping(target = "isUsing", ignore = true)
-    StudyGroupWordBook createDTOTOEntity(CreateWordBookDTO createUserWordBookDTO);
+    StudyGroupWordBook createDTOTOEntity(CreateWordBookDTO createWordBookDTO);
 }

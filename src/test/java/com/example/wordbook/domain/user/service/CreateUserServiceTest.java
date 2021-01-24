@@ -22,6 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 
 class CreateUserServiceTest extends UserServiceTest{
     @MockBean
@@ -36,7 +37,7 @@ class CreateUserServiceTest extends UserServiceTest{
         //given
         CreateUserService createUserService = new CreateUserService(userToUserDetailDtoMapper, createDtoToUserMapper, userRepository, getUserService);
 
-        User user = DomainFactory.createUser(0L);
+        User user = domainFactory.getUserOfStudyGroupNormal();
 
         CreateUserDTO createUserDTO = CreateUserDTO.builder()
                 .email(user.getEmail())

@@ -66,6 +66,5 @@ class CreateStudyGroupControllerTest extends StudyGroupControllerTest {
         urlExistCheck(resultActions, DomainLink.CREATE_STUDY_GROUP_WORDBOOK);
 
         urlExistCheck(resultActions, DomainLink.GET_USER);
-
     }
 }

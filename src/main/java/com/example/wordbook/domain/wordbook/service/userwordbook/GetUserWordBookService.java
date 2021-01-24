@@ -23,7 +23,7 @@ public class GetUserWordBookService {
     }
 
     public WordBookDetailDTO getDetailDTOByUserIdAndWordBookId(@NotNull Long userId, @NotNull Long wordBookId) {
-        return userWordBookToWordBookDetailDtoMapper.entityToResponseDetailDTO(this.getEntityByUserIdAndWordBookId(userId, wordBookId));
+        return userWordBookToWordBookDetailDtoMapper.entityToResponseDetailDTO(getEntityByUserIdAndWordBookId(userId, wordBookId));
     }
 
     public UserWordBook getEntityByUserIdAndWordBookId(@NotNull Long userId, @NotNull Long wordBookId) {

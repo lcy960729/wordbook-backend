@@ -35,7 +35,6 @@ class CreateStudyGroupServiceTest extends StudyGroupServiceTest {
     @MockBean
     private GetUserService getUserService;
 
-
     private CreateStudyGroupService createStudyGroupService;
 
     @BeforeEach
@@ -55,20 +54,16 @@ class CreateStudyGroupServiceTest extends StudyGroupServiceTest {
                 .name("testName")
                 .build();
 
-        long userId = 0;
-        long studyGroupId = 10;
-
-        StudyGroup studyGroup = DomainFactory.createStudyGroup(studyGroupId);
-        User user = DomainFactory.createUser(userId);
-
-        Study study = DomainFactory.createStudyOfAdminUser(0L, studyGroup, user);
+        Study study = domainFactory.getStudyOfStudyGroupAdmin();
+        User user = study.getUser();
+        StudyGroup studyGroup = study.getStudyGroup();
 
         given(studyGroupRepository.save(any(StudyGroup.class))).willReturn(studyGroup);
         given(getUserService.getEntityById(anyLong())).willReturn(user);
         given(createStudyService.create(any(User.class), any(StudyGroup.class))).willReturn(study);
 
         //when
-        StudyGroupDetailDTO studyGroupDetailDTO = createStudyGroupService.create(userId, createStudyGroupDTO);
+        StudyGroupDetailDTO studyGroupDetailDTO = createStudyGroupService.create(user.getId(), createStudyGroupDTO);
 
         //then
         assertThat(studyGroupDetailDTO).isNotNull();

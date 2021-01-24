@@ -5,27 +5,18 @@ import com.example.wordbook.domain.study.exception.NotFoundStudyException;
 import com.example.wordbook.domain.study.service.GetStudyService;
 import com.example.wordbook.domain.studyGroup.dto.response.StudyGroupDetailDTO;
 import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
-import com.example.wordbook.domain.studyGroup.exception.NotFoundStudyGroupException;
-import com.example.wordbook.domain.studyGroup.repository.StudyGroupRepository;
-import com.example.wordbook.domain.studyGroup.mapper.StudyToStudyGroupDetailDtoMapper;
 import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.global.tool.DomainFactory;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 
 public class GetStudyGroupServiceTest extends StudyGroupServiceTest {
 
@@ -43,19 +34,14 @@ public class GetStudyGroupServiceTest extends StudyGroupServiceTest {
     @DisplayName("정상적으로 스터디 그룹을 반환하는 테스트")
     void getEntityByIdTest() {
         //given
-        long studyGroupId = 0L;
-        StudyGroup studyGroup = DomainFactory.createStudyGroup(studyGroupId);
-
-        long userId = 0L;
-        User user = DomainFactory.createUser(userId);
-
-        long studyId = 0L;
-        Study study = DomainFactory.createStudyOfNormalUser(studyId, studyGroup, user);
+        Study study = domainFactory.getStudyOfStudyGroupNormal();
+        StudyGroup studyGroup = study.getStudyGroup();
+        User user = study.getUser();
 
         given(getStudyService.getEntityByFindByUserIdAndStudyGroupsId(anyLong(), anyLong())).willReturn(study);
 
         //when
-        StudyGroupDetailDTO studyGroupDetailDTO = getStudyGroupService.getDetailDTOByUserIdAndStudyGroupId(userId, studyGroupId);
+        StudyGroupDetailDTO studyGroupDetailDTO = getStudyGroupService.getDetailDTOByUserIdAndStudyGroupId(user.getId(), studyGroup.getId());
 
         //then
         assertThat(studyGroupDetailDTO).isNotNull();

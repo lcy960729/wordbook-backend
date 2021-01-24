@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 
 class UpdateUserServiceTest extends UserServiceTest {
     @MockBean
@@ -44,7 +45,7 @@ class UpdateUserServiceTest extends UserServiceTest {
 
         long userId = 0L;
 
-        User user = DomainFactory.createUser(userId);
+        User user = domainFactory.getUserOfStudyGroupNormal();
 
         given(getUserService.getEntityById(anyLong())).willReturn(user);
         given(userRepository.save(any(User.class))).willReturn(user);

@@ -21,7 +21,6 @@ class CreateDtoToUserMapperTest {
     @Test
     @DisplayName("createUserDTOToEntity 맵핑이 정삭적으로 동작 하는 테스트")
     void createUserDTOToEntity() {
-
         //given
         CreateUserDTO createUserDTO = CreateUserDTO.builder()
                 .name("testName")

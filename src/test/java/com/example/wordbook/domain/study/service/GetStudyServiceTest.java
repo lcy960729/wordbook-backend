@@ -1,5 +1,7 @@
 package com.example.wordbook.domain.study.service;
 
+import com.example.wordbook.domain.studyGroup.entity.StudyGroup;
+import com.example.wordbook.domain.user.entity.User;
 import com.example.wordbook.global.enums.StudyGroupRole;
 import com.example.wordbook.domain.study.entity.Study;
 import com.example.wordbook.domain.study.exception.NotFoundStudyException;
@@ -12,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import sun.rmi.server.UnicastServerRef;
 
 import java.util.Optional;
 
@@ -20,15 +23,10 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
-@SpringBootTest(classes = {DomainFactory.class})
-@ExtendWith(MockitoExtension.class)
-class GetStudyServiceTest {
+class GetStudyServiceTest extends StudyServiceTest{
 
     @Mock
     private StudyRepository studyRepository;
-
-    @Autowired
-    private DomainFactory domainFactory;
 
     @Test
     @DisplayName("정상적으로 스터디를 받아오는 테스트")
@@ -36,18 +34,11 @@ class GetStudyServiceTest {
         //given
         GetStudyService getStudyService = new GetStudyService(studyRepository);
 
-        long userId = 1L;
-        long studyGroupId = 2L;
-        long studyId = 0L;
+        Study tempStudy = domainFactory.getStudyOfStudyGroupNormal();
+        long userId = tempStudy.getUser().getId();
+        long studyGroupId = tempStudy.getStudyGroup().getId();
 
-        Study mockStudy = Study.builder()
-                .id(studyId)
-                .user(domainFactory.createUser(userId))
-                .studyGroup(domainFactory.createStudyGroup(studyGroupId))
-                .studyGroupRole(StudyGroupRole.NORMAL)
-                .build();
-
-        given(studyRepository.findByUserIdAndStudyGroupId(anyLong(), anyLong())).willReturn(Optional.of(mockStudy));
+        given(studyRepository.findByUserIdAndStudyGroupId(anyLong(), anyLong())).willReturn(Optional.of(tempStudy));
 
         //when
         Study study = getStudyService.getEntityByFindByUserIdAndStudyGroupsId(userId, studyGroupId);
