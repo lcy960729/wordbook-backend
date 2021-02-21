@@ -1,6 +1,5 @@
 package com.example.wordbook.domain.wordbook.service.userwordbook;
 
-import com.example.wordbook.NotUseClass.wordbook.DeleteWordBookService;
 import com.example.wordbook.domain.wordbook.entity.UserWordBook;
 import com.example.wordbook.domain.wordbook.repository.UserWordBookRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
