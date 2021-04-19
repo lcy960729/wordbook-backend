@@ -1,6 +1,9 @@
 # wordbook-backend
 단어장 백엔드 서버
 
+## 개인 결과물 노션 페이지
+[프로젝트 노션 페이지](https://www.notion.so/lcy960729/a6c02aadac1b4f46bf05e48580172240)
+
 ## 개발 목적
 Spring Boot Framework와 TDD, RestAPI를 학습하기 위한 프로젝트입니다.
 
