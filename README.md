@@ -67,7 +67,5 @@ Body :
 ```
 사용자를 생성하는 API의 요청과 결과 예제 입니다. 이외 추가적인 API의 구현 내용은 아래 링크에서 확인할 수 있습니다.
 
-자세한 개발 내용 - https://lcy960729.github.io/wordbook-project/2021/01/17/%EB%8F%84%EB%A9%94%EC%9D%B8-%EA%B8%B0%EB%8A%A5%EB%93%A4-%EA%B5%AC%ED%98%84-%EC%99%84%EB%A3%8C.html
-
 ## 개발 환경
 JAVA : Oracle JDK 1.8.0
